@@ -1,3 +1,20 @@
+<?php
+session_start();
+
+if(isset($_SESSION["email"])) {
+    if($_SESSION["sudo"]) {
+        header("Location: tecnici/index.php");
+        exit();
+    } else {
+        header("Location: docenti/index.php");
+        exit();
+    }
+}
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

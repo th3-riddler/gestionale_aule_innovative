@@ -3,12 +3,12 @@
     require_once("db.php");
 
     if ($_SERVER["REQUEST_METHOD"] != "POST") {
-        header("Location: ../login.html");
+        header("Location: ../index.php");
         exit();
     }
 
     if (!isset($_POST["email"]) || !isset($_POST["password"])) {
-        header("Location: ../login.html");
+        header("Location: ../index.php");
         exit();
     }
     
@@ -16,7 +16,7 @@
     $password = hash("sha256", $_POST["password"]);
 
     if($email == "" || $password == "") {
-        header("Location: ../login.html");
+        header("Location: ../index.php");
     }
 
     $query = "SELECT * FROM docenti WHERE email = ? AND password = ?";
@@ -52,5 +52,5 @@
         exit();
     }
 
-    header("Location: ../login.html");
+    header("Location: ../index.php");
 ?>
