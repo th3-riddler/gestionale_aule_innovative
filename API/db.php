@@ -1,8 +1,8 @@
 <?php
-$hostname = "localhost";
-$username = "redux";
-$password = "robiola";
-$dbname = "gestionale_aule_innovative";
+$hostname = "127.0.0.1";
+$username = "root";
+$password = "";
+$dbname = "gestione_aule_innovative";
 
 $conn = new mysqli($hostname, $username, $password, $dbname);
 

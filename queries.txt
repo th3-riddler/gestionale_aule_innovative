@@ -18,3 +18,17 @@ CREATE TABLE IF NOT EXISTS tecnici (
 
 INSERT INTO docenti VALUES ("elton.balla@iticopernico.it", "Elton", "Balla", "Matematica", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
 INSERT INTO tecnici VALUES ("luca.bianconi@iticopernico.it", "Luca", "Bianconi", "0e949b5f9de9cfa8437d0beeca8d8c96a6b578caa889fd6659e85b7dff22e59b");
+
+/* CREATE TABLE orario_aule */
+
+CREATE TABLE IF NOT EXISTS orario_aule (
+    aula VARCHAR(255) NOT NULL,
+    giorno VARCHAR(255) NOT NULL,
+    ora INT NOT NULL,
+    email_docente VARCHAR(255),
+    PRIMARY KEY (aula, giorno, ora),
+    FOREIGN KEY (email_docente)
+    REFERENCES docenti(email)
+);
+
+

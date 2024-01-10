@@ -15,6 +15,8 @@
     $email = $_POST["email"];
     $password = hash("sha256", $_POST["password"]);
 
+    echo $email . " " . $password;
+
     if($email == "" || $password == "") {
         header("Location: ../index.php");
     }
