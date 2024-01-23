@@ -15,13 +15,12 @@
     $email = $_POST["email"];
     $password = hash("sha256", $_POST["password"]);
 
-    echo $email . " " . $password;
 
     if($email == "" || $password == "") {
         header("Location: ../index.php");
     }
 
-    $query = "SELECT * FROM docenti WHERE email = ? AND password = ?";
+    $query = "SELECT * FROM docente WHERE email = ? AND password = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("ss", $email, $password);
     $stmt->execute();
@@ -38,7 +37,7 @@
         exit();
     }
 
-    $query = "SELECT * FROM tecnici WHERE email = ? AND password = ?";
+    $query = "SELECT * FROM tecnico WHERE email = ? AND password = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("ss", $email, $password);
     $stmt->execute();
