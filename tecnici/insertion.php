@@ -66,7 +66,7 @@ $hours = ["8:10 - 9:10", "9:10 - 10:00", "10:10 - 11:10", "11:10 - 12:00", "12:1
             </form>
         </section>
         <section id="insertion">
-            <form action="../API/insertion.php" method="POST">
+            <form id="form_hour" action="../API/insertion.php" method="POST">
                 <select name="docente" id="teacher_select">
                     <?php
                         foreach ($teachers as $teacher) {
@@ -81,6 +81,7 @@ $hours = ["8:10 - 9:10", "9:10 - 10:00", "10:10 - 11:10", "11:10 - 12:00", "12:1
                         }
                     ?>
                 </select>
+                <button type="submit">Submit</button>
             </form>
         </section>
         <section id="schedule">

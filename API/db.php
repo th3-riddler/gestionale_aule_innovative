@@ -1,7 +1,7 @@
 <?php
 $hostname = "127.0.0.1";
-$username = "redux";
-$password = "robiola";
+$username = "midee";
+$password = "";
 $dbname = "gestionale_aule_innovative";
 
 $conn = new mysqli($hostname, $username, $password, $dbname);
