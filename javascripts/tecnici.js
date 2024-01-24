@@ -1,4 +1,8 @@
 function getPos(e) {
+    document.querySelectorAll('.selected').forEach(function(td) {
+        td.classList.remove('selected');
+    });
+    this.classList.add('selected');
     let columnPos = parseInt(this.id.split("")[1]);
     let headers = document.querySelectorAll('th');
 

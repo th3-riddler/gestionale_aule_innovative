@@ -13,3 +13,7 @@ th, td{
     text-align: center;
     border: 1px solid black;
 }
+
+.selected{
+    background-color: #a3ff87;
+}
