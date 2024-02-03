@@ -27,8 +27,7 @@ $classes = json_decode(file_get_contents("http://127.0.0.1/gestionale_CARRELLI/A
 $schedule = json_decode(file_get_contents("http://127.0.0.1/gestionale_CARRELLI/API/getSchedule.php?room=" . $_SESSION["current_room"]));
 
 $hours = ["8:10 - 9:10", "9:10 - 10:00", "10:10 - 11:10", "11:10 - 12:00", "12:10 - 13:10", "13:10 - 14:05", "14:20 - 15:10", "15:10 - 16:10"];
-
-print_r($schedule);
+$days = ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"];
 ?>
 
 <!DOCTYPE html>
@@ -90,12 +89,11 @@ print_r($schedule);
             <table>
                 <tr>
                     <th>Ora</th>
-                    <th>Lunedì</th>
-                    <th>Martedì</th>
-                    <th>Mercoledì</th>
-                    <th>Giovedì</th>
-                    <th>Venerdì</th>
-                    <th>Sabato</th>
+                    <?php
+                        foreach ($days as $day) {
+                            echo "<th>$day</th>";
+                        }
+                    ?>
                 </tr>
                 <?php 
                     foreach ($hours as $pos => $hour) {
@@ -105,8 +103,8 @@ print_r($schedule);
                         for($i = 1; $i <= 6; $i++) {
                             echo "<td id=" . ($pos + 1) . $i .  ">";
                             foreach($schedule as $lesson) {
-                                if ($lesson->ora == $pos + 1) { //bisogna implementare un controllo anche sul giorno, quello sulle ore funziona
-                                    echo "<p>$lesson->nome_docente</p>";
+                                if ($lesson->ora == $pos + 1 && $lesson->giorno == $days[$i -1]) { //bisogna implementare un controllo anche sul giorno, quello sulle ore funziona
+                                    echo "<p>$lesson->email_docente</p>";
                                     echo "<p>$lesson->numero_classe$lesson->sezione</p>";
                                 }
                             }

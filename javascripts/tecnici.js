@@ -1,25 +1,31 @@
 function getPos(e) {
-    document.querySelectorAll('.selected').forEach(function(td) {
-        td.classList.remove('selected');
-    });
-    this.classList.add('selected');
     let columnPos = parseInt(this.id.split("")[1]);
     let headers = document.querySelectorAll('th');
-
+    let form = document.getElementById('form_hour');
+    
     let hour = parseInt(this.id.split("")[0]);
     let day = headers[columnPos].textContent;
 
-    let form = document.getElementById('form_hour');
+    if(this.classList.contains('selected')) {
+        this.classList.remove('selected');
+        let inputHour = form.querySelector('input[name="hour[]"][value="' + hour + '"]');
+        let inputDay = form.querySelector('input[name="day[]"][value="' + day + '"]');
+        form.removeChild(inputHour);
+        form.removeChild(inputDay);
+        return;
+    }
+    this.classList.add('selected');
+
 
     let inputHour = form.querySelector('input[name="hour"]') ?? document.createElement('input'); // ?? = se non esiste crea un elemento input
     let inputDay = form.querySelector('input[name="day"]') ?? document.createElement('input');
 
     inputHour.setAttribute('type', 'hidden');
-    inputHour.setAttribute('name', 'hour');
+    inputHour.setAttribute('name', 'hour[]');
     inputHour.setAttribute('value', hour);
 
     inputDay.setAttribute('type', 'hidden');
-    inputDay.setAttribute('name', 'day');
+    inputDay.setAttribute('name', 'day[]');
     inputDay.setAttribute('value', day);
 
     form.appendChild(inputHour);

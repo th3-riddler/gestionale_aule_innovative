@@ -32,6 +32,7 @@ if (!$_SESSION["sudo"]) {
         <li><?php echo $_SESSION["nome"]; ?></li>
         <li><?php echo $_SESSION["cognome"]; ?></li>
         <a href="insertion.php">Inserimento</a>
+        <a href="insertionCart.php">Modifica Carrelli</a>
         <li><a id="logout" href="../API/logout.php">[ <-- </a></li>
     </section>
 

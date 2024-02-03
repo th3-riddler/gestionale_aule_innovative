@@ -12,8 +12,11 @@ th, td{
     padding: 8px;
     text-align: center;
     border: 1px solid black;
+    font-size: 10px;
 }
-
+p{
+    font-size: 10px;
+}
 .selected{
     background-color: #a3ff87;
 }
