@@ -8,14 +8,14 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("previous").addEventListener("click", function() {
         let current = document.getElementById("current");
         let current_date = new Date(current.textContent.split(" - ")[0]);
-        let monday_week = new Date(current_date.getFullYear(), current_date.getMonth(), current_date.getDate() - 7);
+        let monday_week = new Date(current_date.getFullYear(), current_date.getMonth(), current_date.getDate() - 6);
         window.location.href = window.location.href.split("?")[0] + "?data=" + monday_week.toISOString().split("T")[0];
     });
 
     document.getElementById("next").addEventListener("click", function() {
         let current = document.getElementById("current");
         let current_date = new Date(current.textContent.split(" - ")[0]);
-        let monday_week = new Date(current_date.getFullYear(), current_date.getMonth(), current_date.getDate() + 7);
+        let monday_week = new Date(current_date.getFullYear(), current_date.getMonth(), current_date.getDate() + 8);
         
         window.location.href = window.location.href.split("?")[0] + "?data=" + monday_week.toISOString().split("T")[0];
     });

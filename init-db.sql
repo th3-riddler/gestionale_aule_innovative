@@ -1,7 +1,7 @@
-DROP DATABASE IF EXISTS gestionale_aule_innovative;
-CREATE DATABASE IF NOT EXISTS gestionale_aule_innovative;
+-- DROP DATABASE IF EXISTS gestionale_aule_innovative;
+-- CREATE DATABASE IF NOT EXISTS gestionale_aule_innovative;
 
-USE gestionale_aule_innovative;
+-- USE gestionale_aule_innovative;
 
 CREATE TABLE IF NOT EXISTS docente (
     email VARCHAR(255) NOT NULL PRIMARY KEY,

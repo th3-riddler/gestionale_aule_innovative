@@ -17,7 +17,7 @@ $days = array("Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Saba
 $date = $_GET["data"] ?? date("Y-m-d");
 
 
-$prenotazioni_settimana = json_decode(file_get_contents("http://127.0.0.1/esercizi_informatica/gestionale_CARRELLI/API/getPrenotazioniSettimana.php?data=" . $date));
+$prenotazioni_settimana = json_decode(file_get_contents("http://127.0.0.1/API/getWeekReservations.php?data=" . $date));
 print_r($prenotazioni_settimana);
 ?>
 

@@ -17,7 +17,7 @@ if ($_SESSION["sudo"]) {
 $hours = ["8:10 - 9:10", "9:10 - 10:00", "10:10 - 11:10", "11:10 - 12:00", "12:10 - 13:10", "13:10 - 14:05", "14:20 - 15:10", "15:10 - 16:10"];
 $days = array("Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato");
 
-$teacherSchedule = json_decode(file_get_contents("http://127.0.0.1/esercizi_informatica/gestionale_CARRELLI/API/getTeachersSchedule.php?mail=" . $_SESSION["email"]));
+$teacherSchedule = json_decode(file_get_contents("http://127.0.0.1/API/getTeachersSchedule.php?mail=" . $_SESSION["email"]));
 
 ?>
 
@@ -38,7 +38,7 @@ $teacherSchedule = json_decode(file_get_contents("http://127.0.0.1/esercizi_info
         <a href="../API/logout.php">[ <-- </a>
     </section>
 
-    <form action="../API/prenotazione.php" method="POST" id="form_prenotazione">
+    <form action="../API/setReservation.php" method="POST" id="form_prenotazione">
         <input name="n_pc" id="inp_n_pc" type="number" step = "1" min = "0" placeholder="pc da prenotare">
         <input name="nota_docente" id="nota_docente" type="text" placeholder="nota per il tecnico">
         <button type="submit">Prenota</button>

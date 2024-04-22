@@ -31,7 +31,7 @@
         $_SESSION["email"] = $email;
         $_SESSION["nome"] = $result[0]["nome"];
         $_SESSION["cognome"] = $result[0]["cognome"];
-        $_SESSION["materia"] = $result[0]["materia"];
+        // $_SESSION["materia"] = $result[0]["materia"];
         $_SESSION["sudo"] = false;
         header("Location: ../docenti/index.php");
         exit();

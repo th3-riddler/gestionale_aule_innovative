@@ -9,15 +9,13 @@ $aula = $_POST["aula"];
 $ora = intval($_POST["ora"]);
 $cart = intval($_POST["id_carrello"]);
 
-echo $n_pc;
+/*echo $n_pc;
 echo $nota_docente;
 echo $data;
 echo $giorno;
 echo $aula;
 echo $ora;
-echo $cart;
-
-
+echo $cart;*/
 
 $query = "INSERT INTO prenotazione (numero_computer, nota_docente, data, giorno, aula, ora, id_carrello) VALUES (?, ?, ?, ?, ?, ?, ?)";
 $stmt = $conn->prepare($query);

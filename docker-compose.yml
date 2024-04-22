@@ -1,0 +1,17 @@
+services:
+  gestionale:
+    build: ./gestionale
+    ports:
+      - "80:80"
+    depends_on:
+      - database
+  database:
+    image: mariadb
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: gestionale_aule_innovative
+    ports:
+      - ":3306"
+    volumes:
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./db-data:/var/lib/mysql
