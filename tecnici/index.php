@@ -12,6 +12,13 @@ if (!$_SESSION["sudo"]) {
     exit();
 }
 
+$hours = ["8:10 - 9:10", "9:10 - 10:00", "10:10 - 11:10", "11:10 - 12:00", "12:10 - 13:10", "13:10 - 14:05", "14:20 - 15:10", "15:10 - 16:10"];
+$days = array("Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato");
+$date = $_GET["data"] ?? date("Y-m-d");
+
+
+$prenotazioni_settimana = json_decode(file_get_contents("http://127.0.0.1/esercizi_informatica/gestionale_CARRELLI/API/getPrenotazioniSettimana.php?data=" . $date));
+print_r($prenotazioni_settimana);
 ?>
 
 <!DOCTYPE html>
@@ -21,6 +28,7 @@ if (!$_SESSION["sudo"]) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/style.css">
+    <script src="../javascripts/home_tecnici.js"></script>
     <title>Home Tecnici</title>
 </head>
 
@@ -37,35 +45,36 @@ if (!$_SESSION["sudo"]) {
     </section>
 
     <section id="main">
-        <section id="date">
-            <p></p>
+        <section id="date_sect">
+            <div id="previous"> < </div>
+            <div id="current"></div>
+            <div id="next"> > </div>
         </section>
-        <section id="filter">
-            <form action="" method="POST">
-                <input type="text" name="nome" placeholder="Nome">
-                <input type="text" name="cognome" placeholder="Cognome">
-                <input type="text" name="email" placeholder="Email">
-                <input type="text" name="telefono" placeholder="Telefono">
-                <input type="text" name="indirizzo" placeholder="Indirizzo">
-                <input type="text" name="cap" placeholder="Cap">
-                <input type="text" name="citta" placeholder="Città">
-                <input type="text" name="provincia" placeholder="Provincia">
-                <input type="text" name="stato" placeholder="Stato">
-                <input type="submit" value="Cerca">
-            </form>
-        </section>
-        <section id="schedule">
-            <table>
-                <tr>
-                    <th>Lunedì</th>
-                    <th>Martedì</th>
-                    <th>Mercoledì</th>
-                    <th>Giovedì</th>
-                    <th>Venerdì</th>
-                    <th>Sabato</th>
-                </tr>
-            </table>
-        </section>
+        
+        <table>
+            <tr>
+                <th>Ora</th>
+                <?php
+                    foreach ($days as $day) {
+                        echo "<th>$day</th>";
+                    }
+                ?>
+            </tr>
+            <?php 
+                foreach ($hours as $pos => $hour) {
+                    echo "<tr>";
+                    echo "<td value=" . $pos + 1 . ">$hour</td>";
+
+                    for($i = 1; $i <= 6; $i++) {
+                        echo "<td id=" . ($pos + 1) . $i .  ">";
+                        echo "</td>";
+                    }
+
+                    echo "</tr>";
+                }
+            ?>
+        </table>
+
     </section>
 </body>
 

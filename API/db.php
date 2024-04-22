@@ -1,6 +1,6 @@
 <?php
 $hostname = "127.0.0.1";
-$username = "midee";
+$username = "root";
 $password = "";
 $dbname = "gestionale_aule_innovative";
 

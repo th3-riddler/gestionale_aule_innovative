@@ -21,10 +21,10 @@ if (isset($_POST["room"])) {
     }
 }
 
-$rooms = json_decode(file_get_contents("http://127.0.0.1/gestionale_CARRELLI/API/getRooms.php"));
-$teachers = json_decode(file_get_contents("http://127.0.0.1/gestionale_CARRELLI/API/getTeachers.php"));
-$classes = json_decode(file_get_contents("http://127.0.0.1/gestionale_CARRELLI/API/getClasses.php"));
-$schedule = json_decode(file_get_contents("http://127.0.0.1/gestionale_CARRELLI/API/getSchedule.php?room=" . $_SESSION["current_room"]));
+$rooms = json_decode(file_get_contents("http://127.0.0.1/esercizi_informatica/gestionale_CARRELLI/API/getRooms.php"));
+$teachers = json_decode(file_get_contents("http://127.0.0.1/esercizi_informatica/gestionale_CARRELLI/API/getTeachers.php"));
+$classes = json_decode(file_get_contents("http://127.0.0.1/esercizi_informatica/gestionale_CARRELLI/API/getClasses.php"));
+$schedule = json_decode(file_get_contents("http://127.0.0.1/esercizi_informatica/gestionale_CARRELLI/API/getSchedule.php?room=" . $_SESSION["current_room"]));
 
 $hours = ["8:10 - 9:10", "9:10 - 10:00", "10:10 - 11:10", "11:10 - 12:00", "12:10 - 13:10", "13:10 - 14:05", "14:20 - 15:10", "15:10 - 16:10"];
 $days = ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"];
@@ -122,3 +122,4 @@ $days = ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"];
 </body>
 
 </html>
+

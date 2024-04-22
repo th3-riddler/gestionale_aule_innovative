@@ -39,3 +39,4 @@ document.querySelectorAll('td').forEach(function(td) {
 
     td.addEventListener('click', getPos);
 });
+
