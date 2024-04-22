@@ -13,7 +13,7 @@ docker compose up -d database
 docker compose up --build gestionale
 ```
 ## Crediti
-[x] Fabio   Baldassari
-[x] Michele Debiagi
-[x] Alessio Faggioli
-[x] Giacomo Zampini
+- [x] Fabio   Baldassari
+- [x] Michele Debiagi
+- [x] Alessio Faggioli
+- [x] Giacomo Zampini
