@@ -11,6 +11,7 @@ $ora = intval($_POST["ora"]);
 $cart = intval($_POST["id_carrello"]);
 
 //echo json_encode($_POST);
+//exit();
 
 // Check della quantitá di computer disponibili alla data e ora selezionata
 //$query = "SELECT pc_max FROM carrello WHERE id = ? UNION SELECT numero_computer FROM prenotazione WHERE id_carrello = ? AND ora = ? AND giorno = ? AND data = ?;";
@@ -33,6 +34,7 @@ $stmt->bind_param("issssii", $n_pc, $nota_docente, $data, $giorno, $aula, $ora, 
 try {
     $stmt->execute();
 } catch (Exception $e) {
+    //echo $e;
     header("Location: ../docenti/index.php?error=1");
     exit();
 }

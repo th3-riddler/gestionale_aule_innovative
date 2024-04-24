@@ -97,12 +97,13 @@ $teacherSchedule = json_decode(file_get_contents("http://127.0.0.1/API/getTeache
                 $final_pc_number = $result->remaining_pc;
 
                 // Get the technician note for the reservation
-                $result = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getTechnicianNote.php?hour=" . $hour . "&day=" . $lesson->giorno . "&date=" . $lessondate . "&cart_id=" . $cart_id));
-                $index_reservation = array_search($room, array_column($result, "aula"));
-                $final_note = ($index_reservation === false ? null : $result[$index_reservation]["nota_tecnico"]);
+                $result = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getTechnicianNote.php?hour=" . $hour . "&room=" . $room . "&date=" . $lessondate . "&cart_id=" . $cart_id));
+                $final_note = ($result->nota_tecnico) ?? "";
+
+                $had_reservation = (empty($result)) ? false : true;
 
                 // Add the values to the object that will be used in the script
-                $scriptValues[] = ["hour" => $hour, "day" => $day, "class" => $class, "section" => $section, "room" => $room, "final_pc_number" => $final_pc_number, "final_note" => $final_note, "cart_id" => $cart_id];
+                $scriptValues[] = ["hour" => $hour, "day" => $day, "class" => $class, "section" => $section, "room" => $room, "final_pc_number" => $final_pc_number, "final_note" => $final_note, "cart_id" => $cart_id, "had_reservation" => $had_reservation];
             }
         ?>
     </table>

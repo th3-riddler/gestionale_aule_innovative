@@ -1,4 +1,8 @@
 function activate() {
+    if (this.classList.contains("reserved")) {
+        return;
+    }
+
     if (this.classList.contains("selected")) {
         this.classList.remove("selected");
         return;
@@ -9,7 +13,7 @@ function activate() {
     });
 
     this.classList.add("selected");
-    document.getElementById("inp_n_pc").max = parseInt(this.querySelector("span").textContent);
+    document.getElementById("inp_n_pc").max = parseInt(this.querySelector(".max-pc").textContent);
     let day_of_the_week = document.querySelectorAll("th")[parseInt(this.id.split("")[1])].querySelector("span").textContent;
     
     let current = document.getElementById("current").textContent;
@@ -23,7 +27,7 @@ function activate() {
         let input = document.createElement("input");
         input.setAttribute("type", "hidden");
         input.setAttribute("name", ["data", "aula", "giorno", "ora", "id_carrello"][i]);
-        input.setAttribute("value", [date.toISOString().split("T")[0], this.textContent.split(" ")[1], day_of_the_week, this.id.split("")[0], this.value][i]);
+        input.setAttribute("value", [date.toISOString().split("T")[0], this.querySelector(".room").textContent, day_of_the_week, this.id.split("")[0], this.value][i]);
         document.getElementById("form_prenotazione").appendChild(input);
     }
 }
@@ -52,7 +56,8 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     scriptValues.forEach(function(item) {
-        document.getElementById(item["hour"] + item["day"]).innerHTML = item["class"] + item["section"] + " " + item["room"] + "<br>pc disponibili <span>" + item["final_pc_number"] + "</span><br>" + (item["final_note"] ? "nota tecnico: " + item["final_note"] : "");
+        document.getElementById(item["hour"] + item["day"]).innerHTML = item["class"] + item["section"] + " <span class='room'>" + item["room"] + "</span><br>PC disponibili: <span class='max-pc'>" + item["final_pc_number"] + "</span><br>" + (item["final_note"] ? "Nota tecnico: " + item["final_note"] : "");
+        item["had_reservation"] ? document.getElementById(item["hour"] + item["day"]).classList.add("reserved") : null;
         document.getElementById(item["hour"] + item["day"]).addEventListener("click", activate);
         document.getElementById(item["hour"] + item["day"]).value = item["cart_id"];
     });

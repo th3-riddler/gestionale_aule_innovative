@@ -81,7 +81,7 @@ $prenotazioni_settimana = json_decode(file_get_contents("http://127.0.0.1/API/ge
                                 echo "<div class='prenotazione'>";
                                 echo "<p>PC: <span>" . $prenotazione["numero_computer"] . "</span></p>";
                                 echo "<p>Aula: <span>" . $prenotazione["aula"] . "</span></p>";
-                                echo "<p>Note: <span>" . $prenotazione["nota_docente"] . "</span></p>";
+                                echo "<p>Nota: <span>" . $prenotazione["nota_docente"] . "</span></p>";
                                 echo "</div>";
                             }
                         }

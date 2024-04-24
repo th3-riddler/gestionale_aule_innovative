@@ -14,17 +14,17 @@
     }*/
 
     $hour = $_GET["hour"] ?? "";
-    $day = $_GET["day"] ?? "";
+    $room = $_GET["room"] ?? "";
     $lessondate = $_GET["date"] ?? "";
     $cart_id = $_GET["cart_id"] ?? "";
 
-    $query = "SELECT nota_tecnico, aula FROM carrello INNER JOIN prenotazione ON carrello.id = prenotazione.id_carrello WHERE carrello.id = ? AND ora = ? AND giorno = ? AND data = ?";
+    $query = "SELECT nota_tecnico FROM carrello INNER JOIN prenotazione ON carrello.id = prenotazione.id_carrello WHERE carrello.id = ? AND ora = ? AND aula = ? AND data = ?";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("siss", $cart_id, $hour, $day, $lessondate);
+    $stmt->bind_param("siss", $cart_id, $hour, $room, $lessondate);
     $stmt->execute();
     $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     $stmt->close();
 
-    echo json_encode($result);
+    echo json_encode($result[0]);
 
 ?>
