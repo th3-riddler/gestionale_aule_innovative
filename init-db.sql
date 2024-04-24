@@ -42,7 +42,6 @@ CREATE TABLE IF NOT EXISTS carrello (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     nome_carrello VARCHAR(255) NOT NULL,
     pc_max INT,
-    pc_disp INT,
     Aula1 VARCHAR(10),
     Aula2 VARCHAR(10),
     Aula3 VARCHAR(10),
@@ -53,8 +52,7 @@ CREATE TABLE IF NOT EXISTS carrello (
 -- INSERT IGNORE INTO carrello (id, nome_carrello) VALUES (1, "Carrello 1"), (2, "Carrello 2"), (3, "Carrello 3"), (4, "Carrello 4"), (5, "Carrello 5"), (6, "Carrello 6"), (7, "Carrello 7"), (8, "Carrello 8");
 
 
-INSERT IGNORE INTO carrello
-VALUES (1, "Carrello 1", 30, 30, "A1", "A2", "A3", "A4", "A5"), (2, "Carrello 2", 30, 30, "A6", "A7", "A8", "A9", "A10"), (3, "Carrello 3", 30, 30, "A11", "A12", "A13", "A14", "A15"), (4, "Carrello 4", 30, 30, "A16", "A17", "A18", "A19", "A20"), (5, "Carrello 5", 30, 30, "A21", "A22", "A23", "A24", "A25"), (6, "Carrello 6", 30, 30, "A26", "A27", "A28", "A29", "A30"), (7, "Carrello 7", 30, 30, "A31", "A32", "A33", "A34", "A35"), (8, "Carrello 8", 30, 30, "A36", "A37", "A38", "A39", "A40");
+INSERT IGNORE INTO carrello VALUES (1, "Carrello 1", 30, "A1", "A2", "A3", "A4", "A5"), (2, "Carrello 2", 30, "A6", "A7", "A8", "A9", "A10"), (3, "Carrello 3", 30, "A11", "A12", "A13", "A14", "A15"), (4, "Carrello 4", 30, "A16", "A17", "A18", "A19", "A20"), (5, "Carrello 5", 30, "A21", "A22", "A23", "A24", "A25"), (6, "Carrello 6", 30, "A26", "A27", "A28", "A29", "A30"), (7, "Carrello 7", 30, "A31", "A32", "A33", "A34", "A35"), (8, "Carrello 8", 30, "A36", "A37", "A38", "A39", "A40");
 
 
 CREATE TABLE IF NOT EXISTS orario_aula (

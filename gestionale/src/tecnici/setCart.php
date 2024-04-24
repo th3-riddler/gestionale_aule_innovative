@@ -14,7 +14,7 @@ if (!$_SESSION["sudo"]) {
 
 if (isset($_POST["cart"])) {
     $_SESSION["current_cart"] = $_POST["cart"];
-    header("Location: insertionCart.php");
+    header("Location: setCart.php");
 } else {
     if (!isset($_SESSION["current_cart"])) {
         $_SESSION["current_cart"] = 1;
@@ -62,9 +62,8 @@ $cartsData = json_decode(file_get_contents("http://127.0.0.1/API/getCartsData.ph
             </form>
         </section>
         <section id="insertion">
-            <form id="form_cart" action="../API/insertionCart.php" method="POST">
+            <form id="form_cart" action="../API/setCart.php" method="POST">
                 <input type="number" min="0" step="1" name="pc_max" id="pcmax_input" placeholder="N. massimo di pc"></input>
-                <input type="number" min="0" step="1" name="pc_disp" id="pcdisp_input" placeholder="N. di pc disponibili"></input>
                 <input type="text" name="Aula1" id="aula1_input" placeholder="Prima Aula"></input>
                 <input type="text" name="Aula2" id="aula2_input" placeholder="Seconda Aula"></input>
                 <input type="text" name="Aula3" id="aula3_input" placeholder="Terza Aula"></input>
@@ -78,7 +77,6 @@ $cartsData = json_decode(file_get_contents("http://127.0.0.1/API/getCartsData.ph
                 <tr>
                     <th>Nome Carrello</th>
                     <th>Numero massimo di pc</th>
-                    <th>Numero di pc disponibili</th>
                     <th>Aula 1</th>
                     <th>Aula 2</th>
                     <th>Aula 3</th>
@@ -90,7 +88,6 @@ $cartsData = json_decode(file_get_contents("http://127.0.0.1/API/getCartsData.ph
                     echo "<tr>";
                     echo "<td>$cart->nome_carrello</td>";
                     echo "<td>$cart->pc_max</td>";
-                    echo "<td>$cart->pc_disp</td>";
                     echo "<td>$cart->Aula1</td>";
                     echo "<td>$cart->Aula2</td>";
                     echo "<td>$cart->Aula3</td>";

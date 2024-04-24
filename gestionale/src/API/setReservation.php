@@ -12,16 +12,20 @@ $cart = intval($_POST["id_carrello"]);
 
 //echo json_encode($_POST);
 
-// Aggiornamento disponibilità pc (no < 0)
-$query = "UPDATE carrello SET pc_disp = pc_disp - $n_pc WHERE id = $cart AND pc_disp >= $n_pc";
+// Check della quantitá di computer disponibili alla data e ora selezionata
+//$query = "SELECT pc_max FROM carrello WHERE id = ? UNION SELECT numero_computer FROM prenotazione WHERE id_carrello = ? AND ora = ? AND giorno = ? AND data = ?;";
+$query = "SELECT (c.pc_max - IFNULL((SELECT SUM(p.numero_computer) FROM prenotazione p WHERE p.id_carrello = c.id AND p.ora = ? AND p.data = ?), 0)) AS remaining_pc FROM carrello c WHERE c.id = ?;";
 $stmt = $conn->prepare($query);
+$stmt->bind_param("iss", $ora, $data, $cart);
 $stmt->execute();
-if ($stmt->affected_rows == 0) {
-    echo $stmt->affected_rows;
-    //header("Location: ../docenti/index.php?error=1");
+$result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+$remaining_pc = $result[0]["remaining_pc"];
+$stmt->close();
+
+if ($remaining_pc < $n_pc) {
+    header("Location: ../docenti/index.php?error=2");
     exit();
 }
-$stmt->close();
 
 $query = "INSERT INTO prenotazione (numero_computer, nota_docente, data, giorno, aula, ora, id_carrello) VALUES (?, ?, ?, ?, ?, ?, ?)";
 $stmt = $conn->prepare($query);
@@ -29,22 +33,10 @@ $stmt->bind_param("issssii", $n_pc, $nota_docente, $data, $giorno, $aula, $ora, 
 try {
     $stmt->execute();
 } catch (Exception $e) {
-    echo $e;
-    //header("Location: ../docenti/index.php?error=1");
+    header("Location: ../docenti/index.php?error=1");
     exit();
 }
 $stmt->close();
-
-// Creazione evento per la cancellazione automatica della prenotazione
-/*$query = "
-CREATE EVENT IF NOT EXISTS event_$cart
-ON SCHEDULE AT " . $data . " " . $ora . ":00:00
-DO BEGIN
-    UPDATE carrello SET pc_disp = pc_disp + $n_pc WHERE id = $cart;
-    DELETE FROM prenotazione WHERE id_carrello = $cart AND ora = $ora AND data = '$data';
-END";
-$stmt = $conn->prepare($query);
-$stmt->execute();*/
 
 header("Location: ../docenti/index.php");
 ?>

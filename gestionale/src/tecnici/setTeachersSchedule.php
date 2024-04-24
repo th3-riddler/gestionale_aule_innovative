@@ -14,7 +14,7 @@ if (!$_SESSION["sudo"]) {
 
 if (isset($_POST["room"])) {
     $_SESSION["current_room"] = $_POST["room"];
-    header("Location: insertion.php");
+    header("Location: setTeachersSchedule.php");
 } else {
     if (!isset($_SESSION["current_room"])) {
         $_SESSION["current_room"] = "A1";
@@ -67,7 +67,7 @@ $days = ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"];
             </form>
         </section>
         <section id="insertion">
-            <form id="form_hour" action="../API/insertion.php" method="POST">
+            <form id="form_hour" action="../API/setTeachersSchedule.php" method="POST">
                 <select name="teacher" id="teacher_select">
                     <?php
                         foreach ($teachers as $teacher) {
@@ -118,7 +118,7 @@ $days = ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"];
         </section>
     </section>
 
-    <script src="../javascripts/tecnici.js"></script>
+    <script src="../javascripts/setTeachersSchedule.js"></script>
 </body>
 
 </html>

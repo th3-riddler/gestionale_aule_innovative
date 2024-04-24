@@ -30,6 +30,6 @@ foreach ($result["hour"] as $key => $hour) {
 }
 
 
-header("Location: ../tecnici/insertion.php");
+header("Location: ../tecnici/setTeachersSchedule.php");
 
 ?>
