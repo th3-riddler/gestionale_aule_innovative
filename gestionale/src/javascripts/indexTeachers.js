@@ -1,18 +1,34 @@
 function activate() {
-    if (this.classList.contains("reserved")) {
-        return;
-    }
+    console.log(this);
 
     if (this.classList.contains("selected")) {
         this.classList.remove("selected");
+        this.firstElementChild.classList.remove("btn-accent");
+        document.getElementById("inputPcQt").setAttribute("disabled", "true");
+        document.getElementById("inputPcQt").value = "";
+        document.getElementById("inputPcQt").max = 0;
+
+        document.getElementById("teacherNote").setAttribute("disabled", "true");
+        document.getElementById("teacherNote").classList.add("input-disabled");
+        document.getElementById("teacherNote").parentElement.classList.add("input-disabled");
+        document.getElementById("teacherNote").value = "";
+
+        document.getElementById("formReservation").querySelector("button[type='submit']").setAttribute("disabled", "true");
         return;
     }
 
     document.querySelectorAll(".selected").forEach(function(item) {
         item.classList.remove("selected");
+        item.firstElementChild.classList.remove("btn-accent");
     });
 
     this.classList.add("selected");
+    this.firstElementChild.classList.add("btn-accent");
+    document.getElementById("inputPcQt").removeAttribute("disabled");
+    document.getElementById("teacherNote").removeAttribute("disabled");
+    document.getElementById("teacherNote").classList.remove("input-disabled");
+    document.getElementById("teacherNote").parentElement.classList.remove("input-disabled");
+    document.getElementById("formReservation").querySelector("button[type='submit']").removeAttribute("disabled");
     document.getElementById("inputPcQt").max = parseInt(this.querySelector(".maxPc").textContent);
     let weekday = document.querySelectorAll("th")[parseInt(this.id.split("")[1])].querySelector("span").textContent;
     
@@ -56,9 +72,37 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     scriptValues.forEach(function(item) {
-        document.getElementById(item["hour"] + item["weekdayNumber"]).innerHTML = item["class"] + item["section"] + " <span class='room'>" + item["room"] + "</span><br>PC disponibili: <span class='maxPc'>" + item["final_pc_number"] + "</span><br>" + (item["final_note"] ? "Nota tecnico: " + item["final_note"] : "");
-        item["had_reservation"] ? document.getElementById(item["hour"] + item["weekdayNumber"]).classList.add("reserved") : null;
-        document.getElementById(item["hour"] + item["weekdayNumber"]).addEventListener("click", activate);
         document.getElementById(item["hour"] + item["weekdayNumber"]).value = item["cart_id"];
+
+        if (!item["had_reservation"]) {
+            document.getElementById(item["hour"] + item["weekdayNumber"]).innerHTML = 
+            `<div class="btn btn-wide btn-${item["final_pc_number"] == 0 ? "error" : "primary"}">
+                <h2 class="card-title">${item["class"] + item["section"]}<span class='room'>${item["room"]}</span></h2>
+                <p>PC disponibili: <span class='maxPc'>${item["final_pc_number"]}</span></p>
+            </div>`;
+            if (item["final_pc_number"] > 0) { document.getElementById(item["hour"] + item["weekdayNumber"]).addEventListener("click", activate); }
+            return;
+        } 
+
+        document.getElementById(item["hour"] + item["weekdayNumber"]).innerHTML = 
+        `<div class="btn btn-wide btn-secondary" onclick="modal${item["hour"] + item["weekdayNumber"]}.showModal()">
+            <h2 class="card-title">${item["class"] + item["section"]}<span class='room'>${item["room"]}</span></h2>
+            <p>PC prenotati: ${item["final_pc_reserved"]}</p>
+        </div>`;
+
+        let modal = document.createElement("dialog");
+        modal.id = "modal" + item["hour"] + item["weekdayNumber"];
+        modal.classList.add("modal");
+        modal.innerHTML =
+        `<div class="modal-box">
+            <h3 class="font-bold text-lg">Nota del Tecnico</h3>
+            <p class="py-4">${item["final_note"]}</p>
+            <div class="modal-action">
+            <form method="dialog">
+                <button class="btn">Chiudi</button>
+            </form>
+            </div>
+        </div>`;
+        document.body.appendChild(modal);
     });
 });

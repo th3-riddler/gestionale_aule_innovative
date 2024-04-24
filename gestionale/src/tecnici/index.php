@@ -25,7 +25,7 @@ $week_reservations = json_decode(file_get_contents("http://" . $_SERVER["SERVER_
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 
 <head>
     <meta charset="UTF-8">

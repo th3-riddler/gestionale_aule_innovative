@@ -13,7 +13,7 @@ if(isset($_SESSION["email"])) {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,11 +22,32 @@ if(isset($_SESSION["email"])) {
     <title>Login</title>
 </head>
 <body>
-    <form action="API/auth.php" method="POST">
-        <h1>Login</h1>
-        <input type="email" name="email" placeholder="Email">
-        <input type="password" name="password" placeholder="Password">
-        <button type="submit">Login</button>
-    </form>
+    <div class="hero min-h-screen bg-base-200">
+        <div class="hero-content flex-col lg:flex-row-reverse justify-between w-10/12">
+            <div class="text-center lg:text-left">
+                <h1 class="text-5xl font-bold">Pagina di Login</h1>
+                <p class="py-6">Benvenuto nel Gestionale per Aule Innovative, IIS N.Copernico A.Carpeggiani.</p>
+            </div>
+            <div class="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+            <form method="POST" action="API/auth.php" class="card-body">
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Email</span>
+                    </label>
+                    <input name="email" type="email" placeholder="email" class="input input-bordered" required />
+                    </div>
+                    <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Password</span>
+                    </label>
+                    <input name="password" type="password" placeholder="password" class="input input-bordered" required />
+                    </div>
+                    <div class="form-control mt-6">
+                    <button class="btn btn-primary">Login</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

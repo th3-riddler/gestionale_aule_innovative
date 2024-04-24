@@ -6,13 +6,13 @@ require_once('validateToken.php');
 $token = $_GET["token"] ?? $_COOKIE["token"] ?? "";
 validateToken($token);
 
-$pc_qt = $_POST["pc_qt"];
-$teacher_note = $_POST["teacher_note"];
-$date = $_POST["date"];
-$weekday = $_POST["weekday"];
-$room = $_POST["room"];
-$hour = intval($_POST["hour"]);
-$cart_id = intval($_POST["cart_id"]);
+$pc_qt = $_POST["pc_qt"] ?? "";
+$teacher_note = $_POST["teacher_note"] ?? "";
+$date = $_POST["date"] ?? "";
+$weekday = $_POST["weekday"] ?? "";
+$room = $_POST["room"] ?? "";
+$hour = intval($_POST["hour"] ?? 0);
+$cart_id = intval($_POST["cart_id"] ?? 0);
 
 //echo json_encode($_POST);
 //exit();
