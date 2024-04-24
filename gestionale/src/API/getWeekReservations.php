@@ -1,12 +1,16 @@
 <?php
 header("Content-Type: application/json");
 require_once("db.php");
+require_once('validateToken.php');
 
-$data = $_GET["data"];
-$monday_week = date("Y-m-d", strtotime("monday this week", strtotime($data)));
-$saturday_week = date("Y-m-d", strtotime("saturday this week", strtotime($data)));
+$token = $_GET["token"] ?? $_COOKIE["token"] ?? "";
+validateToken($token, true);
 
-$query = "SELECT * FROM prenotazione WHERE data BETWEEN ? AND ?";
+$date = $_GET["date"];
+$monday_week = date("Y-m-d", strtotime("monday this week", strtotime($date)));
+$saturday_week = date("Y-m-d", strtotime("saturday this week", strtotime($date)));
+
+$query = "SELECT * FROM reservation WHERE date BETWEEN ? AND ?";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("ss", $monday_week, $saturday_week);
 $stmt->execute();

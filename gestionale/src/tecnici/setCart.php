@@ -21,8 +21,10 @@ if (isset($_POST["cart"])) {
     }
 }
 
-$carts = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getCarts.php"));
-$cartsData = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getCartsData.php"));
+$token = $_COOKIE["token"];
+
+$carts = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getCarts.php" . "?token=" . $token));
+$cartsData = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getCartsData.php" . "?token=" . $token));
 ?>
 
 <!DOCTYPE html>
@@ -42,35 +44,36 @@ $cartsData = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] .
         <a href="../profile/profile.php">
             <li><?php echo $_SESSION["email"]; ?></li>
         </a>
-        <li><?php echo $_SESSION["nome"]; ?></li>
-        <li><?php echo $_SESSION["cognome"]; ?></li>
+        <li><?php echo $_SESSION["name"]; ?></li>
+        <li><?php echo $_SESSION["surname"]; ?></li>
         <li><a id="logout" href="../API/logout.php">[ <-- </a></li>
     </section>
 
     <section id="main">
-        <section id="cart_select">
+        <section id="cartSelectSectiom">
             <form action="" method="POST">
-                <select onchange="this.form.submit()" name="cart" id="cart_select">
+                <select onchange="this.form.submit()" name="cart" id="cartSelect">
                     <?php
                     foreach ($carts as $cart) {
                         if ($cart->id == $_SESSION["current_cart"]) {
-                            echo "<option selected value='$cart->id'>$cart->nome_carrello</option>";
+                            echo "<option selected value='$cart->id'>$cart->cart_name</option>";
                             continue;
                         }
-                        echo "<option value='$cart->id'>$cart->nome_carrello</option>";
+                        echo "<option value='$cart->id'>$cart->cart_name</option>";
                     }
                     ?>
                 </select>
             </form>
         </section>
         <section id="insertion">
-            <form id="form_cart" action="../API/setCart.php" method="POST">
-                <input type="number" min="0" step="1" name="pc_max" id="pcmax_input" placeholder="N. massimo di pc"></input>
-                <input type="text" name="Aula1" id="aula1_input" placeholder="Prima Aula"></input>
-                <input type="text" name="Aula2" id="aula2_input" placeholder="Seconda Aula"></input>
-                <input type="text" name="Aula3" id="aula3_input" placeholder="Terza Aula"></input>
-                <input type="text" name="Aula4" id="aula4_input" placeholder="Quarta Aula"></input>
-                <input type="text" name="Aula5" id="aula5_input" placeholder="Quinta Aula"></input>
+            <form id="formCart" action="../API/setCart.php" method="POST">
+                <input type="hidden" name="current_cart" value="<?php echo $_SESSION["current_cart"] ?>">
+                <input type="number" min="0" step="1" name="pc_max" value="<?php echo $cartsData[$_SESSION["current_cart"] - 1]->pc_max; ?>" id="inputPcMax" placeholder="N. massimo di pc"></input>
+                <input type="text" name="Room1" id="aula1_input" value="<?php echo $cartsData[$_SESSION["current_cart"] - 1]->Room1; ?>" placeholder="Prima Aula"></input>
+                <input type="text" name="Room2" id="aula2_input" value="<?php echo $cartsData[$_SESSION["current_cart"] - 1]->Room2; ?>" placeholder="Seconda Aula"></input>
+                <input type="text" name="Room3" id="aula3_input" value="<?php echo $cartsData[$_SESSION["current_cart"] - 1]->Room3; ?>" placeholder="Terza Aula"></input>
+                <input type="text" name="Room4" id="aula4_input" value="<?php echo $cartsData[$_SESSION["current_cart"] - 1]->Room4; ?>" placeholder="Quarta Aula"></input>
+                <input type="text" name="Room5" id="aula5_input" value="<?php echo $cartsData[$_SESSION["current_cart"] - 1]->Room5; ?>" placeholder="Quinta Aula"></input>
                 <button type="submit">Submit</button>
             </form>
         </section>
@@ -88,13 +91,13 @@ $cartsData = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] .
                 <?php
                 foreach ($cartsData as $pos => $cart) {
                     echo "<tr>";
-                    echo "<td>$cart->nome_carrello</td>";
+                    echo "<td>$cart->cart_name</td>";
                     echo "<td>$cart->pc_max</td>";
-                    echo "<td>$cart->Aula1</td>";
-                    echo "<td>$cart->Aula2</td>";
-                    echo "<td>$cart->Aula3</td>";
-                    echo "<td>$cart->Aula4</td>";
-                    echo "<td>$cart->Aula5</td>";
+                    echo "<td>$cart->Room1</td>";
+                    echo "<td>$cart->Room2</td>";
+                    echo "<td>$cart->Room3</td>";
+                    echo "<td>$cart->Room4</td>";
+                    echo "<td>$cart->Room5</td>";
                     echo "</tr>";
                 }
                 ?>

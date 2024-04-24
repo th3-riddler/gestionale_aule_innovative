@@ -4,20 +4,16 @@ require_once("db.php");
 require_once('validateToken.php');
 
 $token = $_GET["token"] ?? $_COOKIE["token"] ?? "";
-validateToken($token, true);
+validateToken($token);
 
-$query = "SELECT name, surname, email FROM teacher";
+$emailTeacher = $_GET["email"];
 
+$query = "SELECT * FROM room_schedule WHERE teacher_email = ?";
 $stmt = $conn->prepare($query);
+$stmt->bind_param("s", $emailTeacher);
 $stmt->execute();
-
 $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+$stmt->close();
 
-$teachers = array();
-
-foreach ($result as $row) {
-    array_push($teachers, [$row["surname"] . " " . $row["name"], $row["email"]]);
-}
-
-echo json_encode($teachers);
+echo json_encode($result);
 ?>

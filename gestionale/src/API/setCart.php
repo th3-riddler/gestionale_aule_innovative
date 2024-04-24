@@ -1,20 +1,25 @@
 <?php
-session_start();
 header("Content-Type: application/json");
 require_once("db.php");
+require_once('validateToken.php');
+
+$token = $_GET["token"] ?? $_COOKIE["token"] ?? "";
+validateToken($token, true);
 
 $result = $_POST;
-$query = "SELECT pc_max FROM carrello WHERE id = ?";
+$query = "SELECT pc_max FROM cart WHERE id = ?";
 $stmt = $conn->prepare($query);
-$stmt->bind_param("i", $_SESSION["current_cart"]);
+$id = intval($result["current_cart"]) ?? 1;
+$stmt->bind_param("i", $id);
 $stmt->execute();
 $pc_numbers = $stmt->get_result()->fetch_all(MYSQLI_ASSOC)[0];
 
-$query = "UPDATE carrello SET";
+$query = "UPDATE cart SET";
 $payload = array();
 $paramsType = "";
 
 foreach ($result as $key => $value) {
+    if ($key == "current_cart") { continue; }
     if ($value != null) {
         $query .= " $key = ?,";
         array_push($payload, $value);
@@ -29,7 +34,7 @@ foreach ($result as $key => $value) {
 $query = substr($query, 0, -1);
 $query .= " WHERE id = ?";
 
-array_push($payload, $_SESSION["current_cart"]);
+array_push($payload, intval($result["current_cart"]) ?? 1);
 
 $paramsType .= "i";
 

@@ -21,13 +21,15 @@ if (isset($_POST["room"])) {
     }
 }
 
-$rooms = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getRooms.php"));
-$teachers = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getTeachers.php"));
-$classes = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getClasses.php"));
-$schedule = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getSchedule.php?room=" . $_SESSION["current_room"]));
+$token = $_COOKIE["token"];
+
+$rooms = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getRooms.php" . "?token=" . $token));
+$teachers = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getTeachers.php" . "?token=" . $token));
+$classes = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getClasses.php" . "?token=" . $token));
+$schedule = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getSchedule.php?room=" . $_SESSION["current_room"] . "&token=" . $token));
 
 $hours = ["8:10 - 9:10", "9:10 - 10:00", "10:10 - 11:10", "11:10 - 12:00", "12:10 - 13:10", "13:10 - 14:05", "14:20 - 15:10", "15:10 - 16:10"];
-$days = ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"];
+$weekdays = ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"];
 ?>
 
 <!DOCTYPE html>
@@ -47,15 +49,15 @@ $days = ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"];
         <a href="../profile/profile.php">
             <li><?php echo $_SESSION["email"]; ?></li>
         </a>
-        <li><?php echo $_SESSION["nome"]; ?></li>
-        <li><?php echo $_SESSION["cognome"]; ?></li>
+        <li><?php echo $_SESSION["name"]; ?></li>
+        <li><?php echo $_SESSION["surname"]; ?></li>
         <li><a id="logout" href="../API/logout.php">[ <-- </a></li>
     </section>
 
     <section id="main">
-        <section id="room_select">
+        <section id="roomSelectSection">
             <form action="" method="POST">
-                <select onchange="this.form.submit()" name="room" id="room_select">
+                <select onchange="this.form.submit()" name="room" id="roomSelect">
                     <?php
                         foreach ($rooms as $room) {
                             if ($room == $_SESSION["current_room"]) {
@@ -69,15 +71,16 @@ $days = ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"];
             </form>
         </section>
         <section id="insertion">
-            <form id="form_hour" action="../API/setTeachersSchedule.php" method="POST">
-                <select name="teacher" id="teacher_select">
+            <form id="formHour" action="../API/setTeachersSchedule.php" method="POST">
+                <input type="hidden" name="room" value="<?php echo $_SESSION["current_room"]; ?>">
+                <select name="teacher" id="teacherSelect">
                     <?php
                         foreach ($teachers as $teacher) {
                             echo "<option value='$teacher[1]'>$teacher[0]</option>";
                         }
                     ?>
                 </select>
-                <select name="class" id="class_select">
+                <select name="class" id="classSelect">
                     <?php
                         foreach ($classes as $class) {
                             echo "<option value='$class'>$class</option>";
@@ -92,8 +95,8 @@ $days = ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"];
                 <tr>
                     <th>Ora</th>
                     <?php
-                        foreach ($days as $day) {
-                            echo "<th>$day</th>";
+                        foreach ($weekdays as $weekday) {
+                            echo "<th>$weekday</th>";
                         }
                     ?>
                 </tr>
@@ -105,9 +108,9 @@ $days = ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"];
                         for($i = 1; $i <= 6; $i++) {
                             echo "<td id=" . ($pos + 1) . $i .  ">";
                             foreach($schedule as $lesson) {
-                                if ($lesson->ora == $pos + 1 && $lesson->giorno == $days[$i -1]) { //bisogna implementare un controllo anche sul giorno, quello sulle ore funziona
-                                    echo "<p>$lesson->email_docente</p>";
-                                    echo "<p>$lesson->numero_classe$lesson->sezione</p>";
+                                if ($lesson->hour == $pos + 1 && $lesson->weekday == $weekdays[$i -1]) {
+                                    echo "<p>$lesson->teacher_email</p>";
+                                    echo "<p>$lesson->class_year$lesson->class_section</p>";
                                 }
                             }
                             echo "</td>";

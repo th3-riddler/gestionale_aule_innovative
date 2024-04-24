@@ -1,21 +1,14 @@
 <?php
 header("Content-Type: application/json");
 require_once('db.php');
-/*session_start();
+require_once('validateToken.php');
 
-if (!isset($_SESSION["email"])) {
-    header("Location: ../index.php");
-    exit();
-}
-
-if ($_SESSION["sudo"]) {
-    header("Location: ../tecnici/index.php");
-    exit();
-}*/
+$token = $_GET["token"] ?? $_COOKIE["token"] ?? "";
+validateToken($token);
 
 $room = $_GET["room"] ?? "";
 
-$query = "SELECT id FROM carrello WHERE (Aula1 = ? OR Aula2 = ? OR Aula3 = ? OR Aula4 = ? OR Aula5 = ?)";
+$query = "SELECT id FROM cart WHERE (Room1 = ? OR Room2 = ? OR Room3 = ? OR Room4 = ? OR Room5 = ?)";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("sssss", $room, $room, $room, $room, $room);
 $stmt->execute();

@@ -1,35 +1,36 @@
 <?php
-session_start();
 header("Content-Type: application/json");
 require_once("db.php");
+require_once('validateToken.php');
+
+$token = $_GET["token"] ?? $_COOKIE["token"] ?? "";
+validateToken($token, true);
 
 $result = $_POST;
-$result["room"] = $_SESSION["current_room"];
 
 foreach ($result["hour"] as $key => $hour) {
-    $day = $result["day"][$key];
-    $class_number = intval(str_split($result["class"])[0]);
+    $weekday = $result["weekday"][$key];
+    $class_year = intval(str_split($result["class"])[0]);
     $class_section = str_split($result["class"])[1];
 
-    $query = "INSERT INTO orario_aula VALUES (?,?,?,?,?,?)";
+    $query = "INSERT INTO room_schedule VALUES (?,?,?,?,?,?)";
     $stmt = $conn->prepare($query);
 
-    $payload0 = array($result["room"], $day, $hour, $result["teacher"], $class_number, $class_section);
+    $payload0 = array($result["room"], $weekday, $hour, $result["teacher"], $class_year, $class_section);
 
     $stmt->bind_param("ssisis", ...$payload0);
     try {
         $stmt->execute();
     } catch (Exception $e) {
-        $payload1 = array($result["teacher"], $class_number, $class_section);
+        $payload1 = array($result["teacher"], $class_year, $class_section);
 
-        $query = "UPDATE orario_aula SET email_docente = ?, numero_classe = ?, sezione = ? WHERE aula = ? AND giorno = ? AND ora = ?";
+        $query = "UPDATE room_schedule SET teacher_email = ?, class_year = ?, class_section = ? WHERE room = ? AND weekday = ? AND hour = ?";
         $stmt = $conn->prepare($query);
         $stmt->bind_param("sisssi", ...array_merge($payload1, array_diff($payload0, $payload1))); // array_diff returns the elements of payload0 that are not in payload1
         $stmt->execute();
     }
     $stmt->close();
 }
-
 
 header("Location: ../tecnici/setTeachersSchedule.php");
 ?>

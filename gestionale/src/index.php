@@ -12,21 +12,14 @@ if(isset($_SESSION["email"])) {
 }
 ?>
 
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://rzmfx.github.io/site_styles/authentication.css">
-    <link rel="stylesheet" href="css/auth.css">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>Login</title>
-    <script>
-        let colors = ["#a6e3a1", "#fab387", "#eba0ac", "#cba6f7", "#f9e2af", "#89b4fa"];
-        document.documentElement.style.setProperty('--accent', colors[Math.floor(Math.random() * colors.length)]);
-    </script>
 </head>
 <body>
     <form action="API/auth.php" method="POST">

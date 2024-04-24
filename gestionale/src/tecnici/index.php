@@ -12,13 +12,16 @@ if (!$_SESSION["sudo"]) {
     exit();
 }
 
+$token = $_COOKIE["token"];
+
 $hours = ["8:10 - 9:10", "9:10 - 10:00", "10:10 - 11:10", "11:10 - 12:00", "12:10 - 13:10", "13:10 - 14:05", "14:20 - 15:10", "15:10 - 16:10"];
-$days = array("Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato");
-$days_en = array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
+
+$weekdays_it = array("Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato");
+$weekdays = array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
+
 $date = $_GET["data"] ?? date("Y-m-d");
 
-
-$prenotazioni_settimana = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getWeekReservations.php?data=" . $date), true);
+$week_reservations = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getWeekReservations.php?date=" . $date . "&token=" . $token), true);
 ?>
 
 <!DOCTYPE html>
@@ -38,20 +41,20 @@ $prenotazioni_settimana = json_decode(file_get_contents("http://" . $_SERVER["SE
         <a href="../profile/profile.php">
             <li><?php echo $_SESSION["email"]; ?></li>
         </a>
-        <li><?php echo $_SESSION["nome"]; ?></li>
-        <li><?php echo $_SESSION["cognome"]; ?></li>
+        <li><?php echo $_SESSION["name"]; ?></li>
+        <li><?php echo $_SESSION["surname"]; ?></li>
         <a href="setTeachersSchedule.php">Inserimento</a>
         <a href="setCart.php">Modifica Carrelli</a>
         <li><a id="logout" href="../API/logout.php">[ <-- </a></li>
     </section>
 
-    <form action="../API/setTechnicianNote.php" method="POST" id="form_prenotazione">
-        <input name="nota_tecnico" id="nota_tecnico" type="text" placeholder="nota per il docente">
-        <button type="submit">Prenota</button>
+    <form action="../API/setTechnicianNote.php" method="POST" id="formReservation">
+        <input name="technician_note" id="technician_note" type="text" placeholder="Nota per il docente">
+        <button type="submit">Annota</button>
     </form>
 
     <section id="main">
-        <section id="date_sect">
+        <section id="dateSection">
             <div id="previous"> < </div>
             <div id="current"></div>
             <div id="next"> > </div>
@@ -61,13 +64,13 @@ $prenotazioni_settimana = json_decode(file_get_contents("http://" . $_SERVER["SE
             <tr>
                 <th>Ora</th>
                 <?php
-                    foreach ($days as $day) {
+                    foreach ($weekdays_it as $weekday) {
                         // Calculate the date of the day
-                        $pos = array_search(date('l', strtotime($date)), $days_en);
-                        $shift = $pos - array_search($day, $days);
+                        $pos = array_search(date('l', strtotime($date)), $weekdays);
+                        $shift = $pos - array_search($weekday, $weekdays_it);
                         $specificDate = date('Y-m-d', strtotime($date . ($shift > 0 ? ' - ' . $shift : ' + ' . -$shift) . ' days'));
                         
-                        echo "<th><span class='day'>$day</span><br><span class='date'>$specificDate</span></th>";
+                        echo "<th><span class='day'>$weekday</span><br><span class='date'>$specificDate</span></th>";
                     }
                 ?>
             </tr>
@@ -78,12 +81,12 @@ $prenotazioni_settimana = json_decode(file_get_contents("http://" . $_SERVER["SE
 
                     for($i = 1; $i <= 6; $i++) {
                         echo "<td id=" . ($pos + 1) . $i .  ">";
-                        foreach ($prenotazioni_settimana as $prenotazione) {
-                            if ($prenotazione["ora"] == $pos + 1 && $prenotazione["giorno"] == $days[$i - 1]) {
-                                echo "<div class='prenotazione'>";
-                                echo "<p>PC: <span>" . $prenotazione["numero_computer"] . "</span></p>";
-                                echo "<p>Aula: <span>" . $prenotazione["aula"] . "</span></p>";
-                                echo "<p>Nota: <span>" . $prenotazione["nota_docente"] . "</span></p>";
+                        foreach ($week_reservations as $reservation) {
+                            if ($reservation["hour"] == $pos + 1 && $reservation["weekday"] == $weekdays_it[$i - 1]) {
+                                echo "<div class='reservation" . ($reservation["technician_note"] ? " reserved" : "") . "'>";
+                                echo "<p>PC: <span>" . $reservation["pc_qt"] . "</span></p>";
+                                echo "<p>Aula: <span>" . $reservation["room"] . "</span></p>";
+                                echo "<p>Nota: <span>" . $reservation["teacher_note"] . "</span></p>";
                                 echo "</div>";
                             }
                         }

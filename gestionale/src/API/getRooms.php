@@ -1,8 +1,12 @@
 <?php
 header("Content-Type: application/json");
 require_once("db.php");
+require_once('validateToken.php');
 
-$query = "SELECT Aula1, Aula2, Aula3, Aula4, Aula5 FROM carrello";
+$token = $_GET["token"] ?? $_COOKIE["token"] ?? "";
+validateToken($token, true);
+
+$query = "SELECT Room1, Room2, Room3, Room4, Room5 FROM cart";
 
 $stmt = $conn->prepare($query);
 $stmt->execute();

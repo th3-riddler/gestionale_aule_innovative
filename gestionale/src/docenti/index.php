@@ -11,12 +11,16 @@ if ($_SESSION["sudo"]) {
     exit();
 }
 
-$hours = ["8:10 - 9:10", "9:10 - 10:00", "10:10 - 11:10", "11:10 - 12:00", "12:10 - 13:10", "13:10 - 14:05", "14:20 - 15:10", "15:10 - 16:10"];
-$days = array("Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato");
-$days_en = array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
-$date = $_GET["data"] ?? date("Y-m-d");
+$token = $_COOKIE["token"];
 
-$teacherSchedule = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getTeachersSchedule.php?mail=" . $_SESSION["email"]));
+$hours = ["8:10 - 9:10", "9:10 - 10:00", "10:10 - 11:10", "11:10 - 12:00", "12:10 - 13:10", "13:10 - 14:05", "14:20 - 15:10", "15:10 - 16:10"];
+
+$weekdays_it = array("Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato");
+$weekdays = array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
+
+$date = $_GET["date"] ?? date("Y-m-d");
+
+$teacherSchedule = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getTeacherSchedule.php?email=" . $_SESSION["email"] . "&token=" . $token));
 
 ?>
 
@@ -33,19 +37,19 @@ $teacherSchedule = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NA
 <body>
     <section id="userInfo">
         <a href="../profile/profile.php"><li><?php echo $_SESSION["email"]; ?></li></a>
-        <li><?php echo $_SESSION["nome"]; ?></li>
-        <li><?php echo $_SESSION["cognome"]; ?></li>
+        <li><?php echo $_SESSION["name"]; ?></li>
+        <li><?php echo $_SESSION["surname"]; ?></li>
         <a href="../API/logout.php">[ <-- </a>
     </section>
 
-    <form action="../API/setReservation.php" method="POST" id="form_prenotazione">
-        <input name="n_pc" id="inp_n_pc" type="number" step = "1" min = "0" placeholder="pc da prenotare">
-        <input name="nota_docente" id="nota_docente" type="text" placeholder="nota per il tecnico">
+    <form action="../API/setReservation.php" method="POST" id="formReservation">
+        <input name="pc_qt" id="inputPcQt" type="number" step = "1" min = "0" placeholder="Quantitá di PC da prenotare">
+        <input name="teacher_note" id="teacherNote" type="text" placeholder="Nota per il tecnico">
         <button type="submit">Prenota</button>
     </form>
     
 
-    <section id="date_sect">
+    <section id="dateSection">
         <div id="previous"> < </div>
         <div id="current"></div>
         <div id="next"> > </div>
@@ -55,13 +59,13 @@ $teacherSchedule = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NA
         <tr>
             <th>Ora</th>
             <?php
-                foreach ($days as $day) {
-                    // Calculate the date of the day
-                    $pos = array_search(date('l', strtotime($date)), $days_en);
-                    $shift = $pos - array_search($day, $days);
+                foreach ($weekdays_it as $weekday) {
+                    // Calculate the date of the weekday
+                    $pos = array_search(date('l', strtotime($date)), $weekdays);
+                    $shift = $pos - array_search($weekday, $weekdays_it);
                     $specificDate = date('Y-m-d', strtotime($date . ($shift > 0 ? ' - ' . $shift : ' + ' . -$shift) . ' days'));
                     
-                    echo "<th><span>$day</span><br>$specificDate</th>";
+                    echo "<th><span>$weekday</span><br>$specificDate</th>";
                 }
             ?>
         </tr>
@@ -79,33 +83,33 @@ $teacherSchedule = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NA
 
             $scriptValues = [];
             foreach ($teacherSchedule as $lesson) {
-                $hour = $lesson->ora;
-                $day = strval(array_search($lesson->giorno, $days) + 1);
-                $class = $lesson->numero_classe;
-                $section = $lesson->sezione;
-                $room = $lesson->aula;
+                $hour = $lesson->hour;
+                $weekdayNumber = strval(array_search($lesson->weekday, $weekdays_it) + 1);
+                $class = $lesson->class_year;
+                $section = $lesson->class_section;
+                $room = $lesson->room;
 
                 // Calculate the date of the lesson
-                $pos = array_search(date('l', strtotime($date)), $days_en);
-                $shift = $pos - array_search($lesson->giorno, $days);
-                $lessondate = date('Y-m-d', strtotime($date . ($shift > 0 ? ' - ' . $shift : ' + ' . -$shift) . ' days'));
+                $pos = array_search(date('l', strtotime($date)), $weekdays);
+                $shift = $pos - array_search($lesson->weekday, $weekdays_it);
+                $lessonDate = date('Y-m-d', strtotime($date . ($shift > 0 ? ' - ' . $shift : ' + ' . -$shift) . ' days'));
 
                 // Get the cart id
-                $result = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getCartId.php?room=" . $room));
+                $result = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getCartId.php?room=" . $room . "&token=" . $token));
                 $cart_id = $result->id;
 
                 // Get the remaining PCs in the cart
-                $result = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getRemainingPC.php?hour=" . $hour . "&date=" . $lessondate . "&cart_id=" . $cart_id));
+                $result = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getRemainingPC.php?hour=" . $hour . "&date=" . $lessonDate . "&cart_id=" . $cart_id . "&token=" . $token));
                 $final_pc_number = $result->remaining_pc;
 
                 // Get the technician note for the reservation
-                $result = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getTechnicianNote.php?hour=" . $hour . "&room=" . $room . "&date=" . $lessondate . "&cart_id=" . $cart_id));
+                $result = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getTechnicianNote.php?hour=" . $hour . "&room=" . $room . "&date=" . $lessonDate . "&cart_id=" . $cart_id . "&token=" . $token));
                 $final_note = ($result->nota_tecnico) ?? "";
 
                 $had_reservation = (empty($result)) ? false : true;
 
                 // Add the values to the object that will be used in the script
-                $scriptValues[] = ["hour" => $hour, "day" => $day, "class" => $class, "section" => $section, "room" => $room, "final_pc_number" => $final_pc_number, "final_note" => $final_note, "cart_id" => $cart_id, "had_reservation" => $had_reservation];
+                $scriptValues[] = ["hour" => $hour, "weekdayNumber" => $weekdayNumber, "class" => $class, "section" => $section, "room" => $room, "final_pc_number" => $final_pc_number, "final_note" => $final_note, "cart_id" => $cart_id, "had_reservation" => $had_reservation];
             }
         ?>
     </table>

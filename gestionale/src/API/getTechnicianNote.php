@@ -1,26 +1,19 @@
 <?php
 header("Content-Type: application/json");
 require_once('db.php');
-/*session_start();
+require_once('validateToken.php');
 
-if (!isset($_SESSION["email"])) {
-    header("Location: ../index.php");
-    exit();
-}
+$token = $_GET["token"] ?? $_COOKIE["token"] ?? "";
+validateToken($token);
 
-if ($_SESSION["sudo"]) {
-    header("Location: ../tecnici/index.php");
-    exit();
-}*/
-
+$cart_id = $_GET["cart_id"] ?? "";
 $hour = $_GET["hour"] ?? "";
 $room = $_GET["room"] ?? "";
-$lessondate = $_GET["date"] ?? "";
-$cart_id = $_GET["cart_id"] ?? "";
+$date = $_GET["date"] ?? "";
 
-$query = "SELECT nota_tecnico FROM carrello INNER JOIN prenotazione ON carrello.id = prenotazione.id_carrello WHERE carrello.id = ? AND ora = ? AND aula = ? AND data = ?";
+$query = "SELECT technician_note FROM cart INNER JOIN reservation ON cart.id = reservation.cart_id WHERE cart.id = ? AND hour = ? AND room = ? AND date = ?";
 $stmt = $conn->prepare($query);
-$stmt->bind_param("siss", $cart_id, $hour, $room, $lessondate);
+$stmt->bind_param("siss", $cart_id, $hour, $room, $date);
 $stmt->execute();
 $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
