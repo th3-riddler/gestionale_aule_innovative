@@ -16,7 +16,7 @@ $days = array("Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Saba
 $days_en = array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
 $date = $_GET["data"] ?? date("Y-m-d");
 
-$teacherSchedule = json_decode(file_get_contents("http://127.0.0.1/API/getTeachersSchedule.php?mail=" . $_SESSION["email"]));
+$teacherSchedule = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getTeachersSchedule.php?mail=" . $_SESSION["email"]));
 
 ?>
 

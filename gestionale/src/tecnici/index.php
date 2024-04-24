@@ -18,7 +18,7 @@ $days_en = array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturd
 $date = $_GET["data"] ?? date("Y-m-d");
 
 
-$prenotazioni_settimana = json_decode(file_get_contents("http://127.0.0.1/API/getWeekReservations.php?data=" . $date), true);
+$prenotazioni_settimana = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getWeekReservations.php?data=" . $date), true);
 ?>
 
 <!DOCTYPE html>

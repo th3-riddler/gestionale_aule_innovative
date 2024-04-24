@@ -21,8 +21,8 @@ if (isset($_POST["cart"])) {
     }
 }
 
-$carts = json_decode(file_get_contents("http://127.0.0.1/API/getCarts.php"));
-$cartsData = json_decode(file_get_contents("http://127.0.0.1/API/getCartsData.php"));
+$carts = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getCarts.php"));
+$cartsData = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getCartsData.php"));
 ?>
 
 <!DOCTYPE html>
