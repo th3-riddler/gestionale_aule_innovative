@@ -13,8 +13,6 @@ $cart = intval($_POST["id_carrello"]);
 //echo json_encode($_POST);
 //exit();
 
-// Check della quantitá di computer disponibili alla data e ora selezionata
-//$query = "SELECT pc_max FROM carrello WHERE id = ? UNION SELECT numero_computer FROM prenotazione WHERE id_carrello = ? AND ora = ? AND giorno = ? AND data = ?;";
 $query = "SELECT (c.pc_max - IFNULL((SELECT SUM(p.numero_computer) FROM prenotazione p WHERE p.id_carrello = c.id AND p.ora = ? AND p.data = ?), 0)) AS remaining_pc FROM carrello c WHERE c.id = ?;";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("iss", $ora, $data, $cart);

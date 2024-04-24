@@ -1,7 +1,6 @@
 <?php
-
-require_once("db.php");
 header("Content-Type: application/json");
+require_once("db.php");
 
 $query = "SELECT nome, cognome, email FROM docente";
 

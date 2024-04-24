@@ -1,7 +1,6 @@
 <?php
-
-require_once("db.php");
 header("Content-Type: application/json");
+require_once("db.php");
 
 $query = "SELECT Aula1, Aula2, Aula3, Aula4, Aula5 FROM carrello";
 

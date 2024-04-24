@@ -1,5 +1,6 @@
 <?php
 session_start();
+header("Content-Type: application/json");
 require_once("db.php");
 
 $result = $_POST;
@@ -38,3 +39,4 @@ $stmt->execute();
 $stmt->close();
 
 header("Location: ../tecnici/setCart.php");
+?>
