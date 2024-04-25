@@ -35,19 +35,27 @@ $cartsData = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] .
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="../css/style.css">
     <title>Home Tecnici</title>
 </head>
 
 <body>
-    <section id="menu">
-        <a href="../profile/profile.php">
-            <li><?php echo $_SESSION["email"]; ?></li>
-        </a>
-        <li><?php echo $_SESSION["name"]; ?></li>
-        <li><?php echo $_SESSION["surname"]; ?></li>
-        <li><a id="logout" href="../API/logout.php">[ <-- </a></li>
-    </section>
+
+    <div class="navbar alert m-4 w-auto">
+        <div class="navbar-start">
+            <a class="btn btn-ghost btn-active text-2xl mx-2">Benvenuto, <?php echo $_SESSION["surname"] . " " . $_SESSION["name"]; ?></a>
+        </div>
+        <div class="navbar-center">
+            <ul class="menu menu-horizontal px-1">
+                <li><a href="../tecnici/index.php" class="btn btn-ghost mx-2">Home</a></li>
+                <li><a href="../tecnici/setTeachersSchedule.php" class="btn btn-ghost mx-2">Inserimento Orario</a></li>
+                <li><a href="../tecnici/setCart.php" class="btn btn-ghost btn-active mx-2">Modifica Carrelli</a></li>
+            </ul>
+        </div>
+        <div class="navbar-end">
+            <button class="btn btn-ghost mx-2" onclick="modalHelp.showModal()">Guida</button>
+            <a href="../API/logout.php" class="btn btn-error mx-2">Logout</a>
+        </div>
+    </div>
 
     <section id="main">
         <section id="cartSelectSectiom">

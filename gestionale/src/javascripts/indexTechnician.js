@@ -1,16 +1,28 @@
 function activate() {
-    if (this.classList.contains("selected")) {
-        this.classList.remove("selected");
+    if (this.classList.contains("btn-accent")) {
+        this.classList.remove("btn-accent");
+        document.getElementById("formReservation").querySelector("button[type='submit']").setAttribute("disabled", "true");
+        document.getElementById("technicianNote").setAttribute("disabled", "true");
+        document.getElementById("technicianNote").value = "";
+        document.getElementById("modalTeacherNote").querySelector("p").innerHTML = "";
+        document.getElementById("teacherNote").classList.add("hidden");
         return;
     }
 
-    document.querySelectorAll(".selected").forEach((item) => item.classList.remove("selected"));
-    this.classList.add("selected");
+    document.querySelectorAll(".btn-accent").forEach((item) => item.classList.remove("btn-accent"));
+
+    this.classList.add("btn-accent");
+    document.getElementById("formReservation").querySelector("button[type='submit']").removeAttribute("disabled");
+    document.getElementById("technicianNote").removeAttribute("disabled");
+
+    document.getElementById("modalTeacherNote").querySelector("p").innerHTML = this.querySelector("input[type='hidden']").value;
+    if (this.querySelector("input[type='hidden']").value === "") { document.getElementById("teacherNote").classList.add("hidden"); }
+    else { document.getElementById("teacherNote").classList.remove("hidden"); }
 
     document.getElementById("formReservation").querySelectorAll("input[type='hidden']").forEach((item) => item.remove());
     let columnIndex = Array.from(this.parentElement.parentNode.children).findIndex((element) => element === this.parentElement) - 1;
     let date = document.querySelectorAll(".date")[columnIndex].textContent;
-    let room = this.children[1].querySelector("span").textContent;
+    let room = this.querySelector("span.room").textContent;
     let day = document.querySelectorAll(".day")[columnIndex].textContent;
     let hour = this.parentElement.parentNode.rowIndex;
     
