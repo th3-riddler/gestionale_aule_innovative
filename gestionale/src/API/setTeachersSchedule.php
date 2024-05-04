@@ -32,5 +32,5 @@ foreach ($result["hour"] as $key => $hour) {
     $stmt->close();
 }
 
-header("Location: ../tecnici/setTeachersSchedule.php");
+header("Location: ../tecnici/setTeachersSchedule.php?current_room=" . $result["room"]);
 ?>

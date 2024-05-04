@@ -25,7 +25,7 @@ $teacherSchedule = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NA
 ?>
 
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

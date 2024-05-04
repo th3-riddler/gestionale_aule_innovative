@@ -9,7 +9,7 @@ validateToken($token, true);
 $result = $_POST;
 $query = "SELECT pc_max FROM cart WHERE id = ?";
 $stmt = $conn->prepare($query);
-$id = intval($result["current_cart"]) ?? 1;
+$id = intval($result["current_cart"] ?? 1);
 $stmt->bind_param("i", $id);
 $stmt->execute();
 $pc_numbers = $stmt->get_result()->fetch_all(MYSQLI_ASSOC)[0];
@@ -43,5 +43,5 @@ $stmt->bind_param($paramsType, ...$payload);
 $stmt->execute();
 $stmt->close();
 
-header("Location: ../tecnici/setCart.php");
+header("Location: ../tecnici/setCart.php?current_cart=" . $id);
 ?>

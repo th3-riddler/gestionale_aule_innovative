@@ -25,7 +25,7 @@ $week_reservations = json_decode(file_get_contents("http://" . $_SERVER["SERVER_
 ?>
 
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" data-theme="dark">
 
 <head>
     <meta charset="UTF-8">
@@ -66,44 +66,44 @@ $week_reservations = json_decode(file_get_contents("http://" . $_SERVER["SERVER_
                 <tr class="hover">
                     <th>Ora</th>
                     <?php
-                        foreach ($weekdays_it as $weekday) {
-                            // Calculate the date of the day
-                            $pos = array_search(date('l', strtotime($date)), $weekdays);
-                            $shift = $pos - array_search($weekday, $weekdays_it);
-                            $specificDate = date('Y-m-d', strtotime($date . ($shift > 0 ? ' - ' . $shift : ' + ' . -$shift) . ' days'));
-                            
-                            echo "<th><span class='day'>$weekday</span><br><span class='date'>$specificDate</span></th>";
-                        }
+                    foreach ($weekdays_it as $weekday) {
+                        // Calculate the date of the day
+                        $pos = array_search(date('l', strtotime($date)), $weekdays);
+                        $shift = $pos - array_search($weekday, $weekdays_it);
+                        $specificDate = date('Y-m-d', strtotime($date . ($shift > 0 ? ' - ' . $shift : ' + ' . -$shift) . ' days'));
+
+                        echo "<th><span class='day'>$weekday</span><br><span class='date'>$specificDate</span></th>";
+                    }
                     ?>
                 </tr>
-                <?php 
-                    foreach ($hours as $pos => $hour) {
-                        echo "<tr>";
-                        echo "<td value=" . $pos + 1 . ">$hour</td>";
+                <?php
+                foreach ($hours as $pos => $hour) {
+                    echo "<tr>";
+                    echo "<td value=" . $pos + 1 . ">$hour</td>";
 
-                        for($i = 1; $i <= 6; $i++) {
-                            echo "<td id=" . ($pos + 1) . $i .  ">";
-                            $counter = 0;
-                            foreach ($week_reservations as $reservation) {
-                                if ($reservation["hour"] == $pos + 1 && $reservation["weekday"] == $weekdays_it[$i - 1]) {
-                                    echo "<div id='" . ($pos + 1) . $i ."rev" . ($counter + 1) . "' class='btn btn-wide btn-" . ($reservation["technician_note"] ? "secondary" : "primary") . " reservation'" . ($reservation["technician_note"] ? "onclick='modalTeacherNote.showModal()'" : "") . ">
+                    for ($i = 1; $i <= 6; $i++) {
+                        echo "<td id=" . ($pos + 1) . $i .  ">";
+                        $counter = 0;
+                        foreach ($week_reservations as $reservation) {
+                            if ($reservation["hour"] == $pos + 1 && $reservation["weekday"] == $weekdays_it[$i - 1]) {
+                                echo "<div id='" . ($pos + 1) . $i . "rev" . ($counter + 1) . "' class='btn btn-wide btn-" . ($reservation["technician_note"] ? "secondary" : "primary") . " reservation'" . ($reservation["technician_note"] ? "onclick='modalTeacherNote.showModal()'" : "") . ">
                                         <h2 class='card-title'><span class='room'>" . $reservation["room"]  . "</span></h2>
                                         <p>PC prenotati: <span class='pc'>" . $reservation["pc_qt"] . "</span></p>
                                         <input type='hidden' name='teacherNote' value='" . $reservation["teacher_note"] . "'>
                                     </div>";
-                                    $counter++;
-                                }
+                                $counter++;
                             }
-
-                            if ($counter == 0) {
-                                echo "<button class='btn btn-wide btn-outline btn-disabled'><svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12' /></svg></button>";
-                            }
-
-                            echo "</td>";
                         }
 
-                        echo "</tr>";
+                        if ($counter == 0) {
+                            echo "<button class='btn btn-wide btn-outline btn-disabled'><svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12' /></svg></button>";
+                        }
+
+                        echo "</td>";
                     }
+
+                    echo "</tr>";
+                }
                 ?>
             </table>
         </div>
@@ -121,10 +121,10 @@ $week_reservations = json_decode(file_get_contents("http://" . $_SERVER["SERVER_
             <h3 class="font-bold text-lg">Nota del Docente</h3>
             <p class="py-4"></p>
             <div class="modal-action">
-            <form method="dialog">
-                <!-- if there is a button in form, it will close the modal -->
-                <button class="btn">Chiudi</button>
-            </form>
+                <form method="dialog">
+                    <!-- if there is a button in form, it will close the modal -->
+                    <button class="btn">Chiudi</button>
+                </form>
             </div>
         </div>
     </dialog>
@@ -136,14 +136,15 @@ $week_reservations = json_decode(file_get_contents("http://" . $_SERVER["SERVER_
                 Questa pagina ti permette di gestire le Prenotazioni dei Docenti. <br><br>
             </p>
             <div class="modal-action">
-            <form method="dialog">
-                <!-- if there is a button in form, it will close the modal -->
-                <button class="btn">Chiudi</button>
-            </form>
+                <form method="dialog">
+                    <!-- if there is a button in form, it will close the modal -->
+                    <button class="btn">Chiudi</button>
+                </form>
             </div>
         </div>
     </dialog>
 
     <script src="../javascripts/indexTechnician.js"></script>
 </body>
+
 </html>
