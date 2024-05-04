@@ -84,15 +84,15 @@ $weekdays = ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabat
                             $found = false;
                             foreach($schedule as $lesson) {
                                 if ($lesson->hour == $pos + 1 && $lesson->weekday == $weekdays[$i -1]) {
-                                    echo "<div class='carousel-item btn btn-wide btn-primary'>
+                                    echo "<div class='btn btn-wide btn-primary'>
                                         <h2 class='card-title'>" . $lesson->class_year . $lesson->class_section  . "</h2>
-                                        <p>" . $lesson->teacher_email . "</p>
+                                        <p class='text-xs'>" . $lesson->teacher_email . "</p>
                                     </div>";
                                     $found = true;
                                 }
                             }
                             if (!$found) {
-                                echo "<button class='carousel-item btn btn-wide btn-outline btn-disabled'><svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12' /></svg></button>";
+                                echo "<button class='btn btn-wide btn-outline btn-disabled'><svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12' /></svg></button>";
                             }
                             echo "</td>";
                         }

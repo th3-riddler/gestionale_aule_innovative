@@ -58,36 +58,121 @@ $cartsData = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] .
     </div>
 
     <section id="main">
-        <section id="cartSelectSectiom">
-            <form action="" method="POST">
-                <select onchange="this.form.submit()" name="cart" id="cartSelect">
+        <section id="insertion">
+            <form id="formCart" action="../API/setCart.php" method="POST">
+                <input type="hidden" name="current_cart" value="<?php echo $_SESSION["current_cart"] ?>">
+                <input type="number" placeholder="N. massimo di pc" class="input input-bordered input-md w-full max-w-xs text-lg" min="0" step="1" name="pc_max" value="<?php echo $cartsData[$_SESSION["current_cart"] - 1]->pc_max; ?>" id="inputPcMax" />
+                <input type="text" name="Room1" id="aula1_input" class="input input-bordered input-md w-full max-w-xs text-lg" value="<?php echo $cartsData[$_SESSION["current_cart"] - 1]->Room1; ?>" placeholder="Prima Aula"></input>
+                <input type="text" name="Room2" id="aula2_input" class="input input-bordered input-md w-full max-w-xs text-lg" value="<?php echo $cartsData[$_SESSION["current_cart"] - 1]->Room2; ?>" placeholder="Seconda Aula"></input>
+                <input type="text" name="Room3" id="aula3_input" class="input input-bordered input-md w-full max-w-xs text-lg" value="<?php echo $cartsData[$_SESSION["current_cart"] - 1]->Room3; ?>" placeholder="Terza Aula"></input>
+                <input type="text" name="Room4" id="aula4_input" class="input input-bordered input-md w-full max-w-xs text-lg" value="<?php echo $cartsData[$_SESSION["current_cart"] - 1]->Room4; ?>" placeholder="Quarta Aula"></input>
+                <input type="text" name="Room5" id="aula5_input" class="input input-bordered input-md w-full max-w-xs text-lg" value="<?php echo $cartsData[$_SESSION["current_cart"] - 1]->Room5; ?>" placeholder="Quinta Aula"></input>
+                <input type="submit" value="Submit" class="btn" />
+            </form>
+        </section>
+    </section>
+
+    <div class="card border bg-base-300 m-4">
+        <div class="card-body">
+            <form action="" method="POST" class="btn btn-ghost btn-active text-2xl mx-2">
+
+                <ul class="menu menu-horizontal bg-base-200 rounded-box">
+                    <li>
+                        <a type="radio" class="btn btn-ghost">
+                            <div class="indicator">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                                <span class="badge badge-sm indicator-item">1</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a type="radio" class="btn btn-ghost">
+                            <div class="indicator">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                                <span class="badge badge-sm indicator-item">2</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a type="radio" class="btn btn-ghost">
+                            <div class="indicator">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                                <span class="badge badge-sm indicator-item">3</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a type="radio" class="btn btn-ghost">
+                            <div class="indicator">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                                <span class="badge badge-sm indicator-item">4</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a type="radio" class="btn btn-ghost">
+                            <div class="indicator">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                                <span class="badge badge-sm indicator-item">5</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a type="radio" class="btn btn-ghost">
+                            <div class="indicator">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                                <span class="badge badge-sm indicator-item">6</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a type="radio" class="btn btn-ghost">
+                            <div class="indicator">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                                <span class="badge badge-sm indicator-item">7</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a type="radio" class="btn btn-ghost">
+                            <div class="indicator">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                                <span class="badge badge-sm indicator-item">8</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- <select onchange="this.form.submit()" name="cart" id="cartSelect" class="select select-ghost select-active text-2xl mx-2">
                     <?php
-                    foreach ($carts as $cart) {
+                    /*foreach ($carts as $cart) {
                         if ($cart->id == $_SESSION["current_cart"]) {
                             echo "<option selected value='$cart->id'>$cart->cart_name</option>";
                             continue;
                         }
                         echo "<option value='$cart->id'>$cart->cart_name</option>";
-                    }
+                    }*/
                     ?>
-                </select>
+                </select> -->
             </form>
-        </section>
-        <section id="insertion">
-            <form id="formCart" action="../API/setCart.php" method="POST">
-                <input type="hidden" name="current_cart" value="<?php echo $_SESSION["current_cart"] ?>">
-                <input type="number" min="0" step="1" name="pc_max" value="<?php echo $cartsData[$_SESSION["current_cart"] - 1]->pc_max; ?>" id="inputPcMax" placeholder="N. massimo di pc"></input>
-                <input type="text" name="Room1" id="aula1_input" value="<?php echo $cartsData[$_SESSION["current_cart"] - 1]->Room1; ?>" placeholder="Prima Aula"></input>
-                <input type="text" name="Room2" id="aula2_input" value="<?php echo $cartsData[$_SESSION["current_cart"] - 1]->Room2; ?>" placeholder="Seconda Aula"></input>
-                <input type="text" name="Room3" id="aula3_input" value="<?php echo $cartsData[$_SESSION["current_cart"] - 1]->Room3; ?>" placeholder="Terza Aula"></input>
-                <input type="text" name="Room4" id="aula4_input" value="<?php echo $cartsData[$_SESSION["current_cart"] - 1]->Room4; ?>" placeholder="Quarta Aula"></input>
-                <input type="text" name="Room5" id="aula5_input" value="<?php echo $cartsData[$_SESSION["current_cart"] - 1]->Room5; ?>" placeholder="Quinta Aula"></input>
-                <button type="submit">Submit</button>
-            </form>
-        </section>
-        <section id="schedule">
-            <table>
-                <tr>
+            <table class="table mt-4">
+                <tr class="hover">
                     <th>Nome Carrello</th>
                     <th>Numero massimo di pc</th>
                     <th>Aula 1</th>
@@ -110,8 +195,8 @@ $cartsData = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] .
                 }
                 ?>
             </table>
-        </section>
-    </section>
+        </div>
+    </div>
 
 </body>
 
