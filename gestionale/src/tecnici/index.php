@@ -20,6 +20,10 @@ $weekdays_it = array("Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì"
 $weekdays = array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
 
 $date = $_GET["date"] ?? date("Y-m-d");
+// If date is Sunday, set it to the next day (The API does not return the schedule for Sunday)
+if (date('l', strtotime($date)) == "Sunday") {
+    $date = date('Y-m-d', strtotime($date . ' + 1 days'));
+}
 
 $week_reservations = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getWeekReservations.php?date=" . $date . "&token=" . $token), true);
 ?>
