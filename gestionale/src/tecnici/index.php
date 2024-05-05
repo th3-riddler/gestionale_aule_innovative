@@ -144,6 +144,7 @@ $week_reservations = json_decode(file_get_contents("http://" . $_SERVER["SERVER_
             <h3 class="font-bold text-lg">Guida</h3>
             <p class="py-4">
                 Questa pagina ti permette di gestire le Prenotazioni dei Docenti. <br><br>
+                Nel caso in cui ci siano più prenotazioni nello stesso slot giorno/orario, fai <kbd class="kbd kbd-sm">scroll</kbd> per scrollare tra le prenotazioni. <br><br>
             </p>
             <div class="modal-action">
                 <form method="dialog">
@@ -153,6 +154,8 @@ $week_reservations = json_decode(file_get_contents("http://" . $_SERVER["SERVER_
             </div>
         </div>
     </dialog>
+
+    <div class="toast"></div>
 
     <script src="../javascripts/indexTechnician.js"></script>
 </body>

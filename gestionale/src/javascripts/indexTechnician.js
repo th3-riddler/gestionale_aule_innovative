@@ -112,4 +112,31 @@ document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll(".reservation").forEach((reservation) => {
     reservation.addEventListener("click", activate);
   });
+
+  document.querySelectorAll(".stack").forEach((stack) => {
+    stack.addEventListener("wheel", function () {
+      let firstEl = stack.firstElementChild.cloneNode(true);
+      stack.appendChild(firstEl);
+      firstEl.addEventListener("click", activate);
+      stack.removeChild(stack.firstElementChild);
+
+      let columnIndex =
+        Array.from(stack.parentNode.children).findIndex(
+          (element) => element === stack
+        ) - 1;
+
+      let toast = document.querySelector(".toast");
+      let alert = document.createElement("div");
+      alert.classList.add("alert", "alert-info");
+      let span = document.createElement("span");
+      span.textContent = `Nuova prenotazione visualizzata: ${
+        stack.firstElementChild.querySelector("span.room").textContent
+      } - ${document.querySelectorAll(".date")[columnIndex].textContent} `;
+      alert.appendChild(span);
+      toast.appendChild(alert);
+      setTimeout(() => {
+        alert.remove();
+      }, 3000);
+    });
+  });
 });
