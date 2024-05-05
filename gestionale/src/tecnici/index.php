@@ -82,8 +82,15 @@ $week_reservations = json_decode(file_get_contents("http://" . $_SERVER["SERVER_
                     echo "<td value=" . $pos + 1 . ">$hour</td>";
 
                     for ($i = 1; $i <= 6; $i++) {
-                        echo "<td id=" . ($pos + 1) . $i .  ">";
                         $counter = 0;
+                        foreach ($week_reservations as $reservation) {
+                            if ($reservation["hour"] == $pos + 1 && $reservation["weekday"] == $weekdays_it[$i - 1]) {
+                                $counter++;
+                            }
+                        }
+
+                        echo "<td" . ($counter > 1 ? " class='stack'" : "") . " id=" . ($pos + 1) . $i .  ">";
+                        
                         foreach ($week_reservations as $reservation) {
                             if ($reservation["hour"] == $pos + 1 && $reservation["weekday"] == $weekdays_it[$i - 1]) {
                                 echo "<div id='" . ($pos + 1) . $i . "rev" . ($counter + 1) . "' class='btn btn-wide btn-" . ($reservation["technician_note"] ? "secondary" : "primary") . " reservation'" . ($reservation["technician_note"] ? "onclick='modalTeacherNote.showModal()'" : "") . ">
@@ -91,7 +98,6 @@ $week_reservations = json_decode(file_get_contents("http://" . $_SERVER["SERVER_
                                         <p>PC prenotati: <span class='pc'>" . $reservation["pc_qt"] . "</span></p>
                                         <input type='hidden' name='teacherNote' value='" . $reservation["teacher_note"] . "'>
                                     </div>";
-                                $counter++;
                             }
                         }
 

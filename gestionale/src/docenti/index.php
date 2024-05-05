@@ -19,6 +19,10 @@ $weekdays_it = array("Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì"
 $weekdays = array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
 
 $date = $_GET["date"] ?? date("Y-m-d");
+// If date is Sunday, set it to the next day (The API does not return the schedule for Sunday)
+if (date('l', strtotime($date)) == "Sunday") {
+    $date = date('Y-m-d', strtotime($date . ' + 1 days'));
+}
 
 $teacherSchedule = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getTeacherSchedule.php?email=" . $_SESSION["email"] . "&token=" . $token));
 
@@ -106,7 +110,7 @@ $teacherSchedule = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NA
                         $final_note = ($result->technician_note) ?? "Nessuna nota presente!";
                         $had_reservation = (empty($result)) ? false : true;
 
-                        $result = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getTeacherReservation.php?hour=" . $hour . "&date=" . $lessonDate . "&cart_id=" . $cart_id . "&token=" . $token));
+                        $result = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getTeacherReservation.php?hour=" . $hour . "&date=" . $lessonDate . "&cart_id=" . $cart_id . "&room=" . $room . "&token=" . $token));
                         $final_pc_reserved = $result->pc_qt ?? 0;
 
                         // Add the values to the object that will be used in the script
