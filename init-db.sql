@@ -24,6 +24,16 @@ INSERT IGNORE INTO teacher VALUES ("giuseppe.mazziotti@iticopernico.it", "Giusep
 INSERT IGNORE INTO teacher VALUES ("letizia.montanari@iticopernico.it", "Letizia", "Montanari", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
 INSERT IGNORE INTO teacher VALUES ("cristina.frabetti@iticopernico.it", "Cristina", "Frabetti", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
 INSERT IGNORE INTO teacher VALUES ("roberto.borghi@iticopernico.it", "Roberto", "Borghi", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
+INSERT IGNORE INTO teacher VALUES ("alessandra.trambaiolli@iticopernico.it", "Alessandra", "Trambaiolli", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
+INSERT IGNORE INTO teacher VALUES ("elia.melloni@iticopernico.it", "Elia", "Melloni", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
+INSERT IGNORE INTO teacher VALUES ("andrea.bombonati@iticopernico.it", "Andrea", "Bombonati", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
+INSERT IGNORE INTO teacher VALUES ("simone.ghetti@iticopernico.it", "Simone", "Ghetti", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
+INSERT IGNORE INTO teacher VALUES ("lorenza.masini@iticopernico.it", "Lorenza", "Masini", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
+INSERT IGNORE INTO teacher VALUES ("caterina.mestieri@iticopernico.it", "Caterina", "Mestieri", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
+INSERT IGNORE INTO teacher VALUES ("matteo.lunati@iticopernico.it", "Matteo", "Lunati", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
+INSERT IGNORE INTO teacher VALUES ("dionnedorothy.branca@iticopernico.it", "Dionne Dorothy", "Branca", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
+INSERT IGNORE INTO teacher VALUES ("anna.morelli@iticopernico.it", "Anna", "Morelli", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
+INSERT IGNORE INTO teacher VALUES ("francesca.grazzi@iticopernico.it", "Francesca", "Grazzi", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
 
 -- Default Technician's password: "tecnico"
 INSERT IGNORE INTO technician VALUES ("luca.bianconi@iticopernico.it", "Luca", "Bianconi", "0e949b5f9de9cfa8437d0beeca8d8c96a6b578caa889fd6659e85b7dff22e59b");

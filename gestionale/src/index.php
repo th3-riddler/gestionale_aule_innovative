@@ -25,7 +25,7 @@ if(isset($_SESSION["email"])) {
     <div class="hero min-h-screen bg-base-200">
         <div class="hero-content flex-col lg:flex-row-reverse justify-between w-10/12">
             <div class="text-center lg:text-left">
-                <h1 class="text-5xl font-bold">Pagina di Login</h1>
+                <h1 class="text-5xl font-bold">Login</h1>
                 <p class="py-6">Benvenuto nel Gestionale per Aule Innovative, IIS N.Copernico A.Carpeggiani.</p>
             </div>
             <div class="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">

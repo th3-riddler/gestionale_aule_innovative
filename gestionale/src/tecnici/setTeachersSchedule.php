@@ -86,7 +86,7 @@ $weekdays = ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabat
                         $found = false;
                         foreach ($schedule as $lesson) {
                             if ($lesson->hour == $pos + 1 && $lesson->weekday == $weekdays[$i - 1]) {
-                                echo "<div class='btn btn-wide btn-primary'>
+                                echo "<div class='btn btn-wide bg-primary text-black hover:bg-primary/50 transition-all duration-200'>
                                         <h2 class='card-title'>" . $lesson->class_year . $lesson->class_section  . "</h2>
                                         <p class='text-xs'>" . $lesson->teacher_email . "</p>
                                     </div>";

@@ -98,14 +98,14 @@ $cartsData = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] .
                     }
 
                     if ($pos + 1 == $current_cart) {
-                        echo "<td><button type='submit' class='btn btn-square btn-outline'><svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path fill='currentColor' d='M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z'/></svg></button></td></form>";
+                        echo "<td><button type='submit' title='Confirm' class='btn btn-square btn-outline'><svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path fill='currentColor' d='M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z'/></svg></button></td></form>";
                     } else {
                         echo "<td><button class='btn btn-square btn-outline btn-disabled'><svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12' /></svg></button></td>";
                     }
 
                     echo "</tr>";
                 }
-                ?>
+                ?> 
             </table>
         </div>
     </div>
