@@ -63,6 +63,11 @@ function activate() {
   }
 }
 
+function setThemeLocalStorage() {
+  console.log(this.value);
+  localStorage.setItem("theme", this.value);
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   let current = document.getElementById("current");
   let dateQuery = new URLSearchParams(window.location.search).get("date");
@@ -138,5 +143,19 @@ document.addEventListener("DOMContentLoaded", function () {
         alert.remove();
       }, 3000);
     });
+  });
+
+  if (localStorage.getItem("theme")) {
+    // find the corresponding input radio and check it
+    document
+      .querySelectorAll("input[name='theme']")
+      .forEach((theme) => (theme.checked = false));
+    document
+      .querySelector(`input[value='${localStorage.getItem("theme")}']`)
+      .checked = true;
+  }
+
+  document.querySelectorAll(".theme-controller").forEach((theme) => {
+    theme.addEventListener("click", setThemeLocalStorage);
   });
 });

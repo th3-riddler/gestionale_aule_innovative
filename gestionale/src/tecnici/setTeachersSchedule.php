@@ -43,7 +43,30 @@ $weekdays = ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabat
 
     <div class="navbar alert m-4 w-auto">
         <div class="navbar-start">
-            <a class="btn btn-ghost btn-active text-2xl mx-2">Benvenuto, <?php echo $_SESSION["surname"] . " " . $_SESSION["name"]; ?></a>
+            <div class="dropdown dropdown-hover">
+                <div tabindex="0" role="button" class="avatar placeholder">
+                    <div class="bg-neutral text-neutral-content rounded-full w-12">
+                        <span class="text-xl">BL</span>
+                    </div>
+                </div>
+                <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                    <li><a href="technicianProfile.php">Profile</a></li>
+                    <li>
+                        <details>
+                            <summary>Themes</summary>
+                            <ul>
+                                <li><input type="radio" name="theme-dropdown" class="theme-controller btn btn-sm btn-block btn-ghost justify-start" aria-label="Dark" value="dark" /></li>
+                                <li><input type="radio" name="theme-dropdown" class="theme-controller btn btn-sm btn-block btn-ghost justify-start" aria-label="Business" value="business" /></li>
+                                <li><input type="radio" name="theme-dropdown" class="theme-controller btn btn-sm btn-block btn-ghost justify-start" aria-label="Night" value="night" /></li>
+                                <li><input type="radio" name="theme-dropdown" class="theme-controller btn btn-sm btn-block btn-ghost justify-start" aria-label="Light" value="light" /></li>
+                                <li><input type="radio" name="theme-dropdown" class="theme-controller btn btn-sm btn-block btn-ghost justify-start" aria-label="Nord" value="nord" /></li>
+                                <li><input type="radio" name="theme-dropdown" class="theme-controller btn btn-sm btn-block btn-ghost justify-start" aria-label="Wireframe" value="wireframe" /></li>
+                            </ul>
+                        </details>
+                    </li>
+                    <li><a href="../API/logout.php" class="text-error">Logout</a></li>
+                </ul>
+            </div>
         </div>
         <div class="navbar-center">
             <ul class="menu menu-horizontal px-1">

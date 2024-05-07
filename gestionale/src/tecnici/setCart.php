@@ -37,7 +37,32 @@ $cartsData = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] .
 <body>
     <div class="navbar alert m-4 w-auto">
         <div class="navbar-start">
-            <a class="btn btn-ghost btn-active text-2xl mx-2">Benvenuto, <?php echo $_SESSION["surname"] . " " . $_SESSION["name"]; ?></a>
+            <div class="dropdown dropdown-hover">
+                <div tabindex="0" role="button" class="avatar placeholder">
+                    <div class="bg-neutral text-neutral-content rounded-full w-12">
+                        <span class="text-xl">BL</span>
+                    </div>
+                </div>
+                <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                    <li><a href="technicianProfile.php">Profile</a></li>
+                    <li>
+                        <details>
+                            <summary>
+                                Themes
+                            </summary>
+                            <ul>
+                                <li><input type="radio" name="theme-dropdown" class="theme-controller btn btn-sm btn-block btn-ghost justify-start" aria-label="Dark" value="dark" /></li>
+                                <li><input type="radio" name="theme-dropdown" class="theme-controller btn btn-sm btn-block btn-ghost justify-start" aria-label="Business" value="business" /></li>
+                                <li><input type="radio" name="theme-dropdown" class="theme-controller btn btn-sm btn-block btn-ghost justify-start" aria-label="Night" value="night" /></li>
+                                <li><input type="radio" name="theme-dropdown" class="theme-controller btn btn-sm btn-block btn-ghost justify-start" aria-label="Light" value="light" /></li>
+                                <li><input type="radio" name="theme-dropdown" class="theme-controller btn btn-sm btn-block btn-ghost justify-start" aria-label="Nord" value="nord" /></li>
+                                <li><input type="radio" name="theme-dropdown" class="theme-controller btn btn-sm btn-block btn-ghost justify-start" aria-label="Wireframe" value="wireframe" /></li>
+                            </ul>
+                        </details>
+                    </li>
+                    <li><a href="../API/logout.php" class="text-error">Logout</a></li>
+                </ul>
+            </div>
         </div>
         <div class="navbar-center">
             <ul class="menu menu-horizontal px-1">
@@ -51,7 +76,7 @@ $cartsData = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] .
             <a href="../API/logout.php" class="btn btn-error mx-2">Logout</a>
         </div>
     </div>
-    
+
     <div class="card border bg-base-300 m-4">
         <div class="card-body">
             <ul class="menu menu-horizontal bg-base-200 rounded-box justify-center">
@@ -91,9 +116,9 @@ $cartsData = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] .
                     foreach ($cart as $key => $value) {
                         if ($key == "id") continue;
                         if ($pos + 1 == $current_cart) {
-                            echo "<td><input type='text' name='$key' value='$value' class='input input-bordered input-primary btn-wide text-center'></td>";
+                            echo "<td><input type='text' name='$key' value='$value' class='input input-bordered input-primary btn-square text-center'></td>";
                         } else {
-                            echo "<td><div class='btn btn-wide btn-outline btn-disabled'>$value</div></td>";
+                            echo "<td><div class='btn btn-square btn-outline btn-disabled'>$value</div></td>";
                         }
                     }
 
@@ -105,7 +130,7 @@ $cartsData = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] .
 
                     echo "</tr>";
                 }
-                ?> 
+                ?>
             </table>
         </div>
     </div>
@@ -124,6 +149,26 @@ $cartsData = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] .
             </div>
         </div>
     </dialog>
+
+    <script>
+        function setThemeLocalStorage() {
+            localStorage.setItem("theme", this.value);
+        }
+
+        if (localStorage.getItem("theme")) {
+            // find the corresponding input radio and check it
+            document
+                .querySelectorAll("input[name='theme']")
+                .forEach((theme) => (theme.checked = false));
+            document.querySelector(
+                `input[value='${localStorage.getItem("theme")}']`
+            ).checked = true;
+        }
+
+        document.querySelectorAll(".theme-controller").forEach((theme) => {
+            theme.addEventListener("click", setThemeLocalStorage);
+        });
+    </script>
 
 </body>
 
