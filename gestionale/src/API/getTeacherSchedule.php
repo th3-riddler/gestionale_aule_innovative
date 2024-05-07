@@ -6,7 +6,7 @@ require_once('validateToken.php');
 $token = $_GET["token"] ?? $_COOKIE["token"] ?? "";
 validateToken($token);
 
-$emailTeacher = $_GET["email"];
+$emailTeacher = $_GET["email"] ?? "";
 
 $query = "SELECT * FROM room_schedule WHERE teacher_email = ?";
 $stmt = $conn->prepare($query);

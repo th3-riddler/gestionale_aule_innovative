@@ -26,10 +26,18 @@ if (date('l', strtotime($date)) == "Sunday") {
 
 $teacherSchedule = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getTeacherSchedule.php?email=" . $_SESSION["email"] . "&token=" . $token));
 
+function getProfileImage($work, $email)
+{
+    global $token;
+    $profileImage = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getProfileImage.php?work=" . $work . "&email=" . $email . "&token=" . $token), true);
+    return $profileImage;
+}
+
 ?>
 
 <!DOCTYPE html>
 <html lang="it" data-theme="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,15 +45,40 @@ $teacherSchedule = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NA
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Home Docenti</title>
 </head>
+
 <body>
 
     <div class="navbar alert m-4 w-auto">
-        <div class="flex-1">
-            <a class="btn btn-ghost btn-active text-2xl">Benvenuto, <?php echo $_SESSION["surname"] . " " . $_SESSION["name"]; ?></a>
-        </div>
-        <div class="flex-none">
-            <button class="btn btn-ghost mr-4" onclick="modalHelp.showModal()">Guida</button>
-            <a href="../API/logout.php" class="btn btn-error">Logout</a>
+        <div class="navbar-start">
+
+            <div class="dropdown dropdown-hover">
+                <div tabindex="0" role="button" class="avatar placeholder">
+                    <div class="avatar bg-neutral text-neutral-content rounded-full w-12 ml-3">
+                        <?php $profileImage = getProfileImage('teacher', $_SESSION['email']);
+                        echo $profileImage != false ? '<img class="absolute -z-2 top-0 bottom-0 right-0 left-0 w-full h-full group-hover:opacity-50" src="data:image/jpeg;base64, ' . $profileImage . '" />' : '<span class="group-hover:opacity-50 text-xl">' . $_SESSION["surname"][0] . $_SESSION["name"][0] . '</span>'; ?>
+                    </div>
+                </div>
+                <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                    <li><a href="teacherProfile.php">Profile</a></li>
+                    <li>
+                        <details>
+                            <summary>
+                                Themes
+                            </summary>
+                            <ul>
+                                <li><input type="radio" name="theme-dropdown" class="theme-controller btn btn-sm btn-block btn-ghost justify-start" aria-label="Dark" value="dark" /></li>
+                                <li><input type="radio" name="theme-dropdown" class="theme-controller btn btn-sm btn-block btn-ghost justify-start" aria-label="Business" value="business" /></li>
+                                <li><input type="radio" name="theme-dropdown" class="theme-controller btn btn-sm btn-block btn-ghost justify-start" aria-label="Night" value="night" /></li>
+                                <li><input type="radio" name="theme-dropdown" class="theme-controller btn btn-sm btn-block btn-ghost justify-start" aria-label="Light" value="light" /></li>
+                                <li><input type="radio" name="theme-dropdown" class="theme-controller btn btn-sm btn-block btn-ghost justify-start" aria-label="Nord" value="nord" /></li>
+                                <li><input type="radio" name="theme-dropdown" class="theme-controller btn btn-sm btn-block btn-ghost justify-start" aria-label="Wireframe" value="wireframe" /></li>
+                            </ul>
+                        </details>
+                    </li>
+                    <li><a href="../API/logout.php" class="text-error">Logout</a></li>
+                </ul>
+            </div>
+
         </div>
     </div>
 
@@ -61,61 +94,61 @@ $teacherSchedule = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NA
                 <tr class="hover">
                     <th>Ora</th>
                     <?php
-                        foreach ($weekdays_it as $weekday) {
-                            // Calculate the date of the weekday
-                            $pos = array_search(date('l', strtotime($date)), $weekdays);
-                            $shift = $pos - array_search($weekday, $weekdays_it);
-                            $specificDate = date('Y-m-d', strtotime($date . ($shift > 0 ? ' - ' . $shift : ' + ' . -$shift) . ' days'));
-                            
-                            echo "<th><span>$weekday</span><br>$specificDate</th>";
-                        }
+                    foreach ($weekdays_it as $weekday) {
+                        // Calculate the date of the weekday
+                        $pos = array_search(date('l', strtotime($date)), $weekdays);
+                        $shift = $pos - array_search($weekday, $weekdays_it);
+                        $specificDate = date('Y-m-d', strtotime($date . ($shift > 0 ? ' - ' . $shift : ' + ' . -$shift) . ' days'));
+
+                        echo "<th><span>$weekday</span><br>$specificDate</th>";
+                    }
                     ?>
                 </tr>
-                <?php 
-                    foreach ($hours as $pos => $hour) {
-                        echo "<tr class='hover'><td value=" . $pos + 1 . ">$hour</td>";
+                <?php
+                foreach ($hours as $pos => $hour) {
+                    echo "<tr class='hover'><td value=" . $pos + 1 . ">$hour</td>";
 
-                        for($i = 1; $i <= 6; $i++) {
-                            echo "<td id=" . ($pos + 1) . $i .  ">";
-                            echo "<button class='btn btn-wide btn-outline btn-disabled'><svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12' /></svg></button>";
-                            echo "</td>";
-                        }
-
-                        echo "</tr>";
+                    for ($i = 1; $i <= 6; $i++) {
+                        echo "<td id=" . ($pos + 1) . $i .  ">";
+                        echo "<button class='btn btn-wide btn-outline btn-disabled'><svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12' /></svg></button>";
+                        echo "</td>";
                     }
 
-                    $scriptValues = [];
-                    foreach ($teacherSchedule as $lesson) {
-                        $hour = $lesson->hour;
-                        $weekdayNumber = strval(array_search($lesson->weekday, $weekdays_it) + 1);
-                        $class = $lesson->class_year;
-                        $section = $lesson->class_section;
-                        $room = $lesson->room;
+                    echo "</tr>";
+                }
 
-                        // Calculate the date of the lesson
-                        $pos = array_search(date('l', strtotime($date)), $weekdays);
-                        $shift = $pos - array_search($lesson->weekday, $weekdays_it);
-                        $lessonDate = date('Y-m-d', strtotime($date . ($shift > 0 ? ' - ' . $shift : ' + ' . -$shift) . ' days'));
+                $scriptValues = [];
+                foreach ($teacherSchedule as $lesson) {
+                    $hour = $lesson->hour;
+                    $weekdayNumber = strval(array_search($lesson->weekday, $weekdays_it) + 1);
+                    $class = $lesson->class_year;
+                    $section = $lesson->class_section;
+                    $room = $lesson->room;
 
-                        // Get the cart id
-                        $result = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getCartId.php?room=" . $room . "&token=" . $token));
-                        $cart_id = $result->id;
+                    // Calculate the date of the lesson
+                    $pos = array_search(date('l', strtotime($date)), $weekdays);
+                    $shift = $pos - array_search($lesson->weekday, $weekdays_it);
+                    $lessonDate = date('Y-m-d', strtotime($date . ($shift > 0 ? ' - ' . $shift : ' + ' . -$shift) . ' days'));
 
-                        // Get the remaining PCs in the cart
-                        $result = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getRemainingPC.php?hour=" . $hour . "&date=" . $lessonDate . "&cart_id=" . $cart_id . "&token=" . $token));
-                        $final_pc_number = $result->remaining_pc;
+                    // Get the cart id
+                    $result = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getCartId.php?room=" . $room . "&token=" . $token));
+                    $cart_id = $result->id;
 
-                        // Get the technician note for the reservation
-                        $result = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getTechnicianNote.php?hour=" . $hour . "&room=" . $room . "&date=" . $lessonDate . "&cart_id=" . $cart_id . "&token=" . $token));
-                        $final_note = ($result->technician_note) ?? "Nessuna nota presente!";
-                        $had_reservation = (empty($result)) ? false : true;
+                    // Get the remaining PCs in the cart
+                    $result = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getRemainingPC.php?hour=" . $hour . "&date=" . $lessonDate . "&cart_id=" . $cart_id . "&token=" . $token));
+                    $final_pc_number = $result->remaining_pc;
 
-                        $result = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getTeacherReservation.php?hour=" . $hour . "&date=" . $lessonDate . "&cart_id=" . $cart_id . "&room=" . $room . "&token=" . $token));
-                        $final_pc_reserved = $result->pc_qt ?? 0;
+                    // Get the technician note for the reservation
+                    $result = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getTechnicianNote.php?hour=" . $hour . "&room=" . $room . "&date=" . $lessonDate . "&cart_id=" . $cart_id . "&token=" . $token));
+                    $final_note = ($result->technician_note) ?? "Nessuna nota presente!";
+                    $had_reservation = (empty($result)) ? false : true;
 
-                        // Add the values to the object that will be used in the script
-                        $scriptValues[] = ["hour" => $hour, "weekdayNumber" => $weekdayNumber, "class" => $class, "section" => $section, "room" => $room, "final_pc_number" => $final_pc_number, "final_note" => $final_note, "cart_id" => $cart_id, "had_reservation" => $had_reservation, "final_pc_reserved" => $final_pc_reserved];
-                    }
+                    $result = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getTeacherReservation.php?hour=" . $hour . "&date=" . $lessonDate . "&cart_id=" . $cart_id . "&room=" . $room . "&token=" . $token));
+                    $final_pc_reserved = $result->pc_qt ?? 0;
+
+                    // Add the values to the object that will be used in the script
+                    $scriptValues[] = ["hour" => $hour, "weekdayNumber" => $weekdayNumber, "class" => $class, "section" => $section, "room" => $room, "final_pc_number" => $final_pc_number, "final_note" => $final_note, "cart_id" => $cart_id, "had_reservation" => $had_reservation, "final_pc_reserved" => $final_pc_reserved];
+                }
                 ?>
             </table>
         </div>
@@ -123,7 +156,7 @@ $teacherSchedule = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NA
 
     <form class="alert flex m-4 w-auto" action="../API/setReservation.php" method="POST" id="formReservation">
         <h1 class="btn btn-ghost text-xl">Prenota dei PC</h1>
-        <input class="input input-bordered w-1/6" name="pc_qt" id="inputPcQt" type="number" step = "1" min = "0" placeholder="Quantitá di PC da prenotare" disabled required>
+        <input class="input input-bordered w-1/6" name="pc_qt" id="inputPcQt" type="number" step="1" min="0" placeholder="Quantitá di PC da prenotare" disabled required>
         <label class="input input-bordered flex items-center gap-2 grow input-disabled">
             <input class="grow input-disabled" name="teacher_note" id="teacherNote" type="text" placeholder="Nota per il tecnico" disabled>
             <span class="badge badge-info">Opzionale</span>
@@ -142,10 +175,10 @@ $teacherSchedule = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NA
                 Se hai bisogno di aiuto, clicca sul bottone <kbd class="kbd kbd-sm">Guida</kbd> in alto a destra o contatta un tecnico.
             </p>
             <div class="modal-action">
-            <form method="dialog">
-                <!-- if there is a button in form, it will close the modal -->
-                <button class="btn">Chiudi</button>
-            </form>
+                <form method="dialog">
+                    <!-- if there is a button in form, it will close the modal -->
+                    <button class="btn">Chiudi</button>
+                </form>
             </div>
         </div>
     </dialog>
@@ -153,4 +186,5 @@ $teacherSchedule = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NA
     <?php echo "<script>var scriptValues = " . json_encode($scriptValues) . ";</script>"; ?>
     <script src="../javascripts/indexTeachers.js"></script>
 </body>
+
 </html>

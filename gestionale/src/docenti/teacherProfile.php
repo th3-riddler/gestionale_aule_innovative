@@ -7,11 +7,6 @@ if (!isset($_SESSION["email"])) {
     exit();
 }
 
-if (!$_SESSION["sudo"]) {
-    header("Location: ../docenti/index.php");
-    exit();
-}
-
 $token = $_COOKIE["token"];
 
 $teachers = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getTeachers.php?token=" . $token), true);
@@ -42,12 +37,12 @@ function getProfileImage($work, $email)
             <div class="dropdown dropdown-hover">
                 <div tabindex="0" role="button" class="avatar placeholder">
                     <div class="bg-neutral text-neutral-content rounded-full w-12 ml-3">
-                        <?php $profileImage = getProfileImage('technician', $_SESSION['email']);
+                        <?php $profileImage = getProfileImage('teacher', $_SESSION['email']);
                         echo $profileImage != false ? '<img class="rounded-full relative -z-2 top-0 bottom-0 right-0 left-0 w-full h-full group-hover:opacity-50" src="data:image/jpeg;base64, ' . $profileImage . '" />' : '<span class="group-hover:opacity-50 text-xl">' . $_SESSION["surname"][0] . $_SESSION["name"][0] . '</span>'; ?>
                     </div>
                 </div>
                 <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                    <li><a href="technicianProfile.php">Profile</a></li>
+                    <li><a href="teacherProfile.php">Profile</a></li>
                     <li>
                         <details>
                             <summary>Themes</summary>
@@ -65,13 +60,7 @@ function getProfileImage($work, $email)
                 </ul>
             </div>
         </div>
-        <div class="navbar-center">
-            <ul class="menu menu-horizontal px-1">
-                <li><a href="../tecnici/index.php" class="btn btn-ghost mx-2">Home</a></li>
-                <li><a href="../tecnici/setTeachersSchedule.php" class="btn btn-ghost mx-2">Inserimento Orario</a></li>
-                <li><a href="../tecnici/setCart.php" class="btn btn-ghost mx-2">Modifica Carrelli</a></li>
-            </ul>
-        </div>
+        
         <div class="navbar-end">
             <button class="btn btn-ghostm mx-2" onclick="modalHelp.showModal()">Guida</button>
         </div>
@@ -82,10 +71,10 @@ function getProfileImage($work, $email)
             <div class="avatar placeholder border-1">
                 <div class="group bg-neutral w-36 rounded-full hover:bg-neutral/50 transition-all duration-200 relative">
 
-                    <?php $profileImage = getProfileImage('technician', $_SESSION['email']);
+                    <?php $profileImage = getProfileImage('teacher', $_SESSION['email']);
                     echo $profileImage != false ? '<img class="rounded-full absolute -z-2 top-0 bottom-0 right-0 left-0 w-full h-full group-hover:opacity-50" src="data:image/jpeg;base64, ' . $profileImage . '" />' : '<span class="group-hover:opacity-50 text-5xl">' . $_SESSION["surname"][0] . $_SESSION["name"][0] . '</span>'; ?>
 
-                    <form action='<?php echo 'http://' . $_SERVER["SERVER_NAME"] . '/API/setProfileImage.php?work=technician&email=' . $_SESSION["email"] . '&token=' . $token ?>' method='POST' enctype='multipart/form-data' class="absolute top-0 bottom-0 right-0 left-0 w-full h-full">
+                    <form action='<?php echo 'http://' . $_SERVER["SERVER_NAME"] . '/API/setProfileImage.php?work=teacher&email=' . $_SESSION["email"] . '&token=' . $token ?>' method='POST' enctype='multipart/form-data' class="absolute top-0 bottom-0 right-0 left-0 w-full h-full">
                         <input type="file" name="profileImageSet" accept="image/jpeg" class="hover:cursor-pointer rounded-full opacity-0 absolute top-0 bottom-0 right-0 left-0 w-full h-full" title="Cambia immagine profilo">
                     </form>
 
@@ -99,72 +88,6 @@ function getProfileImage($work, $email)
                 <h1 class="text-5xl font-bold"><?php echo $_SESSION["surname"] . " " . $_SESSION["name"]; ?></h1>
                 <p class="py-3"><?php echo $_SESSION["email"]; ?></p>
             </div>
-        </div>
-
-        <div class="overflow-x-auto w-full">
-            <table class="table">
-                <!-- head -->
-                <thead>
-                    <tr>
-                        <th>
-                            <label>
-                                <input type="checkbox" class="checkbox" />
-                            </label>
-                        </th>
-                        <th>Nome</th>
-                        <th>Materia</th>
-                        <th>Statistiche</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                    <?php
-                    foreach ($teachers as $teacher) {
-                    ?>
-                        <tr>
-                            <th>
-                                <label>
-                                    <input type="checkbox" class="checkbox" />
-                                </label>
-                            </th>
-                            <td>
-                                <div class="flex items-center gap-3">
-                                    <div class="avatar placeholder border-1">
-                                        <div class="bg-neutral w-12 rounded-full">
-                                            <?php $profileImage = getProfileImage('teacher', $teacher['email']);
-                                            echo $profileImage != false ? '<img class="rounded-full relative -z-2 top-0 bottom-0 right-0 left-0 w-full h-full group-hover:opacity-50" src="data:image/jpeg;base64, ' . $profileImage . '" />' : '<span class="group-hover:opacity-50 text-xl">' . $teacher["surname"][0] . $teacher["name"][0] . '</span>'; ?>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="font-bold"><?php echo $teacher['surname'] . " " . $teacher['name']; ?></div>
-                                        <div class="text-sm opacity-50"><?php echo $teacher['email']; ?></div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="flex items-center gap-3">
-                                    <div>
-                                        <div class="font-bold">
-                                            <ul class="list-disc">
-                                                <?php
-                                                foreach ($teacher['subjects'] as $subject) {
-                                                ?>
-                                                    <li><?php echo $subject; ?></li>
-                                                <?php
-                                                }
-                                                ?>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <!-- STATISTICHE -->
-                            </td>
-                        </tr>
-                    <?php
-                    }
-                    ?>
         </div>
 
 

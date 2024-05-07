@@ -26,6 +26,13 @@ $schedule = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . 
 
 $hours = ["8:10 - 9:10", "9:10 - 10:00", "10:10 - 11:10", "11:10 - 12:00", "12:10 - 13:10", "13:10 - 14:05", "14:20 - 15:10", "15:10 - 16:10"];
 $weekdays = ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"];
+
+function getProfileImage($work, $email)
+{
+    global $token;
+    $profileImage = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getProfileImage.php?work=" . $work . "&email=" . $email . "&token=" . $token), true);
+    return $profileImage;
+}
 ?>
 
 <!DOCTYPE html>
@@ -45,9 +52,11 @@ $weekdays = ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabat
         <div class="navbar-start">
             <div class="dropdown dropdown-hover">
                 <div tabindex="0" role="button" class="avatar placeholder">
-                    <div class="bg-neutral text-neutral-content rounded-full w-12">
-                        <span class="text-xl">BL</span>
+                    <div class="avatar bg-neutral text-neutral-content rounded-full w-12 ml-3">
+                        <?php $profileImage = getProfileImage('technician', $_SESSION['email']);
+                        echo $profileImage != false ? '<img class="absolute -z-2 top-0 bottom-0 right-0 left-0 w-full h-full group-hover:opacity-50" src="data:image/jpeg;base64, ' . $profileImage . '" />' : '<span class="group-hover:opacity-50 text-xl">' . $_SESSION["surname"][0] . $_SESSION["name"][0] . '</span>'; ?>
                     </div>
+
                 </div>
                 <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
                     <li><a href="technicianProfile.php">Profile</a></li>
@@ -77,7 +86,6 @@ $weekdays = ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabat
         </div>
         <div class="navbar-end">
             <button class="btn btn-ghost mx-2" onclick="modalHelp.showModal()">Guida</button>
-            <a href="../API/logout.php" class="btn btn-error mx-2">Logout</a>
         </div>
     </div>
 

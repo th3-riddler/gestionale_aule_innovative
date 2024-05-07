@@ -7,37 +7,71 @@ CREATE TABLE IF NOT EXISTS teacher (
     email VARCHAR(255) NOT NULL PRIMARY KEY,
     name VARCHAR(30) NOT NULL,
     surname VARCHAR(30) NOT NULL,
-    password VARCHAR(255) NOT NULL
+    password VARCHAR(255) NOT NULL,
+    profileImage MEDIUMBLOB DEFAULT NULL
+);
+
+CREATE TABLE IF NOT EXISTS subject(  
+    subject_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    subject_name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS teacher_subject(
+    email VARCHAR(255) NOT NULL,
+    subject_id INT NOT NULL,
+    PRIMARY KEY (email, subject_id),
+    FOREIGN KEY (email) REFERENCES teacher(email),
+    FOREIGN KEY (subject_id) REFERENCES subject(subject_id)
 );
 
 CREATE TABLE IF NOT EXISTS technician (
     email VARCHAR(255) NOT NULL PRIMARY KEY,
     name VARCHAR(30) NOT NULL,
     surname VARCHAR(30) NOT NULL,
-    password VARCHAR(255) NOT NULL
+    password VARCHAR(255) NOT NULL,
+    profileImage MEDIUMBLOB DEFAULT NULL
 );
 
 
 -- Default Teacher's password: "docente"
-INSERT IGNORE INTO teacher VALUES ("claudia.vallesi@iticopernico.it", "Claudia", "Vallesi", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
-INSERT IGNORE INTO teacher VALUES ("giuseppe.mazziotti@iticopernico.it", "Giuseppe", "Mazziotti", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
-INSERT IGNORE INTO teacher VALUES ("letizia.montanari@iticopernico.it", "Letizia", "Montanari", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
-INSERT IGNORE INTO teacher VALUES ("cristina.frabetti@iticopernico.it", "Cristina", "Frabetti", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
-INSERT IGNORE INTO teacher VALUES ("roberto.borghi@iticopernico.it", "Roberto", "Borghi", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
-INSERT IGNORE INTO teacher VALUES ("alessandra.trambaiolli@iticopernico.it", "Alessandra", "Trambaiolli", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
-INSERT IGNORE INTO teacher VALUES ("elia.melloni@iticopernico.it", "Elia", "Melloni", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
-INSERT IGNORE INTO teacher VALUES ("andrea.bombonati@iticopernico.it", "Andrea", "Bombonati", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
-INSERT IGNORE INTO teacher VALUES ("simone.ghetti@iticopernico.it", "Simone", "Ghetti", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
-INSERT IGNORE INTO teacher VALUES ("lorenza.masini@iticopernico.it", "Lorenza", "Masini", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
-INSERT IGNORE INTO teacher VALUES ("caterina.mestieri@iticopernico.it", "Caterina", "Mestieri", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
-INSERT IGNORE INTO teacher VALUES ("matteo.lunati@iticopernico.it", "Matteo", "Lunati", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
-INSERT IGNORE INTO teacher VALUES ("dionnedorothy.branca@iticopernico.it", "Dionne Dorothy", "Branca", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
-INSERT IGNORE INTO teacher VALUES ("anna.morelli@iticopernico.it", "Anna", "Morelli", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
-INSERT IGNORE INTO teacher VALUES ("francesca.grazzi@iticopernico.it", "Francesca", "Grazzi", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
+INSERT IGNORE INTO teacher (email, name, surname, password) VALUES ("claudia.vallesi@iticopernico.it", "Claudia", "Vallesi", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
+INSERT IGNORE INTO teacher (email, name, surname, password) VALUES ("giuseppe.mazziotti@iticopernico.it", "Giuseppe", "Mazziotti", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
+INSERT IGNORE INTO teacher (email, name, surname, password) VALUES ("letizia.montanari@iticopernico.it", "Letizia", "Montanari", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
+INSERT IGNORE INTO teacher (email, name, surname, password) VALUES ("cristina.frabetti@iticopernico.it", "Cristina", "Frabetti", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
+INSERT IGNORE INTO teacher (email, name, surname, password) VALUES ("roberto.borghi@iticopernico.it", "Roberto", "Borghi", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
+INSERT IGNORE INTO teacher (email, name, surname, password) VALUES ("alessandra.trambaiolli@iticopernico.it", "Alessandra", "Trambaiolli", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
+INSERT IGNORE INTO teacher (email, name, surname, password) VALUES ("elia.melloni@iticopernico.it", "Elia", "Melloni", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
+INSERT IGNORE INTO teacher (email, name, surname, password) VALUES ("andrea.bombonati@iticopernico.it", "Andrea", "Bombonati", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
+INSERT IGNORE INTO teacher (email, name, surname, password) VALUES ("simone.ghetti@iticopernico.it", "Simone", "Ghetti", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
+INSERT IGNORE INTO teacher (email, name, surname, password) VALUES ("lorenza.masini@iticopernico.it", "Lorenza", "Masini", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
+INSERT IGNORE INTO teacher (email, name, surname, password) VALUES ("caterina.mestieri@iticopernico.it", "Caterina", "Mestieri", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
+INSERT IGNORE INTO teacher (email, name, surname, password) VALUES ("matteo.lunati@iticopernico.it", "Matteo", "Lunati", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
+INSERT IGNORE INTO teacher (email, name, surname, password) VALUES ("anna.morelli@iticopernico.it", "Anna", "Morelli", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
+INSERT IGNORE INTO teacher (email, name, surname, password) VALUES ("francesca.grazzi@iticopernico.it", "Francesca", "Grazzi", "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5");
 
 -- Default Technician's password: "tecnico"
-INSERT IGNORE INTO technician VALUES ("luca.bianconi@iticopernico.it", "Luca", "Bianconi", "0e949b5f9de9cfa8437d0beeca8d8c96a6b578caa889fd6659e85b7dff22e59b");
+INSERT IGNORE INTO technician (email, name, surname, password) VALUES ("luca.bianconi@iticopernico.it", "Luca", "Bianconi", "0e949b5f9de9cfa8437d0beeca8d8c96a6b578caa889fd6659e85b7dff22e59b");
 
+
+INSERT IGNORE INTO subject VALUES (1, "Letteratura"), (2, "Storia"), (3, "Matematica"), (4, "Informatica"), (5, "Fisica"), (6, "Chimica"), (7, "Sistemi e Reti"), (8, "Tecnologie per la Progettazione di Sistemi Informatici e Telecomunicazioni"), (9, "Inglese"), (10, "Religione"), (11, "Gestione Progetto ed Organizzazione d'Impresa"), (12, "Tedesco"), (13, "Big Data"), (14, "Educazione Fisica"), (15, "Telecomunicazioni");
+
+INSERT IGNORE INTO teacher_subject VALUES ("claudia.vallesi@iticopernico.it", 4), 
+                                          ("claudia.vallesi@iticopernico.it", 13),
+                                          ("giuseppe.mazziotti@iticopernico.it", 4), 
+                                          ("giuseppe.mazziotti@iticopernico.it", 8), 
+                                          ("letizia.montanari@iticopernico.it", 3), 
+                                          ("cristina.frabetti@iticopernico.it", 9),
+                                          ("roberto.borghi@iticopernico.it", 8),
+                                          ("alessandra.trambaiolli@iticopernico.it", 7),
+                                          ("elia.melloni@iticopernico.it", 7), 
+                                          ("andrea.bombonati@iticopernico.it", 1),
+                                          ("andrea.bombonati@iticopernico.it", 2),
+                                          ("simone.ghetti@iticopernico.it", 11),
+                                          ("lorenza.masini@iticopernico.it", 10),
+                                          ("caterina.mestieri@iticopernico.it", 12),
+                                          ("matteo.lunati@iticopernico.it", 14),
+                                          ("anna.morelli@iticopernico.it", 6),
+                                          ("francesca.grazzi@iticopernico.it", 15);
 
 CREATE TABLE IF NOT EXISTS class (
     year INT NOT NULL,
