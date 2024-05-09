@@ -59,10 +59,10 @@ function getProfileImage($work, $email)
 
                 </div>
                 <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                    <li><a href="technicianProfile.php">Profile</a></li>
+                    <li><a href="technicianProfile.php">Profilo</a></li>
                     <li>
                         <details>
-                            <summary>Themes</summary>
+                            <summary>Temi</summary>
                             <ul>
                                 <li><input type="radio" name="theme-dropdown" class="theme-controller btn btn-sm btn-block btn-ghost justify-start" aria-label="Dark" value="dark" /></li>
                                 <li><input type="radio" name="theme-dropdown" class="theme-controller btn btn-sm btn-block btn-ghost justify-start" aria-label="Business" value="business" /></li>
@@ -141,11 +141,11 @@ function getProfileImage($work, $email)
         <h1 class="btn btn-ghost text-xl">Modifica l'Orario</h1>
 
         <form class="alert grow p-0" id="formHour" action="../API/setTeachersSchedule.php" method="post">
-            <input type="hidden" name="room" value="<?php echo $current_room; ?>">
+            <input type="hidden" name="room" value="<?php echo $current_room; ?>" />
             <select class="select select-bordered w-full grow" name="teacher" id="teacherSelect">
                 <?php
                 foreach ($teachers as $teacher) {
-                    echo "<option value='$teacher[1]'>$teacher[0]</option>";
+                    echo "<option value='$teacher->email'>$teacher->surname $teacher->name</option>";
                 }
                 ?>
             </select>

@@ -4,10 +4,9 @@ require_once("db.php");
 require_once('validateToken.php');
 
 $token = $_GET["token"] ?? $_COOKIE["token"] ?? "";
-validateToken($token, true);
+validateToken($token);
 
 $email = $_GET["email"] ?? "";
-
 $work = $_GET["work"] ?? "";
 
 if($work == "technician"){

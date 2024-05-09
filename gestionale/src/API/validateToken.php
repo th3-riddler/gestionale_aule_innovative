@@ -20,7 +20,31 @@ function validateToken($token, $sudo = false) {
     } else {
         if ($sudo) {
             echo json_encode(array("message" => "Unauthorized access"));
+            exit();
         }
+    }
+}
+
+function checkUserAuth($email, $token) {
+    global $conn;
+    $query = "SELECT * FROM api_teachertoken WHERE token = ? AND email = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("ss", $token, $email);
+    $stmt->execute();
+    $resulttokentecher = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    if (empty($resulttokentecher)) {
+        $query = "SELECT * FROM api_techniciantoken WHERE token = ? AND email = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("ss", $token, $email);
+        $stmt->execute();
+        $resulttokentechnician = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        if (empty($resulttokentechnician)) {
+            echo json_encode(array("message" => "Token not valid"));
+            exit();
+        }
+        return "technician";
+    } else {
+        return "teacher";
     }
 }
 ?>

@@ -4,10 +4,10 @@ require_once("db.php");
 require_once('validateToken.php');
 
 $token = $_GET["token"] ?? $_COOKIE["token"] ?? "";
-validateToken($token, true);
+validateToken($token);
 
 $email = $_GET["email"] ?? "";
-$work = $_GET["work"] ?? "";
+$work = checkUserAuth($email, $token);
 
 $error = 0;
 if(isset($_FILES['profileImageSet'])) {
@@ -18,7 +18,7 @@ if(isset($_FILES['profileImageSet'])) {
     if($size > 16000000){ //16MB
         $error = 1;
     }
-    else if($type != "image/jpeg"){
+    else if($type != "image/jpeg" && $type != "image/png" && $type != "image/jpg"){
         $error = 2;
     }
 }

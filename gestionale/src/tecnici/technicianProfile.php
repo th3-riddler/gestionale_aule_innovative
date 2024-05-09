@@ -8,7 +8,7 @@ if (!isset($_SESSION["email"])) {
 }
 
 if (!$_SESSION["sudo"]) {
-    header("Location: ../docenti/index.php");
+    header("Location: ../docenti/teacherProfile.php");
     exit();
 }
 
@@ -16,12 +16,15 @@ $token = $_COOKIE["token"];
 
 $teachers = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getTeachers.php?token=" . $token), true);
 
+
 function getProfileImage($work, $email)
 {
     global $token;
     $profileImage = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getProfileImage.php?work=" . $work . "&email=" . $email . "&token=" . $token), true);
     return $profileImage;
 }
+
+$subjects = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getSubjects.php?token=" . $token), true);
 
 ?>
 
@@ -33,7 +36,7 @@ function getProfileImage($work, $email)
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Profile</title>
+    <title>Profilo</title>
 </head>
 
 <body>
@@ -47,10 +50,10 @@ function getProfileImage($work, $email)
                     </div>
                 </div>
                 <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                    <li><a href="technicianProfile.php">Profile</a></li>
+                    <li><a href="technicianProfile.php">Profilo</a></li>
                     <li>
                         <details>
-                            <summary>Themes</summary>
+                            <summary>Temi</summary>
                             <ul>
                                 <li><input type="radio" name="theme-dropdown" class="theme-controller btn btn-sm btn-block btn-ghost justify-start" aria-label="Dark" value="dark" /></li>
                                 <li><input type="radio" name="theme-dropdown" class="theme-controller btn btn-sm btn-block btn-ghost justify-start" aria-label="Business" value="business" /></li>
@@ -85,7 +88,7 @@ function getProfileImage($work, $email)
                     <?php $profileImage = getProfileImage('technician', $_SESSION['email']);
                     echo $profileImage != false ? '<img class="rounded-full absolute -z-2 top-0 bottom-0 right-0 left-0 w-full h-full group-hover:opacity-50" src="data:image/jpeg;base64, ' . $profileImage . '" />' : '<span class="group-hover:opacity-50 text-5xl">' . $_SESSION["surname"][0] . $_SESSION["name"][0] . '</span>'; ?>
 
-                    <svg id="camera" class="w-12 opacity-0 absolute group-hover:opacity-100 transition-opacity duration-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                    <svg id="camera" class="w-12 opacity-0 absolute group-hover:opacity-100 transition-opacity duration-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                         <path fill="#ffffff" d="M149.1 64.8L138.7 96H64C28.7 96 0 124.7 0 160V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H373.3L362.9 64.8C356.4 45.2 338.1 32 317.4 32H194.6c-20.7 0-39 13.2-45.5 32.8zM256 192a96 96 0 1 1 0 192 96 96 0 1 1 0-192z" />
                     </svg>
 
@@ -98,6 +101,7 @@ function getProfileImage($work, $email)
             <div class="flex flex-col ml-5">
                 <h1 class="text-5xl font-bold"><?php echo $_SESSION["surname"] . " " . $_SESSION["name"]; ?></h1>
                 <p class="py-3"><?php echo $_SESSION["email"]; ?></p>
+                <p><?php echo $profileImage != false ? "<a href='http://" . $_SERVER["SERVER_NAME"] . "/API/deleteProfileImage.php?work=technician&email=" . $_SESSION["email"] . "&token=" . $token . "' class='bg-neutral btn btn-sm btn-ghost text-primary'>Rimuovi Immagine</a>" : '' ?></p>
             </div>
         </div>
 
@@ -107,9 +111,14 @@ function getProfileImage($work, $email)
                 <thead>
                     <tr>
                         <th>
-                            <label>
-                                <input type="checkbox" class="checkbox" />
-                            </label>
+                            <div class="flex flex-row justify-start gap-4 w-full">
+                                <button class="btn btn-sm border-1 btn-square btn-outline btn-success text-xl" onclick="modalAddTeacher.showModal()">+</button>
+                                <button id="delete" class="btn btn-sm border-1 btn-square btn-outline btn-error btn-disabled">
+                                    <svg class="w-3 h-3" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                        <path fill="currentColor" d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0H284.2c12.1 0 23.2 6.8 28.6 17.7L320 32h96c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 96 0 81.7 0 64S14.3 32 32 32h96l7.2-14.3zM32 128H416V448c0 35.3-28.7 64-64 64H96c-35.3 0-64-28.7-64-64V128zm96 64c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16z" />
+                                    </svg>
+                                </button>
+                            </div>
                         </th>
                         <th>Nome</th>
                         <th>Materia</th>
@@ -124,7 +133,7 @@ function getProfileImage($work, $email)
                         <tr>
                             <th>
                                 <label>
-                                    <input type="checkbox" class="checkbox" />
+                                    <input value="<?php echo $teacher['email'] ?>" type="checkbox" onchange="checkDeleteButton()" class="checkbox" />
                                 </label>
                             </th>
                             <td>
@@ -149,7 +158,7 @@ function getProfileImage($work, $email)
                                                 <?php
                                                 foreach ($teacher['subjects'] as $subject) {
                                                 ?>
-                                                    <li><?php echo $subject; ?></li>
+                                                    <li class="badge mb-1"><?php echo $subject; ?></li> <br>
                                                 <?php
                                                 }
                                                 ?>
@@ -159,7 +168,7 @@ function getProfileImage($work, $email)
                                 </div>
                             </td>
                             <td>
-                                <!-- STATISTICHE -->
+                                <button class="btn btn-ghostm mx-2" onclick="modalStats.showModal()">Stats</button>
                             </td>
                         </tr>
                     <?php
@@ -167,31 +176,88 @@ function getProfileImage($work, $email)
                     ?>
         </div>
 
+        <dialog id="modalStats" class="modal">
+            <div class="modal-box">
+                <h3 class="font-bold text-lg">Guida</h3>
+                <p class="py-4">
+                    Questa pagina ti permette di gestire le Prenotazioni dei Docenti. <br><br>
+                    Nel caso in cui ci siano più prenotazioni nello stesso slot giorno/orario, fai <kbd class="kbd kbd-sm">scroll</kbd> per scrollare tra le prenotazioni. <br><br>
+                </p>
+                <div class="modal-action">
+                    <form method="dialog">
+                        <!-- if there is a button in form, it will close the modal -->
+                        <button class="btn">Chiudi</button>
+                    </form>
+                </div>
+            </div>
+        </dialog>
 
+        <dialog id="modalHelp" class="modal">
+            <div class="modal-box">
+                <h3 class="font-bold text-lg">Guida</h3>
+                <p class="py-4">
+                    Questa pagina ti permette di visualizzare il tuo profilo personale. <br><br>
+                    In questa sezione è anche possibile modificare la propria <a class="text-primary">immagine del profilo</a>, basta cliccare sulla tua icona attuale per selezionarne una nuova (unico formato supportato: <kbd class="kbd kbd-sm">.jpeg</kbd>). <br>
+                    In caso invece tu voglia <a class="text-error">rimuoverla</a>, ti basterà cliccare sul bottone <kbd class="kbd kbd-sm">Rimuovi Immagine</kbd>. <br><br>
+                    In quanto tecnico hai anche la possibilità di visualizzare una piccola anteprima dei docenti registrati al servizio. <br>
+                    Per ognuno di essi è anche possibile dare un'occhiata alle materie che insegna e alle <a class="text-secondary">statistiche</a> relative alle prenotazioni. <br><br>
+                </p>
+                <div class="modal-action">
+                    <form method="dialog">
+                        <!-- if there is a button in form, it will close the modal -->
+                        <button class="btn">Chiudi</button>
+                    </form>
+                </div>
+            </div>
+        </dialog>
 
-        <script>
-            function setThemeLocalStorage() {
-                localStorage.setItem("theme", this.value);
-            }
+        <dialog id="modalAddTeacher" class="modal">
+            <div class="modal-box">
+                <form method="dialog">
+                    <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                </form>
+                <h3 class="font-bold text-lg">Aggiungi un docente</h3>
 
-            if (localStorage.getItem("theme")) {
-                // find the corresponding input radio and check it
-                document
-                    .querySelectorAll("input[name='theme']")
-                    .forEach((theme) => (theme.checked = false));
-                document.querySelector(
-                    `input[value='${localStorage.getItem("theme")}']`
-                ).checked = true;
-            }
+                <div id="nominativo" class="flex flex-row my-4 justify-center w-full gap-4 items-center flex-wrap">
 
-            document.querySelectorAll(".theme-controller").forEach((theme) => {
-                theme.addEventListener("click", setThemeLocalStorage);
-            });
+                    <label class="input input-bordered flex items-center gap-2 w-2/5 grow">
+                        <input id="name" type="text" class="w-full" placeholder="Nome" required />
+                    </label>
 
-            document.querySelector("input[type='file']").addEventListener("change", function() {
-                this.form.submit();
-            });
-        </script>
+                    <label class="input input-bordered flex items-center gap-2 w-2/5 grow">
+                        <input id="surname" type="text" class="w-full" placeholder="Cognome" required />
+                    </label>
+
+                    <label class="input input-bordered flex items-center gap-2 w-auto grow">
+                        <input id="email" type="email" class="w-full" placeholder="Email" required />
+                    </label>
+
+                </div>
+
+                <h4 class="font-bold text-md mb-2">Seleziona Materie</h4> <!-- Materie -->
+                <div id="materie" class="flex flex-row justify-around w-auto items-center gap-4 my-4">
+                    <select class="select select-bordered w-full grow" name="known-users" onchange="checkSelect()" required>
+                        <option value="">--Nessuna Selezione--</option>
+                        <?php
+                        foreach ($subjects as $subject) {
+                        ?>
+                            <option value="<?php echo $subject['subject_name']; ?>"><?php echo $subject['subject_name']; ?></option>
+                        <?php
+                        }
+                        ?>
+                    </select>
+                    <button class="btn btn-disabled" id="add">Add</button>
+                </div>
+
+                <ul id="subjects" class="menu bg-base-200 rounded-box my-1" id="group">
+                    <h2 class="menu-title">Materie Insegnate</h2>
+                </ul>
+
+                <button class="btn btn-outline btn-success mt-4" id="confirm">Confirm</button>
+            </div>
+        </dialog>
+
+        <script src="../javascripts/technicianProfile.js"></script>
 </body>
 
 </html>

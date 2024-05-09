@@ -6,7 +6,7 @@ require_once('validateToken.php');
 $token = $_GET["token"] ?? $_COOKIE["token"] ?? "";
 validateToken($token, true);
 
-$query = "SELECT name, surname, email, subject_name FROM teacher INNER JOIN teacher_subject USING(email) INNER JOIN subject USING(subject_id);";
+$query = "SELECT name, surname, email, subject_name FROM teacher INNER JOIN teacher_subject USING(email) INNER JOIN subject USING(subject_id) ORDER BY surname, name ASC;";
 
 $stmt = $conn->prepare($query);
 $stmt->execute();

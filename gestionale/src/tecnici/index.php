@@ -59,11 +59,11 @@ function getProfileImage($work, $email)
                     </div>
                 </div>
                 <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                    <li><a href="technicianProfile.php">Profile</a></li>
+                    <li><a href="technicianProfile.php">Profilo</a></li>
                     <li>
                         <details>
                             <summary>
-                                Themes
+                                Temi
                             </summary>
                             <ul>
                                 <li><input type="radio" name="theme-dropdown" class="theme-controller btn btn-sm btn-block btn-ghost justify-start" aria-label="Dark" value="dark" /></li>

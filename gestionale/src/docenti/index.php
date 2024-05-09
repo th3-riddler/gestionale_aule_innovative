@@ -59,11 +59,11 @@ function getProfileImage($work, $email)
                     </div>
                 </div>
                 <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                    <li><a href="teacherProfile.php">Profile</a></li>
+                    <li><a href="teacherProfile.php">Profilo</a></li>
                     <li>
                         <details>
                             <summary>
-                                Themes
+                                Temi
                             </summary>
                             <ul>
                                 <li><input type="radio" name="theme-dropdown" class="theme-controller btn btn-sm btn-block btn-ghost justify-start" aria-label="Dark" value="dark" /></li>
@@ -79,6 +79,16 @@ function getProfileImage($work, $email)
                 </ul>
             </div>
 
+        </div>
+        
+        <div class="navbar-center">
+            <ul class="menu menu-horizontal px-1">
+                <li><a href="../docenti/index.php" class="btn btn-ghost btn-active mx-2">Home</a></li>
+            </ul>
+        </div>
+
+        <div class="navbar-end">
+            <button class="btn btn-ghostm mx-2" onclick="modalHelp.showModal()">Guida</button>
         </div>
     </div>
 
@@ -156,7 +166,7 @@ function getProfileImage($work, $email)
 
     <form class="alert flex m-4 w-auto" action="../API/setReservation.php" method="POST" id="formReservation">
         <h1 class="btn btn-ghost text-xl">Prenota dei PC</h1>
-        <input class="input input-bordered w-1/6" name="pc_qt" id="inputPcQt" type="number" step="1" min="0" placeholder="Quantitá di PC da prenotare" disabled required>
+        <input class="input input-bordered w-1/6" name="pc_qt" id="inputPcQt" type="number" step="1" min="0" placeholder="Quantità di PC da prenotare" disabled required>
         <label class="input input-bordered flex items-center gap-2 grow input-disabled">
             <input class="grow input-disabled" name="teacher_note" id="teacherNote" type="text" placeholder="Nota per il tecnico" disabled>
             <span class="badge badge-info">Opzionale</span>
@@ -169,9 +179,9 @@ function getProfileImage($work, $email)
             <h3 class="font-bold text-lg">Guida</h3>
             <p class="py-4">
                 Questa pagina ti permette di prenotare dei PC per le tue lezioni. <br><br>
-                Per prenotare un PC, clicca su una cella <a class="link link-primary link-hover">azzurra</a> (le celle <a class="link link-error link-hover">rosse</a> non hanno pc disponibili) e compila il form che apparirá. <br>
-                Ricorda che non puoi prenotare piú PC di quelli disponibili. <br><br>
-                Se hai giá prenotato dei PC, puoi vedere le informazioni relative alla tua prenotazione cliccando sulla cella. <br><br>
+                Per prenotare un PC, clicca su una cella <a class="link link-primary link-hover">azzurra</a> (le celle <a class="link link-error link-hover">rosse</a> non hanno pc disponibili) e compila il form che apparirà. <br>
+                Ricorda che non puoi prenotare più PC di quelli disponibili. <br><br>
+                Se hai già prenotato dei PC, puoi vedere le informazioni relative alla tua prenotazione cliccando sulla cella. <br><br>
                 Se hai bisogno di aiuto, clicca sul bottone <kbd class="kbd kbd-sm">Guida</kbd> in alto a destra o contatta un tecnico.
             </p>
             <div class="modal-action">

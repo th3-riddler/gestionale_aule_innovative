@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS teacher (
     email VARCHAR(255) NOT NULL PRIMARY KEY,
     name VARCHAR(30) NOT NULL,
     surname VARCHAR(30) NOT NULL,
-    password VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL DEFAULT "a53dfa154cd75757b02f8d3a56959a5c85fc276d670758ea7c550f85f95159e5",
     profileImage MEDIUMBLOB DEFAULT NULL
 );
 
@@ -20,8 +20,8 @@ CREATE TABLE IF NOT EXISTS teacher_subject(
     email VARCHAR(255) NOT NULL,
     subject_id INT NOT NULL,
     PRIMARY KEY (email, subject_id),
-    FOREIGN KEY (email) REFERENCES teacher(email),
-    FOREIGN KEY (subject_id) REFERENCES subject(subject_id)
+    FOREIGN KEY (email) REFERENCES teacher(email) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (subject_id) REFERENCES subject(subject_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS technician (
@@ -53,7 +53,25 @@ INSERT IGNORE INTO teacher (email, name, surname, password) VALUES ("francesca.g
 INSERT IGNORE INTO technician (email, name, surname, password) VALUES ("luca.bianconi@iticopernico.it", "Luca", "Bianconi", "0e949b5f9de9cfa8437d0beeca8d8c96a6b578caa889fd6659e85b7dff22e59b");
 
 
-INSERT IGNORE INTO subject VALUES (1, "Letteratura"), (2, "Storia"), (3, "Matematica"), (4, "Informatica"), (5, "Fisica"), (6, "Chimica"), (7, "Sistemi e Reti"), (8, "Tecnologie per la Progettazione di Sistemi Informatici e Telecomunicazioni"), (9, "Inglese"), (10, "Religione"), (11, "Gestione Progetto ed Organizzazione d'Impresa"), (12, "Tedesco"), (13, "Big Data"), (14, "Educazione Fisica"), (15, "Telecomunicazioni");
+INSERT IGNORE INTO subject VALUES (1, "Letteratura"),
+                                  (2, "Storia"), 
+                                  (3, "Matematica"), 
+                                  (4, "Informatica"),
+                                  (5, "Fisica"), 
+                                  (6, "Chimica"), 
+                                  (7, "Sistemi e Reti"), 
+                                  (8, "Tecnologie per la Progettazione di Sistemi Informatici e Telecomunicazioni"), 
+                                  (9, "Inglese"), 
+                                  (10, "Religione"), 
+                                  (11, "Gestione Progetto ed Organizzazione d'Impresa"), 
+                                  (12, "Tedesco"), 
+                                  (13, "Big Data"), 
+                                  (14, "Scienze Motorie e Sportive"), 
+                                  (15, "Telecomunicazioni"), 
+                                  (16, "Geografia"), 
+                                  (17, "Diritto ed Economia"), 
+                                  (19, "Disegno Tecnico"), 
+                                  (20, "Biologia");
 
 INSERT IGNORE INTO teacher_subject VALUES ("claudia.vallesi@iticopernico.it", 4), 
                                           ("claudia.vallesi@iticopernico.it", 13),
@@ -72,6 +90,10 @@ INSERT IGNORE INTO teacher_subject VALUES ("claudia.vallesi@iticopernico.it", 4)
                                           ("matteo.lunati@iticopernico.it", 14),
                                           ("anna.morelli@iticopernico.it", 6),
                                           ("francesca.grazzi@iticopernico.it", 15);
+
+
+
+
 
 CREATE TABLE IF NOT EXISTS class (
     year INT NOT NULL,
@@ -105,7 +127,7 @@ CREATE TABLE IF NOT EXISTS room_schedule (
     class_year INT NOT NULL,
     class_section VARCHAR(10),
     PRIMARY KEY (room, weekday, hour),
-    FOREIGN KEY (teacher_email) REFERENCES teacher(email),
+    FOREIGN KEY (teacher_email) REFERENCES teacher(email) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (class_year, class_section) REFERENCES class(year, section)
 );
 
@@ -130,12 +152,12 @@ CREATE TABLE IF NOT EXISTS api_teachertoken (
     token VARCHAR(64) NOT NULL PRIMARY KEY,
     date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     email VARCHAR(255) NOT NULL,
-    FOREIGN KEY (email) REFERENCES teacher(email)
+    FOREIGN KEY (email) REFERENCES teacher(email) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS api_techniciantoken (
     token VARCHAR(64) NOT NULL PRIMARY KEY,
     date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     email VARCHAR(255) NOT NULL,
-    FOREIGN KEY (email) REFERENCES technician(email)
+    FOREIGN KEY (email) REFERENCES technician(email) ON DELETE CASCADE ON UPDATE CASCADE
 );

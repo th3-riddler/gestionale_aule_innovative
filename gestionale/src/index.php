@@ -53,7 +53,7 @@ if (isset($_SESSION["email"])) {
     </div>
 
     <div class="dropdown dropdown-top dropdown-end dropdown-hover absolute bottom-4 right-4">
-        <div tabindex="0" role="button" class="btn m-1">Themes</div>
+        <div tabindex="0" role="button" class="btn m-1">Temi</div>
         <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
             <li><input type="radio" name="theme-dropdown" class="theme-controller btn btn-sm btn-block btn-ghost justify-start" aria-label="Dark" value="dark" /></li>
             <li><input type="radio" name="theme-dropdown" class="theme-controller btn btn-sm btn-block btn-ghost justify-start" aria-label="Business" value="business" /></li>
