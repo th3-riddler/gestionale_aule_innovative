@@ -54,8 +54,17 @@ function getProfileImage($work, $email)
             <div class="dropdown dropdown-hover">
                 <div tabindex="0" role="button" class="avatar placeholder">
                     <div class="avatar bg-neutral text-neutral-content rounded-full w-12 ml-3">
-                        <?php $profileImage = getProfileImage('technician', $_SESSION['email']);
-                        echo $profileImage != false ? '<img class="absolute -z-2 top-0 bottom-0 right-0 left-0 w-full h-full group-hover:opacity-50" src="data:image/jpeg;base64, ' . $profileImage . '" />' : '<span class="group-hover:opacity-50 text-xl">' . $_SESSION["surname"][0] . $_SESSION["name"][0] . '</span>'; ?>
+                        <?php
+                        $profileImage = getProfileImage('technician', $_SESSION['email']);
+
+                        if ($profileImage != false) {
+                            $finfo = new finfo(FILEINFO_MIME_TYPE);
+                            $mimeType = $finfo->buffer(base64_decode($profileImage));
+                            echo '<img class="rounded-full relative -z-2 top-0 bottom-0 right-0 left-0 w-full h-full" src="data:' . $mimeType . ';base64, ' . $profileImage . '" />';
+                        } else {
+                            echo '<span class="text-xl">' . $_SESSION["surname"][0] . $_SESSION["name"][0] . '</span>';
+                        }
+                        ?>
                     </div>
                 </div>
                 <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">

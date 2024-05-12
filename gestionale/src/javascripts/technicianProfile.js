@@ -35,7 +35,7 @@ document.getElementById("confirm").addEventListener("click", function () {
 
 
 
-document.getElementById("delete").addEventListener("click", function () {
+function deleteTeachers() {
   let selected = Array.from(document.querySelectorAll("input[type='checkbox']:checked")).map(
     (checkbox) => checkbox.value
   );
@@ -52,7 +52,7 @@ document.getElementById("delete").addEventListener("click", function () {
       console.log(response);
     }
   );
-});
+};
 
 
 function checkSelect(){
@@ -74,7 +74,7 @@ document.getElementById("add").addEventListener("click", () => {
   let content = document.querySelector("select").value;
   if (content == "") return;
   let li = document.createElement("li");
-  li.classList.add("btn", "btn-neutral", "m-2", "no-animation");
+  li.classList.add("btn", "btn-neutral", "m-2", "no-animation", "hover:border-2", "hover:border-red-500", "hover:text-red-400");
   li.innerHTML = content;
   li.addEventListener("click", () => {
     li.remove();

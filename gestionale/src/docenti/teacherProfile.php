@@ -42,12 +42,21 @@ function getProfileImage($work, $email)
             <div class="dropdown dropdown-hover">
                 <div tabindex="0" role="button" class="avatar placeholder">
                     <div class="bg-neutral text-neutral-content rounded-full w-12 ml-3">
-                        <?php $profileImage = getProfileImage('teacher', $_SESSION['email']);
-                        echo $profileImage != false ? '<img class="rounded-full relative -z-2 top-0 bottom-0 right-0 left-0 w-full h-full group-hover:opacity-50" src="data:image/jpeg;base64, ' . $profileImage . '" />' : '<span class="group-hover:opacity-50 text-xl">' . $_SESSION["surname"][0] . $_SESSION["name"][0] . '</span>'; ?>
+                        <?php
+                        $profileImage = getProfileImage('technician', $_SESSION['email']);
+
+                        if ($profileImage != false) {
+                            $finfo = new finfo(FILEINFO_MIME_TYPE);
+                            $mimeType = $finfo->buffer(base64_decode($profileImage));
+                            echo '<img class="rounded-full relative -z-2 top-0 bottom-0 right-0 left-0 w-full h-full" src="data:' . $mimeType . ';base64, ' . $profileImage . '" />';
+                        } else {
+                            echo '<span class="text-xl">' . $_SESSION["surname"][0] . $_SESSION["name"][0] . '</span>';
+                        }
+                        ?>
                     </div>
                 </div>
                 <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                    <li><a href="teacherProfile.php">Profilo</a></li>
+                    <li><a href="teacherProfile.php" class="bg-neutral">Profilo</a></li>
                     <li>
                         <details>
                             <summary>Temi</summary>
@@ -82,9 +91,17 @@ function getProfileImage($work, $email)
             <div class="avatar placeholder border-1">
                 <div class="group bg-neutral w-36 rounded-full hover:bg-neutral/50 transition-all duration-200 relative">
 
-                    <?php $profileImage = getProfileImage('teacher', $_SESSION['email']);
-                    echo $profileImage != false ? '<img class="rounded-full absolute -z-2 top-0 bottom-0 right-0 left-0 w-full h-full group-hover:opacity-50" src="data:image/jpeg;base64, ' . $profileImage . '" />' : '<span class="group-hover:opacity-50 text-5xl">' . $_SESSION["surname"][0] . $_SESSION["name"][0] . '</span>'; ?>
+                    <?php
+                    $profileImage = getProfileImage('technician', $_SESSION['email']);
 
+                    if ($profileImage != false) {
+                        $finfo = new finfo(FILEINFO_MIME_TYPE);
+                        $mimeType = $finfo->buffer(base64_decode($profileImage));
+                        echo '<img class="rounded-full absolute -z-2 top-0 bottom-0 right-0 left-0 w-full h-full group-hover:opacity-50" src="data:' . $mimeType . ';base64, ' . $profileImage . '" />';
+                    } else {
+                        echo '<span class="group-hover:opacity-50 text-5xl">' . $_SESSION["surname"][0] . $_SESSION["name"][0] . '</span>';
+                    }
+                    ?>
                     <svg id="camera" class="w-12 opacity-0 absolute group-hover:opacity-100 transition-opacity duration-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
                         <path fill="#ffffff" d="M149.1 64.8L138.7 96H64C28.7 96 0 124.7 0 160V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H373.3L362.9 64.8C356.4 45.2 338.1 32 317.4 32H194.6c-20.7 0-39 13.2-45.5 32.8zM256 192a96 96 0 1 1 0 192 96 96 0 1 1 0-192z" />
                     </svg>
@@ -97,8 +114,11 @@ function getProfileImage($work, $email)
             </div>
             <div class="flex flex-col ml-5">
                 <h1 class="text-5xl font-bold"><?php echo $_SESSION["surname"] . " " . $_SESSION["name"]; ?></h1>
-                <p class="py-3"><?php echo $_SESSION["email"]; ?></p>
-                <p><?php echo $profileImage != false ? "<a href='http://" . $_SERVER["SERVER_NAME"] . "/API/deleteProfileImage.php?work=technician&email=" . $_SESSION["email"] . "&token=" . $token . "' class='bg-neutral btn btn-sm btn-ghost text-primary'>Rimuovi Immagine</a>" : '' ?></p>
+                <div class="flex flex-row w-fit items-center">
+                    <p class="py-3"><?php echo $_SESSION["email"]; ?></p>
+                    <a href='http://" <?php echo $_SERVER["SERVER_NAME"] ?> "/API/changePassword.php?&email="<?php $_SESSION["email"] ?>"&token="<?php echo $token ?>"' class='btn btn-sm btn-link text-primary no-underline'>Cambia Password</a>
+                </div>
+                <p><?php echo $profileImage != false ? "<a href='http://" . $_SERVER["SERVER_NAME"] . "/API/deleteProfileImage.php?email=" . $_SESSION["email"] . "&token=" . $token . "' class='bg-neutral btn btn-sm btn-ghost text-primary'>Rimuovi Immagine</a>" : '' ?></p>
             </div>
         </div>
 

@@ -45,12 +45,21 @@ $subjects = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . 
             <div class="dropdown dropdown-hover">
                 <div tabindex="0" role="button" class="avatar placeholder">
                     <div class="bg-neutral text-neutral-content rounded-full w-12 ml-3">
-                        <?php $profileImage = getProfileImage('technician', $_SESSION['email']);
-                        echo $profileImage != false ? '<img class="rounded-full relative -z-2 top-0 bottom-0 right-0 left-0 w-full h-full group-hover:opacity-50" src="data:image/jpeg;base64, ' . $profileImage . '" />' : '<span class="group-hover:opacity-50 text-xl">' . $_SESSION["surname"][0] . $_SESSION["name"][0] . '</span>'; ?>
+                        <?php
+                        $profileImage = getProfileImage('technician', $_SESSION['email']);
+
+                        if ($profileImage != false) {
+                            $finfo = new finfo(FILEINFO_MIME_TYPE);
+                            $mimeType = $finfo->buffer(base64_decode($profileImage));
+                            echo '<img class="rounded-full relative -z-2 top-0 bottom-0 right-0 left-0 w-full h-full" src="data:' . $mimeType . ';base64, ' . $profileImage . '" />';
+                        } else {
+                            echo '<span class="text-xl">' . $_SESSION["surname"][0] . $_SESSION["name"][0] . '</span>';
+                        }
+                        ?>
                     </div>
                 </div>
                 <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                    <li><a href="technicianProfile.php">Profilo</a></li>
+                    <li><a href="technicianProfile.php" class="bg-neutral">Profilo</a></li>
                     <li>
                         <details>
                             <summary>Temi</summary>
@@ -85,22 +94,33 @@ $subjects = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . 
             <div class="avatar placeholder border-1">
                 <div class="group bg-neutral w-36 rounded-full hover:bg-neutral/50 transition-all duration-200 relative">
 
-                    <?php $profileImage = getProfileImage('technician', $_SESSION['email']);
-                    echo $profileImage != false ? '<img class="rounded-full absolute -z-2 top-0 bottom-0 right-0 left-0 w-full h-full group-hover:opacity-50" src="data:image/jpeg;base64, ' . $profileImage . '" />' : '<span class="group-hover:opacity-50 text-5xl">' . $_SESSION["surname"][0] . $_SESSION["name"][0] . '</span>'; ?>
+                    <?php
+                    $profileImage = getProfileImage('technician', $_SESSION['email']);
 
+                    if ($profileImage != false) {
+                        $finfo = new finfo(FILEINFO_MIME_TYPE);
+                        $mimeType = $finfo->buffer(base64_decode($profileImage));
+                        echo '<img class="rounded-full absolute -z-2 top-0 bottom-0 right-0 left-0 w-full h-full group-hover:opacity-50" src="data:' . $mimeType . ';base64, ' . $profileImage . '" />';
+                    } else {
+                        echo '<span class="group-hover:opacity-50 text-5xl">' . $_SESSION["surname"][0] . $_SESSION["name"][0] . '</span>';
+                    }
+                    ?>
                     <svg id="camera" class="w-12 opacity-0 absolute group-hover:opacity-100 transition-opacity duration-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                         <path fill="#ffffff" d="M149.1 64.8L138.7 96H64C28.7 96 0 124.7 0 160V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H373.3L362.9 64.8C356.4 45.2 338.1 32 317.4 32H194.6c-20.7 0-39 13.2-45.5 32.8zM256 192a96 96 0 1 1 0 192 96 96 0 1 1 0-192z" />
                     </svg>
 
                     <form action='<?php echo 'http://' . $_SERVER["SERVER_NAME"] . '/API/setProfileImage.php?work=technician&email=' . $_SESSION["email"] . '&token=' . $token ?>' method='POST' enctype='multipart/form-data' class="absolute top-0 bottom-0 right-0 left-0 w-full h-full">
-                        <input type="file" name="profileImageSet" accept="image/jpeg" class="hover:cursor-pointer rounded-full opacity-0 absolute top-0 bottom-0 right-0 left-0 w-full h-full" title="Cambia immagine profilo">
+                        <input type="file" name="profileImageSet" accept="image/jpeg,image/jpg,image/png,image/gif" class="hover:cursor-pointer rounded-full opacity-0 absolute top-0 bottom-0 right-0 left-0 w-full h-full" title="Cambia immagine profilo">
                     </form>
 
                 </div>
             </div>
             <div class="flex flex-col ml-5">
                 <h1 class="text-5xl font-bold"><?php echo $_SESSION["surname"] . " " . $_SESSION["name"]; ?></h1>
-                <p class="py-3"><?php echo $_SESSION["email"]; ?></p>
+                <div class="flex flex-row w-fit items-center">
+                    <p class="py-3"><?php echo $_SESSION["email"]; ?></p>
+                    <a href='http://" <?php echo $_SERVER["SERVER_NAME"] ?> "/API/changePassword.php?&email="<?php $_SESSION["email"] ?>"&token="<?php echo $token ?>"' class='btn btn-sm btn-link text-primary no-underline'>Cambia Password</a>
+                </div>
                 <p><?php echo $profileImage != false ? "<a href='http://" . $_SERVER["SERVER_NAME"] . "/API/deleteProfileImage.php?work=technician&email=" . $_SESSION["email"] . "&token=" . $token . "' class='bg-neutral btn btn-sm btn-ghost text-primary'>Rimuovi Immagine</a>" : '' ?></p>
             </div>
         </div>
@@ -113,7 +133,7 @@ $subjects = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . 
                         <th>
                             <div class="flex flex-row justify-start gap-4 w-full">
                                 <button class="btn btn-sm border-1 btn-square btn-outline btn-success text-xl" onclick="modalAddTeacher.showModal()">+</button>
-                                <button id="delete" class="btn btn-sm border-1 btn-square btn-outline btn-error btn-disabled">
+                                <button id="delete" class="btn btn-sm border-1 btn-square btn-outline btn-error btn-disabled" onclick="confirmDelete.showModal()">
                                     <svg class="w-3 h-3" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                                         <path fill="currentColor" d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0H284.2c12.1 0 23.2 6.8 28.6 17.7L320 32h96c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 96 0 81.7 0 64S14.3 32 32 32h96l7.2-14.3zM32 128H416V448c0 35.3-28.7 64-64 64H96c-35.3 0-64-28.7-64-64V128zm96 64c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16z" />
                                     </svg>
@@ -140,8 +160,17 @@ $subjects = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . 
                                 <div class="flex items-center gap-3">
                                     <div class="avatar placeholder border-1">
                                         <div class="bg-neutral w-12 rounded-full">
-                                            <?php $profileImage = getProfileImage('teacher', $teacher['email']);
-                                            echo $profileImage != false ? '<img class="rounded-full relative -z-2 top-0 bottom-0 right-0 left-0 w-full h-full group-hover:opacity-50" src="data:image/jpeg;base64, ' . $profileImage . '" />' : '<span class="group-hover:opacity-50 text-xl">' . $teacher["surname"][0] . $teacher["name"][0] . '</span>'; ?>
+                                            <?php
+                                            $profileImage = getProfileImage('technician', $teacher['email']);
+
+                                            if ($profileImage != false) {
+                                                $finfo = new finfo(FILEINFO_MIME_TYPE);
+                                                $mimeType = $finfo->buffer(base64_decode($profileImage));
+                                                echo '<img class="rounded-full relative -z-2 top-0 bottom-0 right-0 left-0 w-full h-full" src="data:' . $mimeType . ';base64, ' . $profileImage . '" />';
+                                            } else {
+                                                echo '<span class="text-xl">' . $teacher["surname"][0] . $teacher["name"][0] . '</span>';
+                                            }
+                                            ?>
                                         </div>
                                     </div>
                                     <div>
@@ -206,6 +235,22 @@ $subjects = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . 
                     <form method="dialog">
                         <!-- if there is a button in form, it will close the modal -->
                         <button class="btn">Chiudi</button>
+                    </form>
+                </div>
+            </div>
+        </dialog>
+
+        <dialog id="confirmDelete" class="modal">
+            <div class="modal-box">
+                <h3 class="font-bold text-lg">Vuoi davvero rimuovere?</h3>
+                <p class="py-4">
+                    Sei sicuro di voler rimuovere i docenti selezionati? <br>
+                    Questa azione è irreversibile.
+                </p>
+                <div class="modal-action">
+                    <form method="dialog">
+                        <button class="btn btn-outline btn-primary" onclick="confirmDelete.close()">Annulla</button>
+                        <button class="btn btn-outline btn-error" onclick="deleteTeachers()">Rimuovi</button>
                     </form>
                 </div>
             </div>
