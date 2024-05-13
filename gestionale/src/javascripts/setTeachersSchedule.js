@@ -176,6 +176,10 @@ document.querySelectorAll("td").forEach(function (td) {
   });
 });
 
+document.querySelectorAll(".theme-controller").forEach((theme) => {
+  theme.addEventListener("click", setThemeLocalStorage);
+});
+
 if (localStorage.getItem("theme")) {
   // find the corresponding input radio and check it
   document
@@ -185,7 +189,3 @@ if (localStorage.getItem("theme")) {
     `input[value='${localStorage.getItem("theme")}']`
   ).checked = true;
 }
-
-document.querySelectorAll(".theme-controller").forEach((theme) => {
-  theme.addEventListener("click", setThemeLocalStorage);
-});

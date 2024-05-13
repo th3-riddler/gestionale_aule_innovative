@@ -25,14 +25,14 @@ if (isset($_SESSION["email"])) {
 
 <body>
     <div class="hero min-h-screen bg-base-200">
-        <div class="hero-content flex-col lg:flex-row-reverse justify-between w-10/12">
-            <div class="text-center lg:text-left">
-                <h1 class="text-5xl font-bold">Login</h1>
-                <p class="py-6">Benvenuto nel Gestionale per Aule Innovative, IIS N.Copernico A.Carpeggiani.</p>
-            </div>
-            <div class="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+        <div class="hero-content flex-col w-1/4 h-fit">
+            <div class="card shrink-0 w-full bg-base-100">
+                <div class="text-center lg:text-left">
+                    <h1 class="text-5xl font-bold text-center pt-6">Login</h1>
+                    <!-- <p class="py-6">Benvenuto nel Gestionale per Aule Innovative, IIS N.Copernico A.Carpeggiani.</p> -->
+                </div>
                 <form method="POST" action="API/auth.php" class="card-body">
-                    <div class="form-control">
+                    <div class="form-control mb-4">
                         <label class="label">
                             <span class="label-text">Email</span>
                         </label>

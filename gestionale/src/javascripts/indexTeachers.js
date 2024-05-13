@@ -184,6 +184,10 @@ document.addEventListener("DOMContentLoaded", function () {
     document.body.appendChild(modal);
   });
 
+  document.querySelectorAll(".theme-controller").forEach((theme) => {
+    theme.addEventListener("click", setThemeLocalStorage);
+  });
+
   if (localStorage.getItem("theme")) {
     // find the corresponding input radio and check it
     document
@@ -193,8 +197,4 @@ document.addEventListener("DOMContentLoaded", function () {
       `input[value='${localStorage.getItem("theme")}']`
     ).checked = true;
   }
-
-  document.querySelectorAll(".theme-controller").forEach((theme) => {
-    theme.addEventListener("click", setThemeLocalStorage);
-  });
 });

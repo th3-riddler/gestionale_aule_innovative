@@ -145,17 +145,17 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
+  document.querySelectorAll(".theme-controller").forEach((theme) => {
+    theme.addEventListener("click", setThemeLocalStorage);
+  });
+  
   if (localStorage.getItem("theme")) {
     // find the corresponding input radio and check it
     document
       .querySelectorAll("input[name='theme']")
       .forEach((theme) => (theme.checked = false));
-    document
-      .querySelector(`input[value='${localStorage.getItem("theme")}']`)
-      .checked = true;
+    document.querySelector(
+      `input[value='${localStorage.getItem("theme")}']`
+    ).checked = true;
   }
-
-  document.querySelectorAll(".theme-controller").forEach((theme) => {
-    theme.addEventListener("click", setThemeLocalStorage);
-  });
 });

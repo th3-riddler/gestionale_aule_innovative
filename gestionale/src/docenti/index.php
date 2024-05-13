@@ -55,7 +55,7 @@ function getProfileImage($work, $email)
                 <div tabindex="0" role="button" class="avatar placeholder">
                     <div class="avatar bg-neutral text-neutral-content rounded-full w-12 ml-3">
                         <?php
-                        $profileImage = getProfileImage('technician', $_SESSION['email']);
+                        $profileImage = getProfileImage('teacher', $_SESSION['email']);
 
                         if ($profileImage != false) {
                             $finfo = new finfo(FILEINFO_MIME_TYPE);

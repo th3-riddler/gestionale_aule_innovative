@@ -31,8 +31,8 @@ if(isset($_FILES['profileImageSet'])) {
     //die(var_dump($type));
 
 
-    // php limita il file a 2MB di default, ma lo limitiamo a 100KB per evitare sovraccarichi nel server, nonostante le immagini profilo dovrebbero essere piccole (<50KB)
-    if($size > 100000){ //100KB
+    // php limita il file a 2MB di default, limito a 64KB perché immagini BLOB
+    if($size > 64000){ //64KB
         $error = 1;
     }
     else if($type != IMAGETYPE_JPEG && $type != IMAGETYPE_PNG && $type != IMAGETYPE_GIF){
