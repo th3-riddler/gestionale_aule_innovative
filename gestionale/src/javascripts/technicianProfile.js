@@ -28,6 +28,9 @@ document.getElementById("confirm").addEventListener("click", function () {
   })
     .then((response) => response.json())
     .then((data) => {
+      if (data["status"] == "successfully added teacher") {
+        localStorage.setItem("teacherAdded", "true");
+      }
       location.reload();
       console.log(data);
     });
@@ -45,9 +48,12 @@ function deleteTeachers() {
     }),
   })
     .then((response) => response.json())
-    .then((response) => {
+    .then((data) => {
+      if (data["status"] == "successfully deleted teachers") {
+        localStorage.setItem("teacherRemove", "true");
+      }
       location.reload();
-      console.log(response);
+      console.log(data);
     });
 }
 
@@ -128,14 +134,13 @@ function changePassword(event) {
     document.getElementById("confirmPswLabel").classList.remove("input-error");
   }
 
-  if(newPassword.length < 8) {
+  if (newPassword.length < 8) {
     alertPsw[1].innerHTML = "Password minore di 8 caratteri.";
     alertPsw[1].classList.add("input-error");
     alertPsw[1].classList.remove("hidden");
     document.getElementById("newPswLabel").classList.add("input-error");
     return;
-  }
-  else{
+  } else {
     alertPsw[1].classList.add("hidden");
     alertPsw[1].classList.remove("input-error");
     document.getElementById("newPswLabel").classList.remove("input-error");
@@ -152,7 +157,7 @@ function changePassword(event) {
   })
     .then((response) => response.json())
     .then((response) => {
-      if(response["status"] == "error") {
+      if (response["status"] == "error") {
         alertPsw[0].innerHTML = response["message"];
         alertPsw[0].classList.add("input-error");
         alertPsw[0].classList.remove("hidden");
@@ -164,21 +169,63 @@ function changePassword(event) {
     });
 }
 
-let server = window.location.hostname;
-let token = document.cookie
-  .split(";")
-  .find((cookie) => {
-    return cookie.includes("token");
-  })
-  .split("=")[1];
+
+function createAlert(message, type) {
+  let toast = document.querySelector(".toast");
+  let alert = toast.querySelector(".alert");
+  let span = alert.querySelector("span");
+
+  try {
+    alert.classList.remove(Array.from(alert.classList).filter((c) => c.startsWith("alert-")));
+  } catch (e) { }
+  alert.classList.add(`alert-${type}`);
+  span.textContent = message;
+  alert.classList.remove("opacity-0");
+  setTimeout(() => {
+    alert.classList.add("opacity-0");
+  }, 3000);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  console.log(teacherAdded);
+
+  if(teacherAdded) {
+    createAlert("Docente aggiunto con successo", "success");
+    localStorage.setItem("teacherAdded", "false");
+  }
+  if(teacherRemove){
+    createAlert("Docente rimosso con successo", "error");
+    localStorage.setItem("teacherRemove", "false");
+  }
+});
 
 function setThemeLocalStorage() {
   localStorage.setItem("theme", this.value);
 }
 
+function checkKeysDown(event) {
+  if (event.key == "Shift") {
+    if (document.querySelector("dialog[open]")) return;
+    multipleCheckboxSelection = true;
+  }
+  if (event.key == "Delete") {
+    document.getElementById("confirmDelete").showModal();
+  }
+}
+
+function checkKeysUp(event) {
+  if (event.key == "Shift") {
+    if (document.querySelector("dialog[open]")) return;
+    multipleCheckboxSelection = false;
+  }
+}
+
 document.querySelectorAll(".theme-controller").forEach((theme) => {
   theme.addEventListener("click", setThemeLocalStorage);
 });
+
+document.addEventListener("keydown", checkKeysDown);
+document.addEventListener("keyup", checkKeysUp);
 
 if (localStorage.getItem("theme")) {
   // find the corresponding input radio and check it
@@ -195,3 +242,39 @@ document
   .addEventListener("change", function () {
     this.form.submit();
   });
+
+
+let multipleCheckboxSelection = false;
+let lastCheckboxChecked = [];
+let server = window.location.hostname;
+let token = document.cookie
+  .split(";")
+  .find((cookie) => {
+    return cookie.includes("token");
+  })
+  .split("=")[1];
+
+setInterval(() => { console.log(multipleCheckboxSelection, lastCheckboxChecked); }, 10);
+
+let teacherAdded = localStorage.getItem("teacherAdded") === "true";
+let teacherRemove = localStorage.getItem("teacherRemove") === "true";
+
+document.querySelectorAll(".teacherCheckbox").forEach((checkbox) => {
+  checkbox.addEventListener("click", (e) => {
+    if (multipleCheckboxSelection && lastCheckboxChecked[1] + 5000 > e.timeStamp) {
+      // get checkboxes between lastCheckboxChecked and e.target
+      let checkboxes = Array.from(document.querySelectorAll(".teacherCheckbox"));
+      let lastCheckboxIndex = checkboxes.indexOf(lastCheckboxChecked[0]);
+      let currentCheckboxIndex = checkboxes.indexOf(e.target);
+      let checkboxesToCheck = checkboxes.slice(
+        Math.min(lastCheckboxIndex, currentCheckboxIndex),
+        Math.max(lastCheckboxIndex, currentCheckboxIndex) + 1
+      );
+      checkboxesToCheck.forEach((tocheck) => {
+        tocheck.checked = e.target.checked;
+      });
+    }
+    // save the last checkbox checked and timestamp
+    lastCheckboxChecked = [e.target, e.timeStamp];
+  });
+});

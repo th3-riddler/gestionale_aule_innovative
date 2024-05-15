@@ -153,7 +153,7 @@ $subjects = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . 
                         <tr>
                             <th>
                                 <label>
-                                    <input value="<?php echo $teacher['email'] ?>" type="checkbox" onchange="checkDeleteButton()" class="checkbox" />
+                                    <input value="<?php echo $teacher['email'] ?>" type="checkbox" onchange="checkDeleteButton()" class="checkbox teacherCheckbox" />
                                 </label>
                             </th>
                             <td>
@@ -203,6 +203,17 @@ $subjects = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . 
                     <?php
                     }
                     ?>
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class="toast">
+            <div class="alert opacity-0 transition-opacity duration-700">
+                <span>
+
+                </span>
+            </div>
         </div>
 
 
@@ -296,8 +307,9 @@ $subjects = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . 
                 <h3 class="font-bold text-lg">Guida</h3>
                 <p class="py-4">
                     Questa pagina ti permette di visualizzare il tuo profilo personale. <br><br>
-                    In questa sezione è anche possibile modificare la propria <a class="text-primary">immagine del profilo</a>, basta cliccare sulla tua icona attuale per selezionarne una nuova (unico formato supportato: <kbd class="kbd kbd-sm">.jpeg</kbd>). <br>
+                    In questa sezione è anche possibile modificare la propria <a class="text-primary">immagine del profilo</a>, basta cliccare sulla tua icona attuale per selezionarne una nuova. <br>
                     In caso invece tu voglia <a class="text-error">rimuoverla</a>, ti basterà cliccare sul bottone <kbd class="kbd kbd-sm">Rimuovi Immagine</kbd>. <br><br>
+                    A fianco al tuo indirizzo email è presente un bottone <kbd class="kbd kbd-sm">Cambia Password</kbd> in caso tu voglia cambiarla. <br><br>
                     In quanto tecnico hai anche la possibilità di visualizzare una piccola anteprima dei docenti registrati al servizio. <br>
                     Per ognuno di essi è anche possibile dare un'occhiata alle materie che insegna e alle <a class="text-secondary">statistiche</a> relative alle prenotazioni. <br><br>
                 </p>

@@ -200,6 +200,7 @@ function getProfileImage($work, $email)
                     Questa pagina ti permette di visualizzare il tuo profilo personale. <br><br>
                     In questa sezione è anche possibile modificare la propria <a class="text-primary">immagine del profilo</a>, basta cliccare sulla tua icona attuale per selezionarne una nuova. <br>
                     In caso invece tu voglia <a class="text-error">rimuoverla</a>, ti basterà cliccare sul bottone <kbd class="kbd kbd-sm">Rimuovi Immagine</kbd>. <br><br>
+                    A fianco al tuo indirizzo email è presente un bottone <kbd class="kbd kbd-sm">Cambia Password</kbd> in caso tu voglia cambiarla. <br><br>
                     Nella parte sottostante è possibile dare un'occhiata a delle <a class="text-secondary">statistiche</a> generali relative alle tue prenotazioni. <br><br>
                 </p>
                 <div class="modal-action">
