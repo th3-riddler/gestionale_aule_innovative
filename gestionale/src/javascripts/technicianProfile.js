@@ -169,15 +169,19 @@ function changePassword(event) {
     });
 }
 
-
 function createAlert(message, type) {
+  if (message == "") {
+    return;
+  }
   let toast = document.querySelector(".toast");
   let alert = toast.querySelector(".alert");
   let span = alert.querySelector("span");
 
   try {
-    alert.classList.remove(Array.from(alert.classList).filter((c) => c.startsWith("alert-")));
-  } catch (e) { }
+    alert.classList.remove(
+      Array.from(alert.classList).filter((c) => c.startsWith("alert-"))
+    );
+  } catch (e) {}
   alert.classList.add(`alert-${type}`);
   span.textContent = message;
   alert.classList.remove("opacity-0");
@@ -189,11 +193,11 @@ function createAlert(message, type) {
 document.addEventListener("DOMContentLoaded", () => {
   console.log(teacherAdded);
 
-  if(teacherAdded) {
+  if (teacherAdded) {
     createAlert("Docente aggiunto con successo", "success");
     localStorage.setItem("teacherAdded", "false");
   }
-  if(teacherRemove){
+  if (teacherRemove) {
     createAlert("Docente rimosso con successo", "error");
     localStorage.setItem("teacherRemove", "false");
   }
@@ -243,7 +247,6 @@ document
     this.form.submit();
   });
 
-
 let multipleCheckboxSelection = false;
 let lastCheckboxChecked = [];
 let server = window.location.hostname;
@@ -254,16 +257,23 @@ let token = document.cookie
   })
   .split("=")[1];
 
-setInterval(() => { console.log(multipleCheckboxSelection, lastCheckboxChecked); }, 10);
+/*setInterval(() => {
+  console.log(multipleCheckboxSelection, lastCheckboxChecked);
+}, 10);*/
 
 let teacherAdded = localStorage.getItem("teacherAdded") === "true";
 let teacherRemove = localStorage.getItem("teacherRemove") === "true";
 
 document.querySelectorAll(".teacherCheckbox").forEach((checkbox) => {
   checkbox.addEventListener("click", (e) => {
-    if (multipleCheckboxSelection && lastCheckboxChecked[1] + 5000 > e.timeStamp) {
+    if (
+      multipleCheckboxSelection &&
+      lastCheckboxChecked[1] + 5000 > e.timeStamp
+    ) {
       // get checkboxes between lastCheckboxChecked and e.target
-      let checkboxes = Array.from(document.querySelectorAll(".teacherCheckbox"));
+      let checkboxes = Array.from(
+        document.querySelectorAll(".teacherCheckbox")
+      );
       let lastCheckboxIndex = checkboxes.indexOf(lastCheckboxChecked[0]);
       let currentCheckboxIndex = checkboxes.indexOf(e.target);
       let checkboxesToCheck = checkboxes.slice(

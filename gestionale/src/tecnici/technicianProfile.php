@@ -12,6 +12,17 @@ if (!$_SESSION["sudo"]) {
     exit();
 }
 
+$errorMessages = [
+    0 => "",
+    1 => "Il file è troppo grande, massimo 64KB",
+    2 => "Il file ha un formato non valido, accettati solo JPG, PNG e GIF",
+    3 => "Errore nel caricamento del file"
+];
+
+$errorNumber = $_SESSION["error"] ?? 0;
+
+unset($_SESSION["error"]);
+
 $token = $_COOKIE["token"];
 
 $teachers = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getTeachers.php?token=" . $token), true);
@@ -25,6 +36,7 @@ function getProfileImage($work, $email)
 }
 
 $subjects = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/API/getSubjects.php?token=" . $token), true);
+
 
 ?>
 
@@ -211,7 +223,7 @@ $subjects = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . 
         <div class="toast">
             <div class="alert opacity-0 transition-opacity duration-700">
                 <span>
-
+                    
                 </span>
             </div>
         </div>
@@ -235,7 +247,7 @@ $subjects = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . 
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70">
                                 <path fill-rule="evenodd" d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z" clip-rule="evenodd" />
                             </svg>
-                            <input id="passwordCorrente" type="password" class="grow" required/>
+                            <input id="passwordCorrente" type="password" class="grow" required />
                         </label>
                         <div class="label">
                             <span class="absolute mt-2 alertPsw label-text-alt text-red-400 hidden"></span>
@@ -251,7 +263,7 @@ $subjects = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . 
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70">
                                 <path fill-rule="evenodd" d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z" clip-rule="evenodd" />
                             </svg>
-                            <input id="nuovaPassword" type="password" class="grow w-1/2" required/>
+                            <input id="nuovaPassword" type="password" class="grow w-1/2" required />
                         </label>
                         <div class="label">
                             <span class="absolute mt-2 alertPsw label-text-alt text-red-400 hidden"></span>
@@ -267,7 +279,7 @@ $subjects = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . 
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70">
                                 <path fill-rule="evenodd" d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z" clip-rule="evenodd" />
                             </svg>
-                            <input id="confermaPassword" type="password" class="grow w-1/2" required/>
+                            <input id="confermaPassword" type="password" class="grow w-1/2" required />
                         </label>
                         <div class="label">
                             <span class="alertPsw absolute mt-2 label-text-alt text-red-400 hidden"></span>
@@ -376,7 +388,7 @@ $subjects = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . 
                     <button class="btn btn-disabled" id="add">Add</button>
                 </div>
 
-                <ul id="subjects" class="menu bg-base-200 rounded-box my-1" id="group">
+                <ul id="subjects" class="menu bg-base-200 rounded-box my-1">
                     <h2 class="menu-title">Materie Insegnate</h2>
                 </ul>
 
@@ -385,6 +397,10 @@ $subjects = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . 
         </dialog>
 
         <script src="../javascripts/technicianProfile.js"></script>
+        <script>
+            createAlert('<?php echo $errorMessages[$errorNumber] ?>', 'error')
+        </script>
+    </div>
 </body>
 
 </html>
