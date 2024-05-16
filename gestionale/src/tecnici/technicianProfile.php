@@ -232,7 +232,7 @@ $subjects = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . 
         <dialog id="changePsw" class="modal">
             <div class="modal-box">
                 <h2 class="font-bold text-lg text-center">Cambia Password</h2>
-                <p class="py-4">
+                <p class="py-4 text-center">
                     La password deve essere lunga almeno 8 caratteri.
                 </p>
 
