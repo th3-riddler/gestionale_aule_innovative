@@ -13,9 +13,9 @@ $weekday = $_POST["weekday"] ?? "";
 $room = $_POST["room"] ?? "";
 $hour = intval($_POST["hour"] ?? 0);
 $cart_id = intval($_POST["cart_id"] ?? 0);
+$teacher_email = $_POST["teacher_email"] ?? "";
 
-//echo json_encode($_POST);
-//exit();
+
 
 $query = "SELECT (c.pc_max - IFNULL((SELECT SUM(r.pc_qt) FROM reservation r WHERE r.cart_id = c.id AND r.hour = ? AND r.date = ?), 0)) AS remaining_pc FROM cart c WHERE c.id = ?;";
 $stmt = $conn->prepare($query);
@@ -30,9 +30,9 @@ if ($remaining_pc < $pc_qt) {
     exit();
 }
 
-$query = "INSERT INTO reservation (pc_qt, teacher_note, date, weekday, room, hour, cart_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+$query = "INSERT INTO reservation (pc_qt, teacher_note, date, weekday, room, hour, cart_id, teacher_email) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 $stmt = $conn->prepare($query);
-$stmt->bind_param("issssii", $pc_qt, $teacher_note, $date, $weekday, $room, $hour, $cart_id);
+$stmt->bind_param("issssiis", $pc_qt, $teacher_note, $date, $weekday, $room, $hour, $cart_id, $teacher_email);
 try {
     $stmt->execute();
 } catch (Exception $e) {

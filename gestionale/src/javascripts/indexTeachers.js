@@ -58,6 +58,7 @@ function activate() {
     .getElementById("formReservation")
     .querySelectorAll("input[type='hidden']");
   presentInputs.forEach(function (item) {
+    if(item.name == "teacher_email"){ return; }
     item.remove();
   });
 

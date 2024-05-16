@@ -41,7 +41,7 @@ function getProfileImage($work, $email)
     <title>Home Tecnici</title>
 </head>
 
-<body>
+<body  style="zoom: 90%;">
     <div class="navbar alert m-4 w-auto">
         <div class="navbar-start">
             <div class="dropdown dropdown-hover">
@@ -132,16 +132,16 @@ function getProfileImage($work, $email)
                     foreach ($cart as $key => $value) {
                         if ($key == "id") continue;
                         if ($pos + 1 == $current_cart) {
-                            echo "<td><input type='text' name='$key' value='$value' class='input input-bordered input-primary btn-square w-40 text-center'></td>";
+                            echo "<td><input type='text' name='$key' value='$value' class='input input-bordered input-primary w-full text-center'></td>";
                         } else {
-                            echo "<td><div class='btn btn-square w-40 btn-outline btn-disabled'>$value</div></td>";
+                            echo "<td><div class='btn w-full btn-outline btn-disabled'>$value</div></td>";
                         }
                     }
 
                     if ($pos + 1 == $current_cart) {
-                        echo "<td><button type='submit' title='Confirm' class='btn btn-square btn-outline'><svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path fill='currentColor' d='M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z'/></svg></button></td></form>";
+                        echo "<td><button type='submit' title='Confirm' class='btn w-full btn-outline'><svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path fill='currentColor' d='M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z'/></svg></button></td></form>";
                     } else {
-                        echo "<td><button class='btn btn-square btn-outline btn-disabled'><svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12' /></svg></button></td>";
+                        echo "<td><button class='btn w-full btn-outline btn-disabled'><svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12' /></svg></button></td>";
                     }
 
                     echo "</tr>";

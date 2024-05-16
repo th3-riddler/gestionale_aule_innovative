@@ -46,7 +46,7 @@ function getProfileImage($work, $email)
     <title>Home Tecnici</title>
 </head>
 
-<body>
+<body  style="zoom: 90%;">
 
     <div class="navbar alert m-4 w-auto">
         <div class="navbar-start">

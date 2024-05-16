@@ -19,8 +19,15 @@ $errorMessages = [
     3 => "Errore nel caricamento del file"
 ];
 
-$errorNumber = $_SESSION["error"] ?? 0;
 
+
+if (isset($_GET["error"])) {
+    $_SESSION["error"] = $_GET["error"];
+    header("Location: technicianProfile.php");
+    exit();
+}
+
+$errorNumber = isset($_SESSION["error"]) ? $_SESSION["error"] : 0;
 unset($_SESSION["error"]);
 
 $token = $_COOKIE["token"];
@@ -51,7 +58,7 @@ $subjects = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . 
     <title>Profilo</title>
 </head>
 
-<body>
+<body style="zoom: 90%;">
     <div class="navbar alert m-4 w-auto">
         <div class="navbar-start">
             <div class="dropdown dropdown-hover">
@@ -223,184 +230,184 @@ $subjects = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . 
         <div class="toast">
             <div class="alert opacity-0 transition-opacity duration-700">
                 <span>
-                    
+
                 </span>
             </div>
         </div>
-
-
-        <dialog id="changePsw" class="modal">
-            <div class="modal-box">
-                <h2 class="font-bold text-lg text-center">Cambia Password</h2>
-                <p class="py-4 text-center">
-                    La password deve essere lunga almeno 8 caratteri.
-                </p>
-
-                <div id="currentPsw" class="flex flex-row my-4 justify-between w-full gap-4 items-center flex-wrap">
-
-                    <!-- PASSWORD CORRENTE -->
-                    <div class="flex flex-col w-full">
-                        <div class="label">
-                            <span class="label-text font-bold">Password Corrente</span>
-                        </div>
-                        <label id="currentPswLabel" class="input input-bordered flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70">
-                                <path fill-rule="evenodd" d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z" clip-rule="evenodd" />
-                            </svg>
-                            <input id="passwordCorrente" type="password" class="grow" required />
-                        </label>
-                        <div class="label">
-                            <span class="absolute mt-2 alertPsw label-text-alt text-red-400 hidden"></span>
-                        </div>
-                    </div>
-
-                    <!-- NUOVA PASSWORD -->
-                    <div class="flex flex-col w-[47.5%]">
-                        <div class="label">
-                            <span class="label-text font-bold">Nuova Password</span>
-                        </div>
-                        <label id="newPswLabel" class="input input-bordered flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70">
-                                <path fill-rule="evenodd" d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z" clip-rule="evenodd" />
-                            </svg>
-                            <input id="nuovaPassword" type="password" class="grow w-1/2" required />
-                        </label>
-                        <div class="label">
-                            <span class="absolute mt-2 alertPsw label-text-alt text-red-400 hidden"></span>
-                        </div>
-                    </div>
-
-                    <!-- CONFERMA PASSWORD -->
-                    <div class="flex flex-col w-[47.5%]">
-                        <div class="label">
-                            <span class="label-text font-bold">Conferma Password</span>
-                        </div>
-                        <label id="confirmPswLabel" class="input input-bordered flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70">
-                                <path fill-rule="evenodd" d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z" clip-rule="evenodd" />
-                            </svg>
-                            <input id="confermaPassword" type="password" class="grow w-1/2" required />
-                        </label>
-                        <div class="label">
-                            <span class="alertPsw absolute mt-2 label-text-alt text-red-400 hidden"></span>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="modal-action">
-                    <form method="dialog">
-                        <button class="btn btn-outline btn-primary" onclick="changePsw.close()">Annulla</button>
-                        <button class="btn btn-outline btn-success" onclick="changePassword(event)">Cambia</button>
-                        <input type="hidden" name="technicianEmail" value="<?php echo $_SESSION['email'] ?>">
-                    </form>
-                </div>
-            </div>
-        </dialog>
-
-        <dialog id="modalStats" class="modal">
-            <div class="modal-box">
-                <h3 class="font-bold text-lg">Guida</h3>
-                <p class="py-4">
-                    Questa pagina ti permette di gestire le Prenotazioni dei Docenti. <br><br>
-                    Nel caso in cui ci siano più prenotazioni nello stesso slot giorno/orario, fai <kbd class="kbd kbd-sm">scroll</kbd> per scrollare tra le prenotazioni. <br><br>
-                </p>
-                <div class="modal-action">
-                    <form method="dialog">
-                        <!-- if there is a button in form, it will close the modal -->
-                        <button class="btn">Chiudi</button>
-                    </form>
-                </div>
-            </div>
-        </dialog>
-
-        <dialog id="modalHelp" class="modal">
-            <div class="modal-box">
-                <h3 class="font-bold text-lg">Guida</h3>
-                <p class="py-4">
-                    Questa pagina ti permette di visualizzare il tuo profilo personale. <br><br>
-                    In questa sezione è anche possibile modificare la propria <a class="text-primary">immagine del profilo</a>, basta cliccare sulla tua icona attuale per selezionarne una nuova. <br>
-                    In caso invece tu voglia <a class="text-error">rimuoverla</a>, ti basterà cliccare sul bottone <kbd class="kbd kbd-sm">Rimuovi Immagine</kbd>. <br><br>
-                    A fianco al tuo indirizzo email è presente un bottone <kbd class="kbd kbd-sm">Cambia Password</kbd> in caso tu voglia cambiarla. <br><br>
-                    In quanto tecnico hai anche la possibilità di visualizzare una piccola anteprima dei docenti registrati al servizio. <br>
-                    Per ognuno di essi è anche possibile dare un'occhiata alle materie che insegna e alle <a class="text-secondary">statistiche</a> relative alle prenotazioni. <br><br>
-                </p>
-                <div class="modal-action">
-                    <form method="dialog">
-                        <!-- if there is a button in form, it will close the modal -->
-                        <button class="btn">Chiudi</button>
-                    </form>
-                </div>
-            </div>
-        </dialog>
-
-        <dialog id="confirmDelete" class="modal">
-            <div class="modal-box">
-                <h3 class="font-bold text-lg">Vuoi davvero rimuovere?</h3>
-                <p class="py-4">
-                    Sei sicuro di voler rimuovere i docenti selezionati? <br>
-                    Questa azione è irreversibile.
-                </p>
-                <div class="modal-action">
-                    <form method="dialog">
-                        <button class="btn btn-outline btn-primary" onclick="confirmDelete.close()">Annulla</button>
-                        <button class="btn btn-outline btn-error" onclick="deleteTeachers()">Rimuovi</button>
-                    </form>
-                </div>
-            </div>
-        </dialog>
-
-        <dialog id="modalAddTeacher" class="modal">
-            <div class="modal-box">
-                <form method="dialog">
-                    <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-                </form>
-                <h3 class="font-bold text-lg">Aggiungi un docente</h3>
-
-                <div id="nominativo" class="flex flex-row my-4 justify-center w-full gap-4 items-center flex-wrap">
-
-                    <label class="input input-bordered flex items-center gap-2 w-2/5 grow">
-                        <input id="name" type="text" class="w-full" placeholder="Nome" required />
-                    </label>
-
-                    <label class="input input-bordered flex items-center gap-2 w-2/5 grow">
-                        <input id="surname" type="text" class="w-full" placeholder="Cognome" required />
-                    </label>
-
-                    <label class="input input-bordered flex items-center gap-2 w-auto grow">
-                        <input id="email" type="email" class="w-full" placeholder="Email" required />
-                    </label>
-
-                </div>
-
-                <h4 class="font-bold text-md mb-2">Seleziona Materie</h4> <!-- Materie -->
-                <div id="materie" class="flex flex-row justify-around w-auto items-center gap-4 my-4">
-                    <select class="select select-bordered w-full grow" name="known-users" onchange="checkSelect()" required>
-                        <option value="">--Nessuna Selezione--</option>
-                        <?php
-                        foreach ($subjects as $subject) {
-                        ?>
-                            <option value="<?php echo $subject['subject_name']; ?>"><?php echo $subject['subject_name']; ?></option>
-                        <?php
-                        }
-                        ?>
-                    </select>
-                    <button class="btn btn-disabled" id="add">Add</button>
-                </div>
-
-                <ul id="subjects" class="menu bg-base-200 rounded-box my-1">
-                    <h2 class="menu-title">Materie Insegnate</h2>
-                </ul>
-
-                <button class="btn btn-outline btn-success mt-4" id="confirm">Confirm</button>
-            </div>
-        </dialog>
-
-        <script src="../javascripts/technicianProfile.js"></script>
-        <script>
-            createAlert('<?php echo $errorMessages[$errorNumber] ?>', 'error')
-        </script>
     </div>
+
+
+    <dialog id="changePsw" class="modal">
+        <div class="modal-box">
+            <h2 class="font-bold text-lg text-center">Cambia Password</h2>
+            <p class="py-4 text-center">
+                La password deve essere lunga almeno 8 caratteri.
+            </p>
+
+            <div id="currentPsw" class="flex flex-row my-4 justify-between w-full gap-4 items-center flex-wrap">
+
+                <!-- PASSWORD CORRENTE -->
+                <div class="flex flex-col w-full">
+                    <div class="label">
+                        <span class="label-text font-bold">Password Corrente</span>
+                    </div>
+                    <label id="currentPswLabel" class="input input-bordered flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70">
+                            <path fill-rule="evenodd" d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z" clip-rule="evenodd" />
+                        </svg>
+                        <input id="passwordCorrente" type="password" class="grow" required />
+                    </label>
+                    <div class="label">
+                        <span class="absolute mt-2 alertPsw label-text-alt text-red-400 hidden"></span>
+                    </div>
+                </div>
+
+                <!-- NUOVA PASSWORD -->
+                <div class="flex flex-col w-[47.5%]">
+                    <div class="label">
+                        <span class="label-text font-bold">Nuova Password</span>
+                    </div>
+                    <label id="newPswLabel" class="input input-bordered flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70">
+                            <path fill-rule="evenodd" d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z" clip-rule="evenodd" />
+                        </svg>
+                        <input id="nuovaPassword" type="password" class="grow w-1/2" required />
+                    </label>
+                    <div class="label">
+                        <span class="absolute mt-2 alertPsw label-text-alt text-red-400 hidden"></span>
+                    </div>
+                </div>
+
+                <!-- CONFERMA PASSWORD -->
+                <div class="flex flex-col w-[47.5%]">
+                    <div class="label">
+                        <span class="label-text font-bold">Conferma Password</span>
+                    </div>
+                    <label id="confirmPswLabel" class="input input-bordered flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70">
+                            <path fill-rule="evenodd" d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z" clip-rule="evenodd" />
+                        </svg>
+                        <input id="confermaPassword" type="password" class="grow w-1/2" required />
+                    </label>
+                    <div class="label">
+                        <span class="alertPsw absolute mt-2 label-text-alt text-red-400 hidden"></span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-action">
+                <form method="dialog">
+                    <button class="btn btn-outline btn-primary" onclick="changePsw.close()">Annulla</button>
+                    <button class="btn btn-outline btn-success" onclick="changePassword(event)">Cambia</button>
+                    <input type="hidden" name="technicianEmail" value="<?php echo $_SESSION['email'] ?>">
+                </form>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog id="modalStats" class="modal">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg">Guida</h3>
+            <p class="py-4">
+                Questa pagina ti permette di gestire le Prenotazioni dei Docenti. <br><br>
+                Nel caso in cui ci siano più prenotazioni nello stesso slot giorno/orario, fai <kbd class="kbd kbd-sm">scroll</kbd> per scrollare tra le prenotazioni. <br><br>
+            </p>
+            <div class="modal-action">
+                <form method="dialog">
+                    <!-- if there is a button in form, it will close the modal -->
+                    <button class="btn">Chiudi</button>
+                </form>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog id="modalHelp" class="modal">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg">Guida</h3>
+            <p class="py-4">
+                Questa pagina ti permette di visualizzare il tuo profilo personale. <br><br>
+                In questa sezione è anche possibile modificare la propria <a class="text-primary">immagine del profilo</a>, basta cliccare sulla tua icona attuale per selezionarne una nuova. <br>
+                In caso invece tu voglia <a class="text-error">rimuoverla</a>, ti basterà cliccare sul bottone <kbd class="kbd kbd-sm">Rimuovi Immagine</kbd>. <br><br>
+                A fianco al tuo indirizzo email è presente un bottone <kbd class="kbd kbd-sm">Cambia Password</kbd> in caso tu voglia cambiarla. <br><br>
+                In quanto tecnico hai anche la possibilità di visualizzare una piccola anteprima dei docenti registrati al servizio. <br>
+                Per ognuno di essi è anche possibile dare un'occhiata alle materie che insegna e alle <a class="text-secondary">statistiche</a> relative alle prenotazioni. <br><br>
+            </p>
+            <div class="modal-action">
+                <form method="dialog">
+                    <!-- if there is a button in form, it will close the modal -->
+                    <button class="btn">Chiudi</button>
+                </form>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog id="confirmDelete" class="modal">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg">Vuoi davvero rimuovere?</h3>
+            <p class="py-4">
+                Sei sicuro di voler rimuovere i docenti selezionati? <br>
+                Questa azione è irreversibile.
+            </p>
+            <div class="modal-action">
+                <form method="dialog">
+                    <button class="btn btn-outline btn-primary" onclick="confirmDelete.close()">Annulla</button>
+                    <button class="btn btn-outline btn-error" onclick="deleteTeachers()">Rimuovi</button>
+                </form>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog id="modalAddTeacher" class="modal">
+        <div class="modal-box">
+            <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            </form>
+            <h3 class="font-bold text-lg">Aggiungi un docente</h3>
+
+            <div id="nominativo" class="flex flex-row my-4 justify-center w-full gap-4 items-center flex-wrap">
+
+                <label class="input input-bordered flex items-center gap-2 w-2/5 grow">
+                    <input id="name" type="text" class="w-full" placeholder="Nome" required />
+                </label>
+
+                <label class="input input-bordered flex items-center gap-2 w-2/5 grow">
+                    <input id="surname" type="text" class="w-full" placeholder="Cognome" required />
+                </label>
+
+                <label class="input input-bordered flex items-center gap-2 w-auto grow">
+                    <input id="email" type="email" class="w-full" placeholder="Email" required />
+                </label>
+
+            </div>
+
+            <h4 class="font-bold text-md mb-2">Seleziona Materie</h4> <!-- Materie -->
+            <div id="materie" class="flex flex-row justify-around w-auto items-center gap-4 my-4">
+                <select class="select select-bordered w-full grow" name="known-users" onchange="checkSelect()" required>
+                    <option value="">--Nessuna Selezione--</option>
+                    <?php
+                    foreach ($subjects as $subject) {
+                    ?>
+                        <option value="<?php echo $subject['subject_name']; ?>"><?php echo $subject['subject_name']; ?></option>
+                    <?php
+                    }
+                    ?>
+                </select>
+                <button class="btn btn-disabled" id="add">Add</button>
+            </div>
+
+            <ul id="subjects" class="menu bg-base-200 rounded-box my-1">
+                <h2 class="menu-title">Materie Insegnate</h2>
+            </ul>
+
+            <button class="btn btn-outline btn-success mt-4" id="confirm">Confirm</button>
+        </div>
+    </dialog>
+
+    <script src="../javascripts/technicianProfile.js"></script>
+    <script>
+        createAlert('<?php echo $errorMessages[$errorNumber] ?>', 'error')
+    </script>
 </body>
 
 </html>

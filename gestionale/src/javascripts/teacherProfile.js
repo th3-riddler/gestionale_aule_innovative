@@ -25,14 +25,13 @@ function changePassword(event) {
     document.getElementById("confirmPswLabel").classList.remove("input-error");
   }
 
-  if(newPassword.length < 8) {
+  if (newPassword.length < 8) {
     alertPsw[1].innerHTML = "Password minore di 8 caratteri.";
     alertPsw[1].classList.add("input-error");
     alertPsw[1].classList.remove("hidden");
     document.getElementById("newPswLabel").classList.add("input-error");
     return;
-  }
-  else{
+  } else {
     alertPsw[1].classList.add("hidden");
     alertPsw[1].classList.remove("input-error");
     document.getElementById("newPswLabel").classList.remove("input-error");
@@ -49,7 +48,7 @@ function changePassword(event) {
   })
     .then((response) => response.json())
     .then((response) => {
-      if(response["status"] == "error") {
+      if (response["status"] == "error") {
         alertPsw[0].innerHTML = response["message"];
         alertPsw[0].classList.add("input-error");
         alertPsw[0].classList.remove("hidden");
@@ -68,6 +67,27 @@ let token = document.cookie
     return cookie.includes("token");
   })
   .split("=")[1];
+
+function createAlert(message, type) {
+  if (message == "") {
+    return;
+  }
+  let toast = document.querySelector(".toast");
+  let alert = toast.querySelector(".alert");
+  let span = alert.querySelector("span");
+
+  try {
+    alert.classList.remove(
+      Array.from(alert.classList).filter((c) => c.startsWith("alert-"))
+    );
+  } catch (e) {}
+  alert.classList.add(`alert-${type}`);
+  span.textContent = message;
+  alert.classList.remove("opacity-0");
+  setTimeout(() => {
+    alert.classList.add("opacity-0");
+  }, 3000);
+}
 
 function setThemeLocalStorage() {
   localStorage.setItem("theme", this.value);

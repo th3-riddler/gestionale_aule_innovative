@@ -143,8 +143,10 @@ CREATE TABLE IF NOT EXISTS reservation (
     weekday VARCHAR(30) NOT NULL,
     hour INT NOT NULL,
     cart_id INT NOT NULL,
+    teacher_email VARCHAR(255) NOT NULL,
     FOREIGN KEY (room, weekday, hour) REFERENCES room_schedule(room, weekday, hour),
     FOREIGN KEY (cart_id) REFERENCES cart(id),
+    FOREIGN KEY (teacher_email) REFERENCES teacher(email) ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY (date, room, weekday, hour)
 );
 

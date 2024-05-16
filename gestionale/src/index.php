@@ -23,7 +23,7 @@ if (isset($_SESSION["email"])) {
     <title>Login</title>
 </head>
 
-<body>
+<body  style="zoom: 90%;">
     <div class="hero min-h-screen bg-base-200">
         <div class="hero-content flex-col w-1/4 h-fit">
             <div class="card shrink-0 w-full bg-base-100">

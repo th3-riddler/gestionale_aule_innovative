@@ -46,7 +46,7 @@ function getProfileImage($work, $email)
     <title>Home Docenti</title>
 </head>
 
-<body>
+<body  style="zoom: 90%;">
 
     <div class="navbar alert m-4 w-auto">
         <div class="navbar-start">
@@ -180,6 +180,7 @@ function getProfileImage($work, $email)
             <input class="grow input-disabled" name="teacher_note" id="teacherNote" type="text" placeholder="Nota per il tecnico" disabled>
             <span class="badge badge-info">Opzionale</span>
         </label>
+        <input type="hidden" name="teacher_email" value="<?php echo $_SESSION["email"] ?>">
         <button class="btn btn-outline btn-success" type="submit" disabled>Prenota</button>
     </form>
 
