@@ -19,7 +19,14 @@ $errorMessages = [
     3 => "Errore nel caricamento del file"
 ];
 
-$errorNumber = $_SESSION["error"] ?? 0;
+if (isset($_GET["error"])) {
+    $_SESSION["error"] = $_GET["error"];
+    header("Location: teacherProfile.php");
+    exit();
+}
+
+$errorNumber = isset($_SESSION["error"]) ? $_SESSION["error"] : 0;
+unset($_SESSION["error"]);
 
 $token = $_COOKIE["token"];
 
@@ -68,7 +75,7 @@ $stats = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/A
                     </div>
                 </div>
                 <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                    <li><a href="teacherProfile.php" class="bg-neutral">Profilo</a></li>
+                    <li><a href="teacherProfile.php" class="btn-active">Profilo</a></li>
                     <li>
                         <details>
                             <summary>Temi</summary>
@@ -134,17 +141,17 @@ $stats = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/A
             </div>
         </div>
 
-        <div class="stats shadow bg-base-300 my-20 w-11/12">
+        <div class="stats bg-base-300 my-20 w-11/12">
 
             <div class="stat">
                 <div class="stat-figure text-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-8 h-8 stroke-current">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="inline-block w-8 h-8 stroke-current" viewBox="0 0 640 512">
+                        <path fill="currentColor" d="M384 96V320H64L64 96H384zM64 32C28.7 32 0 60.7 0 96V320c0 35.3 28.7 64 64 64H181.3l-10.7 32H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H352c17.7 0 32-14.3 32-32s-14.3-32-32-32H277.3l-10.7-32H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm464 0c-26.5 0-48 21.5-48 48V432c0 26.5 21.5 48 48 48h64c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48H528zm16 64h32c8.8 0 16 7.2 16 16s-7.2 16-16 16H544c-8.8 0-16-7.2-16-16s7.2-16 16-16zm-16 80c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16s-7.2 16-16 16H544c-8.8 0-16-7.2-16-16zm32 160a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
                     </svg>
                 </div>
-                <div class="stat-title">Numero Totale di PC prenotati</div>
-                <div class="stat-value text-primary"><?php echo $stats[0]["pc_tot"] ?></div>
-                <div class="stat-desc">21% more than last month</div>
+                <div class="stat-title font-bold text-xl w-fit">Numero Totale di PC prenotati</div>
+                <div class="stat-value text-primary w-fit"><?php echo $stats["pc"]["teacher_pc"] ?? 0 ?></div>
+                <div class="stat-desc text-base mt-2 w-fit">Percentuale di PC prenotati rispetto al totale: <span class="text-info font-bold"><?php echo $stats["pc"]["percentage"] ?? 0 ?>%</span></div>
             </div>
 
             <div class="stat">
@@ -155,7 +162,7 @@ $stats = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/A
                 </div>
                 <div class="stat-title">Page Views</div>
                 <div class="stat-value text-secondary">2.6M</div>
-                <div class="stat-desc">21% more than last month</div>
+                <div class="stat-desc mt-2">21% more than last month</div>
             </div>
 
             <div class="stat">
@@ -172,6 +179,15 @@ $stats = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . "/A
             </div>
 
         </div>
+
+        <div class="toast">
+            <div class="alert opacity-0 transition-opacity duration-700">
+                <span>
+
+                </span>
+            </div>
+        </div>
+
     </div>
 
 

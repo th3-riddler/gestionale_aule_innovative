@@ -78,7 +78,7 @@ $subjects = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . 
                     </div>
                 </div>
                 <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                    <li><a href="technicianProfile.php" class="bg-neutral">Profilo</a></li>
+                    <li><a href="technicianProfile.php" class="btn-active">Profilo</a></li>
                     <li>
                         <details>
                             <summary>Temi</summary>
@@ -216,7 +216,7 @@ $subjects = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . 
                                 </div>
                             </td>
                             <td>
-                                <button class="btn btn-ghostm mx-2" onclick="modalStats.showModal()">Stats</button>
+                                <button class="btn btn-ghostm mx-2" onclick="openStatsModal('<?php echo $teacher['name'] . "', '" . $teacher['surname'] . "', '" . $teacher['email'] ?>')">Statistiche</button>
                             </td>
                         </tr>
                     <?php
@@ -236,6 +236,57 @@ $subjects = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . 
         </div>
     </div>
 
+
+    <dialog id="modalStats" class="modal">
+        <div class="card w-max bg-base-300 p-8">
+            <h1 class="font-bold text-lg text-center">Statistiche di ...</h1>
+            <div class="stats bg-base-300 my-20">
+
+                <div class="stat">
+                    <div class="stat-figure text-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="inline-block w-8 h-8 stroke-current" viewBox="0 0 640 512">
+                            <path fill="currentColor" d="M384 96V320H64L64 96H384zM64 32C28.7 32 0 60.7 0 96V320c0 35.3 28.7 64 64 64H181.3l-10.7 32H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H352c17.7 0 32-14.3 32-32s-14.3-32-32-32H277.3l-10.7-32H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm464 0c-26.5 0-48 21.5-48 48V432c0 26.5 21.5 48 48 48h64c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48H528zm16 64h32c8.8 0 16 7.2 16 16s-7.2 16-16 16H544c-8.8 0-16-7.2-16-16s7.2-16 16-16zm-16 80c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16s-7.2 16-16 16H544c-8.8 0-16-7.2-16-16zm32 160a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
+                        </svg>
+                    </div>
+                    <div class="stat-title font-bold text-xl w-fit">Numero Totale di PC prenotati</div>
+                    <div class="stat-value text-primary w-fit"><?php echo $stats["pc"]["teacher_pc"] ?? 0 ?></div>
+                    <div class="stat-desc text-base mt-2 w-fit">Percentuale di PC prenotati rispetto al totale: <span class="text-info font-bold"><?php echo $stats["pc"]["percentage"] ?? 0 ?>%</span></div>
+                </div>
+
+                <div class="stat">
+                    <div class="stat-figure text-secondary">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-8 h-8 stroke-current">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <div class="stat-title">Page Views</div>
+                    <div class="stat-value text-secondary">2.6M</div>
+                    <div class="stat-desc mt-2">21% more than last month</div>
+                </div>
+
+                <div class="stat">
+                    <div class="stat-figure text-secondary">
+                        <div class="avatar online">
+                            <div class="w-16 rounded-full">
+                                <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-value">86%</div>
+                    <div class="stat-title">Tasks done</div>
+                    <div class="stat-desc text-secondary">31 tasks remaining</div>
+                </div>
+
+            </div>
+
+            <div class="modal-action">
+                <form method="dialog">
+                    <!-- if there is a button in form, it will close the modal -->
+                    <button class="btn">Chiudi</button>
+                </form>
+            </div>
+        </div>
+    </dialog>
 
     <dialog id="changePsw" class="modal">
         <div class="modal-box">
@@ -301,22 +352,6 @@ $subjects = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . 
                     <button class="btn btn-outline btn-primary" onclick="changePsw.close()">Annulla</button>
                     <button class="btn btn-outline btn-success" onclick="changePassword(event)">Cambia</button>
                     <input type="hidden" name="technicianEmail" value="<?php echo $_SESSION['email'] ?>">
-                </form>
-            </div>
-        </div>
-    </dialog>
-
-    <dialog id="modalStats" class="modal">
-        <div class="modal-box">
-            <h3 class="font-bold text-lg">Guida</h3>
-            <p class="py-4">
-                Questa pagina ti permette di gestire le Prenotazioni dei Docenti. <br><br>
-                Nel caso in cui ci siano più prenotazioni nello stesso slot giorno/orario, fai <kbd class="kbd kbd-sm">scroll</kbd> per scrollare tra le prenotazioni. <br><br>
-            </p>
-            <div class="modal-action">
-                <form method="dialog">
-                    <!-- if there is a button in form, it will close the modal -->
-                    <button class="btn">Chiudi</button>
                 </form>
             </div>
         </div>

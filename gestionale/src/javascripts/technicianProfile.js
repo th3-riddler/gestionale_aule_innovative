@@ -190,6 +190,27 @@ function createAlert(message, type) {
   }, 3000);
 }
 
+function openStatsModal(name, surname, email) {
+  let modal = document.getElementById("modalStats");
+  let title = modal.querySelector("h1");
+  title.textContent = `Statistiche di ${name} ${surname}`;
+
+  fetch(
+    `http://${server}/API/getStats.php?email=${email}&token=${token}`,
+    {
+      method: "GET",
+    }
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      document.querySelector(".stat-value", ".text-primary").textContent = data["pc"]["teacher_pc"];
+      document.querySelector(".text-info").textContent = data["pc"]["percentage"] + "%";
+
+      // OTHER STATS
+    });
+  modal.showModal();
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   console.log(teacherAdded);
 
