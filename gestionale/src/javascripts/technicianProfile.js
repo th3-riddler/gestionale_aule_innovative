@@ -193,7 +193,7 @@ function createAlert(message, type) {
 function openStatsModal(name, surname, email) {
   let modal = document.getElementById("modalStats");
   let title = modal.querySelector("h1");
-  title.textContent = `Statistiche di ${name} ${surname}`;
+  title.textContent = `Statistiche di ${surname} ${name}`;
 
   fetch(
     `http://${server}/API/getStats.php?email=${email}&token=${token}`,
@@ -203,10 +203,14 @@ function openStatsModal(name, surname, email) {
   )
     .then((response) => response.json())
     .then((data) => {
-      document.querySelector(".stat-value", ".text-primary").textContent = data["pc"]["teacher_pc"];
-      document.querySelector(".text-info").textContent = data["pc"]["percentage"] + "%";
+      document.querySelectorAll(".stat")[0].querySelector(".stat-value").textContent = data["pc"]["teacher_pc"];
+      document.querySelectorAll(".stat")[0].querySelector(".stat-desc").querySelector("span").textContent = data["pc"]["percentage"] + "%";
 
-      // OTHER STATS
+      document.querySelectorAll(".stat")[1].querySelector(".stat-value").textContent = data["reservation"]["teacher_reservation"];
+      document.querySelectorAll(".stat")[1].querySelector(".stat-desc").querySelector("span").textContent = data["reservation"]["percentage"] + "%";
+
+      document.querySelectorAll(".stat")[2].querySelector(".stat-value").textContent = data["completed"]["percentage"] + "%";
+      document.querySelectorAll(".stat")[2].querySelector(".stat-desc").querySelector("span").textContent = data["completed"]["uncompleted"];
     });
   modal.showModal();
 }

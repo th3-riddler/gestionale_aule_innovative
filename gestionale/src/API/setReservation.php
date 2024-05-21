@@ -1,5 +1,6 @@
 <?php
-header("Content-Type: application/json");
+date_default_timezone_set("Europe/Rome");
+//header("Content-Type: application/json");
 require_once("db.php");
 require_once('validateToken.php');
 
@@ -15,6 +16,12 @@ $hour = intval($_POST["hour"] ?? 0);
 $cart_id = intval($_POST["cart_id"] ?? 0);
 $teacher_email = $_POST["teacher_email"] ?? "";
 
+$timeHour = array("8" => 1, "9" => 2, "10" => 3, "11" => 4, "12" => 5, "13" => 6, "14" => 7, "15" => 8);
+
+if($date < date("Y-m-d") || ($date == date("Y-m-d") && ($timeHour[date("H")] >= $hour || $timeHour[date("H")] == null))) {
+    header("Location: ../docenti/index.php");
+    exit();
+}
 
 
 $query = "SELECT (c.pc_max - IFNULL((SELECT SUM(r.pc_qt) FROM reservation r WHERE r.cart_id = c.id AND r.hour = ? AND r.date = ?), 0)) AS remaining_pc FROM cart c WHERE c.id = ?;";
