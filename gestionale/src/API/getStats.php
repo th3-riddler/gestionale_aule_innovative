@@ -21,8 +21,8 @@ function pcStats($conn, $email) {
 
     if (count($pc) == 1) {
         $completeStast["pc"] = array(
-            "teacher_pc" => $pc[0]["teacher_pc"],
-            "percentage" => 100.00
+            "teacher_pc" => $pc[0]["teacher_pc"] ?? 0,
+            "percentage" => $pc[0]["teacher_pc"] == 0 ? "-- " : 100.00
         );
     } else {
         $completeStast["pc"] = array(
@@ -41,7 +41,7 @@ function pcStats($conn, $email) {
     if (count($reservations) == 1) {
         $completeStast["reservation"] = array(
             "teacher_reservation" => $reservations[0]["counts"],
-            "percentage" => 100.00
+            "percentage" => $reservations[0]["counts"] == 0 ? "-- " : 100.00
         );
     } else {
         $completeStast["reservation"] = array(

@@ -104,9 +104,9 @@ function getProfileImage($work, $email)
     <div class="card border bg-base-300 m-4">
         <div class="card-body">
             <div class="join grid grid-cols-3" id="dateSection">
-                <button class="join-item btn btn-outline" id="previous">Previous Week</button>
+                <button class="join-item btn btn-outline" id="previous">Settimana Precedente</button>
                 <div class="join-item btn btn-outline btn-active font-bold no-animation" id="current"></div>
-                <button class="join-item btn btn-outline" id="next">Next Week</button>
+                <button class="join-item btn btn-outline" id="next">Prossima Settimana</button>
             </div>
 
             <table class="table mt-4">
@@ -215,7 +215,7 @@ function getProfileImage($work, $email)
             <h3 class="font-bold text-lg">Guida</h3>
             <p class="py-4">
                 Questa pagina ti permette di gestire le Prenotazioni dei Docenti. <br><br>
-                Nel caso in cui ci siano più prenotazioni nello stesso slot giorno/orario, fai <kbd class="kbd kbd-sm">scroll</kbd> per scrollare tra le prenotazioni. <br><br>
+                Nel caso in cui ci siano più prenotazioni nello stesso slot giorno/orario, potrai scorrerle tramite la freccia sullo slot. <br><br>
             </p>
             <div class="modal-action">
                 <form method="dialog">

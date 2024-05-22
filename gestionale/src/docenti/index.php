@@ -13,6 +13,24 @@ if ($_SESSION["sudo"]) {
 
 $token = $_COOKIE["token"];
 
+$errorMessages = [
+    0 => "",
+    1 => "Errore durante la prenotazione, riprova più tardi",
+    2 => "Non puoi prenotare più PC di quelli disponibili",
+    3 => "Non puoi prenotare un PC per un'ora passata",
+    4 => "Non puoi eliminare una prenotazione per un'ora passata",
+    5 => "Errore durante l'eliminazione della prenotazione, riprova più tardi"
+];
+
+if (isset($_GET["error"])) {
+    $_SESSION["error"] = $_GET["error"];
+    header("Location: index.php");
+    exit();
+}
+
+$errorNumber = isset($_SESSION["error"]) ? $_SESSION["error"] : 0;
+unset($_SESSION["error"]);
+
 $hours = ["8:10 - 9:10", "9:10 - 10:00", "10:10 - 11:10", "11:10 - 12:00", "12:10 - 13:10", "13:10 - 14:05", "14:20 - 15:10", "15:10 - 16:10"];
 
 $weekdays_it = array("Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato");
@@ -104,9 +122,9 @@ function getProfileImage($work, $email)
     <div class="card border bg-base-300 m-4">
         <div class="card-body">
             <div class="join grid grid-cols-3" id="dateSection">
-                <button class="join-item btn btn-outline" id="previous">Previous Week</button>
+                <button class="join-item btn btn-outline" id="previous">Settimana Precedente</button>
                 <div class="join-item btn btn-outline btn-active font-bold no-animation" id="current"></div>
-                <button class="join-item btn btn-outline" id="next">Next Week</button>
+                <button class="join-item btn btn-outline" id="next">Prossima Settimana</button>
             </div>
 
             <table class="table mt-4">
@@ -184,6 +202,14 @@ function getProfileImage($work, $email)
         <button class="btn btn-outline btn-success" type="submit" disabled>Prenota</button>
     </form>
 
+    <div class="toast -z-10">
+        <div class="alert opacity-0 transition-opacity duration-700">
+            <span>
+
+            </span>
+        </div>
+    </div>
+
     <!-- <footer class="footer footer-center p-10 mt-10 pb-5">
         <aside class="items-center grid-flow-col">
             <svg width="50" height="50" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" class="fill-current">
@@ -218,8 +244,9 @@ function getProfileImage($work, $email)
             <p class="py-4">
                 Questa pagina ti permette di prenotare dei PC per le tue lezioni. <br><br>
                 Per prenotare un PC, clicca su una cella <a class="link link-primary link-hover">azzurra</a> (le celle <a class="link link-error link-hover">rosse</a> non hanno pc disponibili) e compila il form che apparirà. <br>
-                Ricorda che non puoi prenotare più PC di quelli disponibili. <br><br>
-                Se hai già prenotato dei PC, puoi vedere le informazioni relative alla tua prenotazione cliccando sulla cella. <br><br>
+                Ricorda che non puoi prenotare più PC di quelli disponibili e li puoi prenotare solo dall'ora successiva a quella attuale. <br><br>
+                Se hai già prenotato dei PC, puoi vedere le informazioni relative alla tua prenotazione cliccando sul tasto di informazioni sulla cella. <br><br>
+                Se invece vuoi eliminare una prenotazione, clicca sul tasto di rimozione sulla cella. <br><br>
                 Se hai bisogno di aiuto, clicca sul bottone <kbd class="kbd kbd-sm">Guida</kbd> in alto a destra o contatta un tecnico.
             </p>
             <div class="modal-action">
@@ -233,6 +260,9 @@ function getProfileImage($work, $email)
 
     <?php echo "<script>var scriptValues = " . json_encode($scriptValues) . ";</script>"; ?>
     <script src="../javascripts/indexTeachers.js"></script>
+    <script>
+        createAlert("<?php echo $errorMessages[$errorNumber] ?>", "error")
+    </script>
 </body>
 
 </html>

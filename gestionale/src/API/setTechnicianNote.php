@@ -12,6 +12,11 @@ $room = $_POST["room"] ?? "";
 $weekday = $_POST["weekday"] ?? "";
 $hour = intval($_POST["hour"] ?? "0");
 
+if ($technician_note == "") {
+    header("Location: ../tecnici/index.php?error=2");
+    exit();
+}
+
 $query = "UPDATE reservation SET technician_note = ? WHERE date = ? AND room = ? AND weekday = ? AND hour = ?";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("ssssi", $technician_note, $date, $room, $weekday, $hour);

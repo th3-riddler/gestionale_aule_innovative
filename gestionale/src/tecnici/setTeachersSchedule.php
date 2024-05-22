@@ -125,7 +125,7 @@ function getProfileImage($work, $email)
                         $found = false;
                         foreach ($schedule as $lesson) {
                             if ($lesson->hour == $pos + 1 && $lesson->weekday == $weekdays[$i - 1]) {
-                                echo "<div class='btn btn-wide bg-primary text-black hover:bg-primary/30 transition-all duration-200'>
+                                echo "<div class='btn btn-wide bg-primary text-black hover:bg-primary/30 transition-all duration-200 gap-y-0'>
                                         <h2 class='card-title'>" . $lesson->class_year . $lesson->class_section  . "</h2>
                                         <p class='text-xs'>" . $lesson->teacher_email . "</p>
                                     </div>";
@@ -200,7 +200,10 @@ function getProfileImage($work, $email)
         <div class="modal-box">
             <h3 class="font-bold text-lg">Guida</h3>
             <p class="py-4">
-                Questa pagina ti permette di gestire l'Orario dei Docenti. <br><br>
+                Questa pagina ti permette di gestire l'Orario dei Docenti.<br><br>
+                Per inserire un docente in un'ora specifica, seleziona l'aula nella quale vuoi inserire il prospetto orario e la <a class="text-green-500">cella</a> corrispondente all'ora e al giorno in cui vuoi inserire il docente. <br><br>
+                Successivamente potrai selezionare il docente e la classe da assegnare all'ora selezionata. Cliccando su <kbd class="kbd kbd-sm">Aggiungi</kbd> il docente verrà aggiunto nella rispettiva <a class="text-green-500">cella</a>.<br><br>
+                Una volta inserito il docente, potrai modificarlo cliccando sul rispettivo tasto e inserendo un altro insegnante al suo posto e rimuoverlo.
             </p>
             <div class="modal-action">
                 <form method="dialog">

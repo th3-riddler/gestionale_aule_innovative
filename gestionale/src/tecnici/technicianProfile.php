@@ -467,7 +467,7 @@ $subjects = json_decode(file_get_contents("http://" . $_SERVER["SERVER_NAME"] . 
 
     <script src="../javascripts/technicianProfile.js"></script>
     <script>
-        createAlert('<?php echo $errorMessages[$errorNumber] ?>', 'error')
+        createAlert("<?php echo $errorMessages[$errorNumber] ?>", "error")
     </script>
 </body>
 

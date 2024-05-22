@@ -183,6 +183,7 @@ function getProfileImage($work, $email)
             <h3 class="font-bold text-lg">Guida</h3>
             <p class="py-4">
                 Questa pagina ti permette di gestire i Carrelli. <br><br>
+                Selezionando il carrello che vuoi modificare, potrai cambiare il nome del carrello, il numero massimo di pc che può contenere e le aule che questo "copre". <br><br>
             </p>
             <div class="modal-action">
                 <form method="dialog">
