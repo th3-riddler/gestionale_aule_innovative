@@ -94,6 +94,37 @@ function setThemeLocalStorage() {
   localStorage.setItem("theme", this.value);
 }
 
+function deleteReservation(event) {
+  event.preventDefault();
+
+  fetch(`http://${server}/API/deleteReservation.php?token=${token}`, {
+    method: "POST",
+    body: JSON.stringify({
+      hour: params["hour"],
+      weekday: params["weekday"],
+      room: params["room"],
+      date: params["date"],
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      window.location.href = window.location.href + "&error=" + data["status"];
+      console.log(data);
+    });
+}
+
+let params = {};
+
+function assignParams(hour, weekday, room, date) {
+  params = {
+    hour: hour,
+    weekday: weekday,
+    room: room,
+    date: date,
+  };
+  document.getElementById("modalDeleteReservation").showModal();
+}
+
 function viewOptions() {
   let customizationDiv = document.createElement("div");
   customizationDiv.classList.add(
@@ -112,17 +143,17 @@ function viewOptions() {
                                             <path fill="currentColor" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/>
                                         </svg>
                                     </div>
-                                  <a href="../API/deleteReservation.php?hour=${
+                                  <a class='btn btn-square btn-outline btn-error border-2 btn-sm' onclick="assignParams(${
                                     this.parentNode.id.split("")[0]
-                                  }&weekday=${
+                                  }, '${
     document
       .querySelectorAll("th")
       [parseInt(this.parentNode.id.split("")[1])].querySelector("span")
       .textContent
-  }&room=${this.firstElementChild.querySelector("span").textContent}&date=${
+  }', '${this.firstElementChild.querySelector("span").textContent}', '${
     document.querySelectorAll("th")[parseInt(this.parentNode.id.split("")[1])]
       .lastChild.textContent
-  }" class='btn btn-square btn-outline btn-error border-2 btn-sm'>
+  }')">
                                     <div>
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 384 512" stroke="currentColor">
                                             <path fill="currentColor" d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/>
@@ -153,10 +184,10 @@ document.addEventListener("DOMContentLoaded", function () {
   );
   let options = { year: "numeric", month: "long", day: "numeric" };
   current.textContent =
-  monday_week.toLocaleDateString("it-IT", options) +
-  " - " +
-  saturday_week.toLocaleDateString("it-IT", options);
-  
+    monday_week.toLocaleDateString("it-IT", options) +
+    " - " +
+    saturday_week.toLocaleDateString("it-IT", options);
+
   current.dataset.monday_week = monday_week.toISOString();
   current.dataset.saturday_week = saturday_week.toISOString();
   document.getElementById("previous").addEventListener("click", function () {
@@ -222,7 +253,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById(
       item["hour"] + item["weekdayNumber"]
-    ).innerHTML = `<div class="btn btn-wide bg-secondary text-black hover:bg-secondary/30 transition-all duration-200">
+    ).innerHTML = `<div class="btn btn-wide bg-secondary text-black hover:bg-secondary/30 hover:text-black/30 transition-all duration-200">
             <h2 class="card-title">${
               item["class"] + item["section"]
             }<span class='room'>${item["room"]}</span></h2>
@@ -285,6 +316,14 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+let server = window.location.hostname;
+let token = document.cookie
+  .split(";")
+  .find((cookie) => {
+    return cookie.includes("token");
+  })
+  .split("=")[1];
+
 function createAlert(message, type) {
   if (message == "") {
     return;
@@ -304,6 +343,8 @@ function createAlert(message, type) {
   toast.classList.remove("-z-10");
   setTimeout(() => {
     alert.classList.add("opacity-0");
-    toast.classList.add("-z-10");
+    setTimeout(() => {
+      toast.classList.add("-z-10");
+    }, 1000);
   }, 3000);
 }

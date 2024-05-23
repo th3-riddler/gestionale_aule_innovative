@@ -19,12 +19,14 @@ $errorMessages = [
     2 => "Non puoi prenotare più PC di quelli disponibili",
     3 => "Non puoi prenotare un PC per un'ora passata",
     4 => "Non puoi eliminare una prenotazione per un'ora passata",
-    5 => "Errore durante l'eliminazione della prenotazione, riprova più tardi"
+    5 => "Errore durante l'eliminazione della prenotazione, riprova più tardi",
+    6 => "Prenotazione eliminata con successo",
+    7 => "Non puoi prenotare un PC per una data superiore a un mese"
 ];
 
 if (isset($_GET["error"])) {
     $_SESSION["error"] = $_GET["error"];
-    header("Location: index.php");
+    header("Location: index.php" . (isset($_GET["date"]) ? "?date=" . $_GET["date"] : ""));
     exit();
 }
 
@@ -258,10 +260,26 @@ function getProfileImage($work, $email)
         </div>
     </dialog>
 
+    <dialog id="modalDeleteReservation" class="modal">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg">Vuoi davvero rimuovere?</h3>
+            <p class="py-4">
+                Sei sicuro di voler rimuovere le prenotazioni selezionate? <br>
+                Questa azione è irreversibile.
+            </p>
+            <div class="modal-action">
+                <form method="dialog">
+                    <button class="btn btn-outline btn-primary" onclick="modalDeleteReservation.close()">Annulla</button>
+                    <button class="btn btn-outline btn-error" onclick="deleteReservation(event)">Rimuovi</button>
+                </form>
+            </div>
+        </div>
+    </dialog>
+
     <?php echo "<script>var scriptValues = " . json_encode($scriptValues) . ";</script>"; ?>
     <script src="../javascripts/indexTeachers.js"></script>
     <script>
-        createAlert("<?php echo $errorMessages[$errorNumber] ?>", "error")
+        createAlert("<?php echo $errorMessages[$errorNumber] ?>", "<?php echo $errorNumber == 6 ? "success" : "error" ?>");
     </script>
 </body>
 

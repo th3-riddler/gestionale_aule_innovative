@@ -33,23 +33,24 @@ CREATE TABLE IF NOT EXISTS technician (
 );
 
 
--- Default Teacher's password: "docente"
-INSERT IGNORE INTO teacher (email, name, surname, password) VALUES ("claudia.vallesi@iticopernico.it", "Claudia", "Vallesi", "3e64a091e9b1a6ec84714fc3d6e85ea042458d5c4f01034d2281d87d384b0ed1");
-INSERT IGNORE INTO teacher (email, name, surname, password) VALUES ("giuseppe.mazziotti@iticopernico.it", "Giuseppe", "Mazziotti", "3e64a091e9b1a6ec84714fc3d6e85ea042458d5c4f01034d2281d87d384b0ed1");
-INSERT IGNORE INTO teacher (email, name, surname, password) VALUES ("letizia.montanari@iticopernico.it", "Letizia", "Montanari", "3e64a091e9b1a6ec84714fc3d6e85ea042458d5c4f01034d2281d87d384b0ed1");
-INSERT IGNORE INTO teacher (email, name, surname, password) VALUES ("cristina.frabetti@iticopernico.it", "Cristina", "Frabetti", "3e64a091e9b1a6ec84714fc3d6e85ea042458d5c4f01034d2281d87d384b0ed1");
-INSERT IGNORE INTO teacher (email, name, surname, password) VALUES ("roberto.borghi@iticopernico.it", "Roberto", "Borghi", "3e64a091e9b1a6ec84714fc3d6e85ea042458d5c4f01034d2281d87d384b0ed1");
-INSERT IGNORE INTO teacher (email, name, surname, password) VALUES ("alessandra.trambaiolli@iticopernico.it", "Alessandra", "Trambaiolli", "3e64a091e9b1a6ec84714fc3d6e85ea042458d5c4f01034d2281d87d384b0ed1");
-INSERT IGNORE INTO teacher (email, name, surname, password) VALUES ("elia.melloni@iticopernico.it", "Elia", "Melloni", "3e64a091e9b1a6ec84714fc3d6e85ea042458d5c4f01034d2281d87d384b0ed1");
-INSERT IGNORE INTO teacher (email, name, surname, password) VALUES ("andrea.bombonati@iticopernico.it", "Andrea", "Bombonati", "3e64a091e9b1a6ec84714fc3d6e85ea042458d5c4f01034d2281d87d384b0ed1");
-INSERT IGNORE INTO teacher (email, name, surname, password) VALUES ("simone.ghetti@iticopernico.it", "Simone", "Ghetti", "3e64a091e9b1a6ec84714fc3d6e85ea042458d5c4f01034d2281d87d384b0ed1");
-INSERT IGNORE INTO teacher (email, name, surname, password) VALUES ("lorenza.masini@iticopernico.it", "Lorenza", "Masini", "3e64a091e9b1a6ec84714fc3d6e85ea042458d5c4f01034d2281d87d384b0ed1");
-INSERT IGNORE INTO teacher (email, name, surname, password) VALUES ("caterina.mestieri@iticopernico.it", "Caterina", "Mestieri", "3e64a091e9b1a6ec84714fc3d6e85ea042458d5c4f01034d2281d87d384b0ed1");
-INSERT IGNORE INTO teacher (email, name, surname, password) VALUES ("matteo.lunati@iticopernico.it", "Matteo", "Lunati", "3e64a091e9b1a6ec84714fc3d6e85ea042458d5c4f01034d2281d87d384b0ed1");
-INSERT IGNORE INTO teacher (email, name, surname, password) VALUES ("anna.morelli@iticopernico.it", "Anna", "Morelli", "3e64a091e9b1a6ec84714fc3d6e85ea042458d5c4f01034d2281d87d384b0ed1");
-INSERT IGNORE INTO teacher (email, name, surname, password) VALUES ("francesca.grazzi@iticopernico.it", "Francesca", "Grazzi", "3e64a091e9b1a6ec84714fc3d6e85ea042458d5c4f01034d2281d87d384b0ed1");
+-- Default Teacher's password: "docentee"
+INSERT IGNORE INTO teacher (email, name, surname) VALUES 
+("claudia.vallesi@iticopernico.it", "Claudia", "Vallesi"),
+("giuseppe.mazziotti@iticopernico.it", "Giuseppe", "Mazziotti"),
+("letizia.montanari@iticopernico.it", "Letizia", "Montanari"),
+("cristina.frabetti@iticopernico.it", "Cristina", "Frabetti"),
+("roberto.borghi@iticopernico.it", "Roberto", "Borghi"),
+("alessandra.trambaiolli@iticopernico.it", "Alessandra", "Trambaiolli"),
+("elia.melloni@iticopernico.it", "Elia", "Melloni"),
+("andrea.bombonati@iticopernico.it", "Andrea", "Bombonati"),
+("simone.ghetti@iticopernico.it", "Simone", "Ghetti"),
+("lorenza.masini@iticopernico.it", "Lorenza", "Masini"),
+("caterina.mestieri@iticopernico.it", "Caterina", "Mestieri"),
+("matteo.lunati@iticopernico.it", "Matteo", "Lunati"),
+("anna.morelli@iticopernico.it", "Anna", "Morelli"),
+("francesca.grazzi@iticopernico.it", "Francesca", "Grazzi");
 
--- Default Technician's password: "tecnico"
+-- Default Technician's password: "tecnicoo"
 INSERT IGNORE INTO technician (email, name, surname, password) VALUES ("luca.bianconi@iticopernico.it", "Luca", "Bianconi", "0188ff70cece0fe771e79f3bed925ae70dc23e3295cd577bcf35f95b66f32934");
 
 
@@ -128,7 +129,7 @@ CREATE TABLE IF NOT EXISTS room_schedule (
     class_section VARCHAR(10),
     PRIMARY KEY (room, weekday, hour),
     FOREIGN KEY (teacher_email) REFERENCES teacher(email) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (class_year, class_section) REFERENCES class(year, section)
+    FOREIGN KEY (class_year, class_section) REFERENCES class(year, section) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 INSERT IGNORE INTO room_schedule
@@ -144,8 +145,8 @@ CREATE TABLE IF NOT EXISTS reservation (
     hour INT NOT NULL,
     cart_id INT NOT NULL,
     teacher_email VARCHAR(255) NOT NULL,
-    FOREIGN KEY (room, weekday, hour) REFERENCES room_schedule(room, weekday, hour),
-    FOREIGN KEY (cart_id) REFERENCES cart(id),
+    FOREIGN KEY (room, weekday, hour) REFERENCES room_schedule(room, weekday, hour) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (cart_id) REFERENCES cart(id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (teacher_email) REFERENCES teacher(email) ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY (date, room, weekday, hour)
 );

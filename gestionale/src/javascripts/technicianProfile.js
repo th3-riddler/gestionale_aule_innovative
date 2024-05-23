@@ -238,6 +238,7 @@ function checkKeysDown(event) {
     multipleCheckboxSelection = true;
   }
   if (event.key == "Delete") {
+    if(Array.from(document.querySelectorAll("input[type='checkbox']:checked")).length == 0) return;
     document.getElementById("confirmDelete").showModal();
   }
 }
