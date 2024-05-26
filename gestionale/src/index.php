@@ -78,6 +78,10 @@ if (isset($_SESSION["email"])) {
                 `input[value='${localStorage.getItem("theme")}']`
             ).checked = true;
         }
+        else{
+            localStorage.setItem("theme", "dark");
+            document.querySelector(`input[value='dark']`).checked = true;
+        }
 
         document.querySelectorAll(".theme-controller").forEach((theme) => {
             theme.addEventListener("click", setThemeLocalStorage);
