@@ -345,6 +345,6 @@ function createAlert(message, type) {
     alert.classList.add("opacity-0");
     setTimeout(() => {
       toast.classList.add("-z-10");
-    }, 1000);
-  }, 3000);
+    }, 2000);
+  }, 5000);
 }

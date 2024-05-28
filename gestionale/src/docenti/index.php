@@ -21,7 +21,8 @@ $errorMessages = [
     4 => "Non puoi eliminare una prenotazione per un'ora passata",
     5 => "Errore durante l'eliminazione della prenotazione, riprova più tardi",
     6 => "Prenotazione eliminata con successo",
-    7 => "Non puoi prenotare un PC per una data superiore a un mese"
+    7 => "Non puoi prenotare un PC per una data superiore a un mese",
+    8 => "Devi prenotare almeno un pc",
 ];
 
 if (isset($_GET["error"])) {
@@ -195,7 +196,7 @@ function getProfileImage($work, $email)
 
     <form class="alert flex m-4 w-auto" action="../API/setReservation.php" method="POST" id="formReservation">
         <h1 class="btn btn-ghost text-xl">Prenota dei PC</h1>
-        <input class="input input-bordered w-1/6" name="pc_qt" id="inputPcQt" type="number" step="1" min="0" placeholder="Quantità di PC da prenotare" disabled required>
+        <input class="input input-bordered w-1/6" name="pc_qt" id="inputPcQt" type="number" step="1" min="1" placeholder="Quantità di PC da prenotare" disabled required>
         <label class="input input-bordered flex items-center gap-2 grow input-disabled">
             <input class="grow input-disabled" name="teacher_note" id="teacherNote" type="text" placeholder="Nota per il tecnico" disabled>
             <span class="badge badge-info">Opzionale</span>

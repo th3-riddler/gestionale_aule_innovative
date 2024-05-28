@@ -27,6 +27,10 @@ if ($date > date("Y-m-d", strtotime("+1 month"))){
     exit();
 }
 
+if($pc_qt <= 0){
+    header("Location: ../docenti/index.php?error=8");
+    exit();
+}
 
 $query = "SELECT (c.pc_max - IFNULL((SELECT SUM(r.pc_qt) FROM reservation r WHERE r.cart_id = c.id AND r.hour = ? AND r.date = ?), 0)) AS remaining_pc FROM cart c WHERE c.id = ?;";
 $stmt = $conn->prepare($query);

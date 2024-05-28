@@ -187,7 +187,7 @@ function createAlert(message, type) {
   alert.classList.remove("opacity-0");
   setTimeout(() => {
     alert.classList.add("opacity-0");
-  }, 3000);
+  }, 5000);
 }
 
 function openStatsModal(name, surname, email) {
